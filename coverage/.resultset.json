@@ -1,9 +1,11 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/ianlucas1/Desktop/easycalendar/app/models/child.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/appointment.rb": [
         1,
         1,
+        1,
+        null,
         null
       ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/application_record.rb": [
@@ -11,7 +13,19 @@
         1,
         null
       ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/child.rb": [
+        1,
+        1,
+        1,
+        null
+      ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/location.rb": [
+        1,
+        1,
+        null
+      ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/user.rb": [
+        1,
         1,
         1,
         null
@@ -55,6 +69,6 @@
         0
       ]
     },
-    "timestamp": 1475262525
+    "timestamp": 1475266886
   }
 }
