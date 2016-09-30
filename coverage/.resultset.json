@@ -17,6 +17,8 @@
         1,
         1,
         1,
+        1,
+        1,
         null
       ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/child.rb": [
@@ -37,13 +39,44 @@
         1,
         null
       ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/coach_location.rb": [
+        1,
+        1,
+        1,
+        null
+      ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/invite.rb": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        null
+      ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/location.rb": [
         1,
         1,
         1,
         null
       ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/message.rb": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        null
+      ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/notification.rb": [
+        1,
+        1,
+        1,
+        null
+      ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/user.rb": [
+        1,
+        1,
+        1,
         1,
         1,
         1,
@@ -91,6 +124,6 @@
         0
       ]
     },
-    "timestamp": 1475273956
+    "timestamp": 1475279287
   }
 }
