@@ -1,54 +1,58 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/ianlucas1/easycalendar/app/models/user.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/child.rb": [
         1,
         null
       ],
-      "/Users/ianlucas1/easycalendar/app/models/application_record.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/application_record.rb": [
         1,
         1,
         null
       ],
-      "/Users/ianlucas1/easycalendar/app/channels/application_cable/channel.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/user.rb": [
+        1,
+        null
+      ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/channels/application_cable/channel.rb": [
         0,
         0,
         0,
         0
       ],
-      "/Users/ianlucas1/easycalendar/app/channels/application_cable/connection.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/channels/application_cable/connection.rb": [
         0,
         0,
         0,
         0
       ],
-      "/Users/ianlucas1/easycalendar/app/controllers/application_controller.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/controllers/application_controller.rb": [
         0,
         0,
         0
       ],
-      "/Users/ianlucas1/easycalendar/app/controllers/welcome_controller.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/controllers/welcome_controller.rb": [
         0,
         0,
         0,
         0,
         0
       ],
-      "/Users/ianlucas1/easycalendar/app/helpers/application_helper.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/helpers/application_helper.rb": [
         0,
         0
       ],
-      "/Users/ianlucas1/easycalendar/app/jobs/application_job.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/jobs/application_job.rb": [
         0,
         0
       ],
-      "/Users/ianlucas1/easycalendar/app/mailers/application_mailer.rb": [
+      "/Users/ianlucas1/Desktop/easycalendar/app/mailers/application_mailer.rb": [
         0,
         0,
         0,
         0
       ]
     },
-    "timestamp": 1475207324
+    "timestamp": 1475260105
   }
 }
