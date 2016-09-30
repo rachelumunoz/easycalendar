@@ -1,5 +1,5 @@
 class Appointment < ApplicationRecord
   belongs_to :child
   belongs_to :location
-  # belongs_to :parent, through: :child
+  has_one :parent, through: :child, source: :parent # NEED TO MAKE THROUGH WORK
 end

@@ -5,8 +5,6 @@ RSpec.describe Child, type: :model do
   let(:mom) { User.create!(first_name: "Martha", last_name: "Ruth") }
   let(:kid) { Child.create!(first_name: "Baby", last_name: "Ruth", age: 9, parent_id: mom.id) }
 
-  # puts "#{parent.first_name}"
-
   context "creating a new child" do
     
     it "creates a Child object" do
