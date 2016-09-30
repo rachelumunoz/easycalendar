@@ -1,47 +1,47 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/apprentice/easycalendar/app/models/user.rb": [
+      "/Users/ianlucas1/easycalendar/app/models/user.rb": [
         1,
         null
       ],
-      "/Users/apprentice/easycalendar/app/models/application_record.rb": [
+      "/Users/ianlucas1/easycalendar/app/models/application_record.rb": [
         1,
         1,
         null
       ],
-      "/Users/apprentice/easycalendar/app/channels/application_cable/channel.rb": [
+      "/Users/ianlucas1/easycalendar/app/channels/application_cable/channel.rb": [
         0,
         0,
         0,
         0
       ],
-      "/Users/apprentice/easycalendar/app/channels/application_cable/connection.rb": [
+      "/Users/ianlucas1/easycalendar/app/channels/application_cable/connection.rb": [
         0,
         0,
         0,
         0
       ],
-      "/Users/apprentice/easycalendar/app/controllers/application_controller.rb": [
+      "/Users/ianlucas1/easycalendar/app/controllers/application_controller.rb": [
         0,
         0,
         0
       ],
-      "/Users/apprentice/easycalendar/app/helpers/application_helper.rb": [
+      "/Users/ianlucas1/easycalendar/app/helpers/application_helper.rb": [
         0,
         0
       ],
-      "/Users/apprentice/easycalendar/app/jobs/application_job.rb": [
+      "/Users/ianlucas1/easycalendar/app/jobs/application_job.rb": [
         0,
         0
       ],
-      "/Users/apprentice/easycalendar/app/mailers/application_mailer.rb": [
+      "/Users/ianlucas1/easycalendar/app/mailers/application_mailer.rb": [
         0,
         0,
         0,
         0
       ]
     },
-    "timestamp": 1475203591
+    "timestamp": 1475205208
   }
 }
