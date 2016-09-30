@@ -3,6 +3,7 @@
     "coverage": {
       "/Users/ianlucas1/Desktop/easycalendar/app/models/child.rb": [
         1,
+        1,
         null
       ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/application_record.rb": [
@@ -11,6 +12,7 @@
         null
       ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/user.rb": [
+        1,
         1,
         null
       ],
@@ -53,6 +55,6 @@
         0
       ]
     },
-    "timestamp": 1475260105
+    "timestamp": 1475262525
   }
 }

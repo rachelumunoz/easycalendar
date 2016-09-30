@@ -2,20 +2,31 @@ require 'rails_helper'
 
 RSpec.describe Child, type: :model do
   
-  let(:child) { Child.new(name: "Babe Ruth", age:"9") }
+  let(:mom) { User.create!(first_name: "Martha", last_name: "Ruth") }
+  let(:kid) { Child.create!(first_name: "Baby", last_name: "Ruth", age: 9, parent_id: mom.id) }
+
+  # puts "#{parent.first_name}"
 
   context "creating a new child" do
     
     it "creates a Child object" do
-      expect(child).to be_an_instance_of Child
+      expect(kid).to be_an_instance_of Child
     end
 
-    it "has a name" do
-      expect(child.name).to eq("Babe Ruth")
+    it "has a first name" do
+      expect(kid.first_name).to eq("Baby")
+    end
+
+    it "has a last name" do
+      expect(kid.last_name).to eq("Ruth")
     end
     
     it "has an age" do
-      expect(child.age).to eq(9)
+      expect(kid.age).to eq(9)
+    end
+
+    it "should have a parent (user) association" do
+      expect(kid.parent).to eq(mom) 
     end
 
   end
