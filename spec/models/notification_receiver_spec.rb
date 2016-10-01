@@ -2,15 +2,7 @@ require 'rails_helper'
 
 RSpec.describe NotificationReceiver, type: :model do
  
-  let(:mom) { create(:user) }
-  let(:kid) { Child.create!(first_name: "Baby", last_name: "Ruth", age: 9, client_id: mom.id) }
-  let(:iceArena) { Location.create!(name: "IceBox", address: "123 Way St.") }
-  let(:figure_skating) { Activity.create!(name: "Figure Skating") }
-  let(:michelle_kwan) { create(:user, name: 'Michelle') }
-  let(:michelle_kwan_figure_skating) { CoachActivity.create!(coach_id: michelle_kwan.id, activity_id: figure_skating.id) }
-  let(:lesson) { Appointment.create!(coach_activity_id: michelle_kwan_figure_skating.id, child_id: kid.id, location_id: iceArena.id) }
-  let(:notification) { Notification.create!(appointment_id: lesson.id, content: "Lesson Canceled") }
-  let(:notification_receiver) { NotificationReceiver.create!(receiver_id: mom.id, notification_id: notification.id) }
+  let(:notification_receiver) { create(:notification_receiver) }
 
   context "creating a new NotificationReceiver" do
     
@@ -19,11 +11,11 @@ RSpec.describe NotificationReceiver, type: :model do
     end
 
     it "has a receiver association" do
-      expect(notification_receiver.receiver).to eq(mom)
+      expect(notification_receiver.receiver).to be_an_instance_of User
     end
 
     it "has a notification association" do
-      expect(notification_receiver.notification).to eq(notification)
+      expect(notification_receiver.notification).to be_an_instance_of Notification
     end
 
   end

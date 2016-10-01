@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CoachLocation, type: :model do
   
-  let(:michelle_kwan) { create(:user, name: 'Michelle') }
-  let(:iceArena) { Location.create!(name: "IceBox", address: "123 Way St.") }
-  let(:coach_location) { CoachLocation.create!(coach_id: michelle_kwan.id, location_id: iceArena.id) }
+  let(:coach_location) { create(:coach_location) }
 
   context "creating a new CoachLocation" do
     
@@ -13,11 +11,11 @@ RSpec.describe CoachLocation, type: :model do
     end
 
     it "has a user association" do
-      expect(coach_location.coach).to eq(michelle_kwan)
+      expect(coach_location.coach).to be_an_instance_of User
     end
 
     it "has a location association" do
-      expect(coach_location.location).to eq(iceArena)
+      expect(coach_location.location).to be_an_instance_of Location
     end
 
   end

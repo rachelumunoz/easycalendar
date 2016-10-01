@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:michelle_kwan) { build(:user, name: 'Michelle') }
+  
+  let(:michelle_kwan) { build(:coach) }
 
   context "creating a new user" do
   
@@ -10,7 +11,7 @@ RSpec.describe User, type: :model do
     end
   
     it "has a name" do
-      expect(michelle_kwan.name).to eq("Michelle")
+      expect(michelle_kwan.name).to eq("Michelle Kwan")
     end
 
   end

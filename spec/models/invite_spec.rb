@@ -2,11 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Invite, type: :model do
   
-  let(:dad) { create(:user, name: 'Marky Mark')  }
-  let(:michelle_kwan) { create(:user, name: 'Michelle') }
-  let(:figure_skating) { Activity.create!(name: "Figure Skating") }
-  let(:michelle_kwan_figure_skating) { CoachActivity.create!(coach_id: michelle_kwan.id, activity_id: figure_skating.id) }
-  let(:invite) { Invite.create!(client_id: dad.id, coach_activity_id: michelle_kwan_figure_skating.id) }
+  let(:invite) { create(:invite) }
 
   context "creating a new invite" do
     
@@ -15,19 +11,19 @@ RSpec.describe Invite, type: :model do
     end
 
     it "has an associated client" do
-      expect(invite.client).to eq(dad)
+      expect(invite.client).to be_an_instance_of User
     end
     
     it "has an associated coach_activity" do
-      expect(invite.coach_activity).to eq(michelle_kwan_figure_skating)
+      expect(invite.coach_activity).to be_an_instance_of CoachActivity
     end
 
     it "has an associated coach" do
-      expect(invite.coach).to eq(michelle_kwan)
+      expect(invite.coach).to be_an_instance_of User
     end   
 
     it "has an associated activity" do
-      expect(invite.activity).to eq(figure_skating)
+      expect(invite.activity).to be_an_instance_of Activity
     end 
 
   end

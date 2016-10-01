@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CoachActivity, type: :model do
   
-  let(:figure_skating) { Activity.create!(name: "Figure Skating") }
-  let(:michelle_kwan) { create(:user, name: 'Michelle') }
-  let(:coach_activity) { CoachActivity.create!(coach_id: michelle_kwan.id, activity_id: figure_skating.id) }
+  let(:coach_activity) { create(:coach_activity) }
 
   context "creating a new CoachActivity" do
     
@@ -13,11 +11,11 @@ RSpec.describe CoachActivity, type: :model do
     end
 
     it "has a coach association" do
-      expect(coach_activity.coach).to eq(michelle_kwan)
+      expect(coach_activity.coach).to be_an_instance_of User
     end
 
     it "has an activity association" do
-      expect(coach_activity.activity).to eq(figure_skating)
+      expect(coach_activity.activity).to be_an_instance_of Activity
     end
 
   end

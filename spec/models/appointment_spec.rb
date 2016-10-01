@@ -2,13 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
   
-  let(:mom) { create(:user) }
-  let(:kid) { Child.create!(first_name: "Baby", last_name: "Ruth", age: 9, client_id: mom.id) }
-  let(:iceArena) { Location.create!(name: "IceBox", address: "123 Way St.") }
-  let(:figure_skating) { Activity.create!(name: "Figure Skating") }
-  let(:michelle_kwan) { create(:user, name: 'Michelle') }
-  let(:michelle_kwan_figure_skating) { CoachActivity.create!(coach_id: michelle_kwan.id, activity_id: figure_skating.id) }
-  let(:lesson) { Appointment.create!(coach_activity_id: michelle_kwan_figure_skating.id, child_id: kid.id, location_id: iceArena.id) }
+  let(:lesson) { create(:appointment) }
 
   context "creating a new Appointment" do
     
@@ -17,15 +11,15 @@ RSpec.describe Appointment, type: :model do
     end
 
     it "has a child association" do
-      expect(lesson.child).to eq(kid)
+      expect(lesson.child).to be_an_instance_of Child
     end
 
     it "has a location association" do
-      expect(lesson.location).to eq(iceArena)
+      expect(lesson.location).to be_an_instance_of Location
     end
 
     it "has a client association" do
-      expect(lesson.child.client).to eq(mom)
+      expect(lesson.child.client).to be_an_instance_of User
     end
 
   end
