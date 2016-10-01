@@ -35,10 +35,14 @@ gem 'jbuilder', '~> 2.5'
   gem 'rails-controller-testing'
   gem 'coveralls', require: false
 
+  gem 'twilio-ruby'
+  gem 'localtunnel'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
   gem 'byebug', platform: :mri
+  gem 'dotenv-rails'
 end
 
 group :development do
