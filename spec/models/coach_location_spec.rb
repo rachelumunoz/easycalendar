@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CoachLocation, type: :model do
   
-  let(:michelle_kwan) { User.create!(first_name: "Michelle", last_name: "Kwan") }
+  let(:michelle_kwan) { create(:user, name: 'Michelle') }
   let(:iceArena) { Location.create!(name: "IceBox", address: "123 Way St.") }
   let(:coach_location) { CoachLocation.create!(coach_id: michelle_kwan.id, location_id: iceArena.id) }
 

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CoachActivity, type: :model do
   
   let(:figure_skating) { Activity.create!(name: "Figure Skating") }
-  let(:michelle_kwan) { User.create!(first_name: "Michelle", last_name: "Kwan") }
+  let(:michelle_kwan) { create(:user, name: 'Michelle') }
   let(:coach_activity) { CoachActivity.create!(coach_id: michelle_kwan.id, activity_id: figure_skating.id) }
 
   context "creating a new CoachActivity" do

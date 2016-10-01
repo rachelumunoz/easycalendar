@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Invite, type: :model do
   
-  let(:dad) { User.create!(first_name: "Mark", last_name: "Ruth") }
-  let(:michelle_kwan) { User.create!(first_name: "Michelle", last_name: "Kwan") }
+  let(:dad) { create(:user, name: 'Marky Mark')  }
+  let(:michelle_kwan) { create(:user, name: 'Michelle') }
   let(:figure_skating) { Activity.create!(name: "Figure Skating") }
   let(:michelle_kwan_figure_skating) { CoachActivity.create!(coach_id: michelle_kwan.id, activity_id: figure_skating.id) }
   let(:invite) { Invite.create!(client_id: dad.id, coach_activity_id: michelle_kwan_figure_skating.id) }
