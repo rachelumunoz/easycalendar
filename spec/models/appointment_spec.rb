@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
   
-  let(:lesson) { create(:appointment) }
+  let(:appointment) { create(:appointment) }
 
   context "creating a new Appointment" do
     it "creates an Appointment object" do
-      expect(lesson).to be_an_instance_of Appointment
+      expect(appointment).to be_an_instance_of Appointment
     end
   end
 
@@ -29,6 +29,10 @@ RSpec.describe Appointment, type: :model do
 
     it "has a coach" do
       should have_one(:coach)
+    end
+
+    it "has many notifications" do
+      should have_many(:notifications)
     end
   end
 

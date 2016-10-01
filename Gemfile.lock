@@ -256,8 +256,8 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   coveralls
-  factory_girl_rails
   devise
+  factory_girl_rails
   figaro
   jbuilder (~> 2.5)
   jquery-rails

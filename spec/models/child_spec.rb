@@ -23,8 +23,8 @@ RSpec.describe Child, type: :model do
   end
 
   context "validates associations" do
-    it "belongs to a client" do
-      should belong_to(:client)
+    it "belongs to a parent" do
+      should belong_to(:parent)
     end
 
     it "has many appointments" do
@@ -33,8 +33,8 @@ RSpec.describe Child, type: :model do
   end
 
   context "validates data" do
-    it "validates a client is present" do
-      should validate_presence_of(:client)
+    it "validates a parent is present" do
+      should validate_presence_of(:parent)
     end
   end
 end

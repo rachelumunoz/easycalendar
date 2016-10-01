@@ -3,6 +3,6 @@ FactoryGirl.define do
     coach_activity
     child
     location
-    client
+    association :client, email: "martharuth1@gmail.com"
   end
 end

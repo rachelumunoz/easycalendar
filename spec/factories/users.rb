@@ -1,9 +1,15 @@
 FactoryGirl.define do
   factory :client, class: User do
-    name "Martha Ruth"
+    first_name "Martha"
+    last_name "Ruth"
+    email "martharuth@gmail.com"
+    password "password"
   end
 
   factory :coach, class: User do
-    name "Michelle Kwan"
+    first_name "Michelle"
+    last_name "Kwan"
+    email "michellekwan@gmail.com"
+    password "password"
   end
 end
