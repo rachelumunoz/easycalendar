@@ -13,6 +13,6 @@ RSpec.describe User, type: :model do
     it "has a password" do
       expect(user.password).to eq("123")
     end
-  
+
   end
 end
