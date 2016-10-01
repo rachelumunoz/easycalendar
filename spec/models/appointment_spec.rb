@@ -5,22 +5,44 @@ RSpec.describe Appointment, type: :model do
   let(:lesson) { create(:appointment) }
 
   context "creating a new Appointment" do
-    
     it "creates an Appointment object" do
       expect(lesson).to be_an_instance_of Appointment
     end
+  end
 
-    it "has a child association" do
-      expect(lesson.child).to be_an_instance_of Child
+  context "validates associations" do
+    it "belongs to a child" do
+      should belong_to(:child)
     end
 
-    it "has a location association" do
-      expect(lesson.location).to be_an_instance_of Location
+    it "belongs to a location" do
+      should belong_to(:location)
     end
 
-    it "has a client association" do
-      expect(lesson.child.client).to be_an_instance_of User
+    it "has a client" do
+      should have_one(:client)
     end
 
+    it "belongs to a coach_activity" do
+      should belong_to(:coach_activity)
+    end
+
+    it "has a coach" do
+      should have_one(:coach)
+    end
+  end
+
+  context "validates data" do
+    it "validates a location is present" do
+      should validate_presence_of(:location)
+    end
+
+    it "validates a coach_activity is present" do
+      should validate_presence_of(:coach_activity)
+    end
+
+    it "validates a coach is present" do
+      should validate_presence_of(:coach)
+    end
   end
 end

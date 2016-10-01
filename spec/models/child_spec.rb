@@ -5,7 +5,6 @@ RSpec.describe Child, type: :model do
   let(:kid) { create(:child) }
 
   context "creating a new child" do
-    
     it "creates a Child object" do
       expect(kid).to be_an_instance_of Child
     end
@@ -21,11 +20,21 @@ RSpec.describe Child, type: :model do
     it "has an age" do
       expect(kid.age).to eq(9)
     end
+  end
 
-    # User Shoulda Matchers?
-    # it "should have a client (user) association" do
-    #   expect(kid.client).to eq(user) 
-    # end
+  context "validates associations" do
+    it "belongs to a client" do
+      should belong_to(:client)
+    end
 
+    it "has many appointments" do
+      should have_many(:appointments)
+    end
+  end
+
+  context "validates data" do
+    it "validates a client is present" do
+      should validate_presence_of(:client)
+    end
   end
 end

@@ -24,7 +24,7 @@
         1,
         null,
         1,
-        1,
+        0,
         0,
         0,
         0,
@@ -41,29 +41,11 @@
         1,
         null
       ],
-      "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/controllers/home_controller.rb": [
-        1,
-        1,
-        null,
-        null
-      ],
-      "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/controllers/sessions_controller.rb": [
-        1,
-        1,
-        1,
-        0,
-        0,
-        null,
-        null,
-        1,
-        1,
-        1,
-        null,
-        null
-      ],
       "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/models/activity.rb": [
         1,
         1,
+        1,
+        null,
         1,
         null
       ],
@@ -74,16 +56,25 @@
         1,
         1,
         1,
+        null,
+        1,
+        1,
+        1,
         null
       ],
       "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/models/child.rb": [
         1,
         1,
         1,
+        null,
+        1,
         null
       ],
       "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/models/client_location.rb": [
         1,
+        1,
+        1,
+        null,
         1,
         1,
         null
@@ -92,10 +83,16 @@
         1,
         1,
         1,
+        null,
+        1,
+        1,
         null
       ],
       "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/models/coach_location.rb": [
         1,
+        1,
+        1,
+        null,
         1,
         1,
         null
@@ -106,10 +103,16 @@
         1,
         1,
         1,
+        null,
+        1,
+        1,
         null
       ],
       "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/models/location.rb": [
         1,
+        1,
+        1,
+        null,
         1,
         1,
         null
@@ -120,10 +123,18 @@
         1,
         1,
         1,
+        null,
+        1,
+        1,
+        1,
+        1,
         null
       ],
       "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/models/notification_receiver.rb": [
         1,
+        1,
+        1,
+        null,
         1,
         1,
         null
@@ -134,9 +145,32 @@
         1,
         1,
         1,
+        null,
+        1,
+        1,
         null
+      ],
+      "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/controllers/home_controller.rb": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "/Users/clarabova/DevBootCamp/Salamanders/FinalProject/easycalendar/app/controllers/sessions_controller.rb": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
-    "timestamp": 1475345960
+    "timestamp": 1475352668
   }
 }
