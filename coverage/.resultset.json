@@ -67,7 +67,15 @@
         1,
         null
       ],
+      "/Users/ianlucas1/Desktop/easycalendar/app/models/notification_receiver.rb": [
+        1,
+        1,
+        1,
+        null
+      ],
       "/Users/ianlucas1/Desktop/easycalendar/app/models/notification.rb": [
+        1,
+        1,
         1,
         1,
         1,
@@ -83,47 +91,12 @@
         1,
         1,
         1,
+        1,
+        1,
+        1,
         null
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/channels/application_cable/channel.rb": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/channels/application_cable/connection.rb": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/controllers/application_controller.rb": [
-        0,
-        0,
-        0
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/controllers/welcome_controller.rb": [
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/helpers/application_helper.rb": [
-        0,
-        0
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/jobs/application_job.rb": [
-        0,
-        0
-      ],
-      "/Users/ianlucas1/Desktop/easycalendar/app/mailers/application_mailer.rb": [
-        0,
-        0,
-        0,
-        0
       ]
     },
-    "timestamp": 1475279287
+    "timestamp": 1475280890
   }
 }
