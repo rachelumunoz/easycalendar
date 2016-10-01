@@ -12,7 +12,6 @@ class MessagesController < ApplicationController
       body: "Hello there, thanks for texting me. Your number is #{from_number}."
       # body: "Welcome to Easy Calendar! Your number, #{from_number}, also serves as your username."
     )
-    
   end
  
   private

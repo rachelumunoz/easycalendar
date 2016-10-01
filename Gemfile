@@ -38,6 +38,9 @@ gem 'jbuilder', '~> 2.5'
   gem 'twilio-ruby'
   gem 'localtunnel'
 
+gem 'figaro'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
@@ -58,3 +61,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "omniauth-google-oauth2"
+
+
+gem 'devise'
