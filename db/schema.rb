@@ -10,19 +10,91 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930182257) do
-
+ActiveRecord::Schema.define(version: 20160930235224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "appointments", force: :cascade do |t|
+    t.integer  "coach_activity_id"
+    t.integer  "child_id"
+    t.integer  "location_id"
+    t.datetime "day_time"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "children", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "age"
-    t.integer  "parent_id"
+    t.integer  "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "client_locations", force: :cascade do |t|
+    t.integer  "client_id"
+    t.integer  "location_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "coach_activities", force: :cascade do |t|
+    t.integer  "coach_id"
+    t.integer  "activity_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "coach_locations", force: :cascade do |t|
+    t.integer  "coach_id"
+    t.integer  "location_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.integer  "client_id"
+    t.integer  "coach_activity_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string   "name"
+    t.string   "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer  "notification_id"
+    t.integer  "sender_id"
+    t.integer  "receiver_id"
+    t.text     "content"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "notification_receivers", force: :cascade do |t|
+    t.integer  "notification_id"
+    t.integer  "receiver_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "appointment_id"
+    t.text     "content"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "users", force: :cascade do |t|
