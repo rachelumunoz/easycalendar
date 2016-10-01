@@ -35,6 +35,8 @@ gem 'jbuilder', '~> 2.5'
   gem 'rails-controller-testing'
   gem 'coveralls', require: false
 
+gem 'figaro'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
@@ -59,3 +61,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "omniauth-google-oauth2"
+gem 'devise'
+gem 'bower-rails'
+gem 'angular-rails'
