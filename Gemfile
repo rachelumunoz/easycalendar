@@ -41,6 +41,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
   gem 'byebug', platform: :mri
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -52,10 +53,14 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+group :test do
+  gem 'shoulda-matchers', '~> 3.1'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "omniauth-google-oauth2"
-
-
 gem 'devise'
+gem 'bower-rails'
+gem 'angular-rails'

@@ -1,0 +1,18 @@
+{
+  "name": "easycalendar",
+  "homepage": "https://github.com/ianlucas1/easycalendar",
+  "authors": [
+    "Rachel Munoz, Ian Lucas, Clara Bova, Andrew Palmes"
+  ],
+  "description": "Private lesson scheduling app for coaches and clients",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
