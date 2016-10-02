@@ -9,8 +9,9 @@ class MessagesController < ApplicationController
     sms = @client.messages.create(
       from: Rails.application.secrets.twilio_number,
       to: from_number,
-      body: "Hello there, thanks for texting me. Your number is #{from_number}."
-      # body: "Welcome to Easy Calendar! Your number, #{from_number}, also serves as your username."
+      # body: "Hello there, thanks for texting me. Your number is #{from_number}."
+      # body: reply_message
+      body: "Welcome to Easy Calendar! Your number, #{from_number}, also serves as your username."
     )
   end
  
@@ -21,4 +22,17 @@ class MessagesController < ApplicationController
     auth_token = Rails.application.secrets.twilio_token
     @client = Twilio::REST::Client.new account_sid, auth_token
   end
+
+  def reply_message 
+    "Welcome to Easy Calendar! Your number, #{from_number}, also serves as your username."
+  end
+
+  def reply_recipient
+    if from_number == 14785424512
+      ", Ian"
+    else
+      ""
+    end
+  end
+
 end
