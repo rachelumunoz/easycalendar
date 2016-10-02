@@ -1,17 +1,15 @@
 class MessagesController < ApplicationController 
  skip_before_filter :verify_authenticity_token
  # skip_before_filter :authenticate_user!, :only => "reply"
- 
+
   def reply
-    message_body = params["Body"]
-    from_number = params["From"]
+    @message_body = params["Body"]
+    @from_number = params["From"]
     boot_twilio
     sms = @client.messages.create(
       from: Rails.application.secrets.twilio_number,
-      to: from_number,
-      # body: "Hello there, thanks for texting me. Your number is #{from_number}."
-      # body: reply_message
-      body: "Welcome to Easy Calendar! Your number, #{from_number}, also serves as your username."
+      to: @from_number,
+      body: reply_message
     )
   end
  
@@ -23,15 +21,27 @@ class MessagesController < ApplicationController
     @client = Twilio::REST::Client.new account_sid, auth_token
   end
 
-  def reply_message 
-    "Welcome to Easy Calendar! Your number, #{from_number}, also serves as your username."
+  def reply_message
+    if @message_body == "Y"
+      appt_confirmation
+    else
+      welcome_msg
+    end
+  end
+
+  def appt_confirmation
+    return "Great, you have booked that appointment. We've notified your coach for you."
+  end
+
+  def welcome_msg
+    return "Welcome to Easy Calendar#{reply_recipient}! Your number, #{@from_number}, also serves as your username."
   end
 
   def reply_recipient
-    if from_number == 14785424512
-      ", Ian"
+    if @from_number == "+14785424512"
+      return ", Ian"
     else
-      ""
+      return ""
     end
   end
 
