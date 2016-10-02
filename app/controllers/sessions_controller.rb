@@ -13,6 +13,11 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
+  # def create
+  #   session[:user_id] = nil
+  #   redirect_to root_path
+  # end
+
   protected
 
   def auth_hash

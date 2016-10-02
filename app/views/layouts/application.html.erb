@@ -13,6 +13,7 @@
       <% if current_user %>
         Signed in as <strong><%= current_user.email %></strong>!
         <%= link_to "Sign out", signout_path, id: "sign_out" %>
+        <%= link_to "other signout", destroy_user_session_path %>
       <% else %>
         <%= link_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, id: "sign_in with google" %>
       <% end %>

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def current_user
-    puts "enter_user in applicatoin controller*****************************************************"
+    puts "enter_user in application controller*****************************************************"
     if(@current_user)
       puts "current user already signed in!!!!!!!!!"
     end

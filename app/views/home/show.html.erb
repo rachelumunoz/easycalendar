@@ -1,5 +1,9 @@
-<h1>Home#show</h1>
-<p>Find me in app/views/home/show.html.erb</p>
+<h1>Easy Calendar</h1>
 <% if current_user %>
 hello
 <% end %>
+
+<%= link_to 'Sign in with us', new_user_session_path  %> OR
+<%= link_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, id: "sign_in with google" %>
+<br>
+<%= link_to 'Register with us', new_user_registration_path  %>
