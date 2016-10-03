@@ -3,9 +3,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.find_for_google_oauth2(request.env["omniauth.auth"], current_user)
     puts "======find for google======"
     puts request.env["omniauth.auth"]
-    if @user.persisted?
+    session[:user_id] = user.id
+    if @user
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Google"
-      session[:user_id] = @user.id
+
       sign_in_and_redirect @user, :event => :authentication
       @user.token = request.env["omniauth.auth"].credentials[:token]
     else

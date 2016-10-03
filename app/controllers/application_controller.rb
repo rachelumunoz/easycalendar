@@ -9,5 +9,10 @@ class ApplicationController < ActionController::Base
     end
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
-  helper_method :current_user
+
+  # def after_sign_in_path_for(resource_or_scope)
+  #  if request.env['omniauth.origin']
+  #     request.env['omniauth.origin']
+  #   end
+  # end
 end
