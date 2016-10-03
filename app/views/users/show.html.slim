@@ -1,3 +1,6 @@
+=javascript_include_tag "application", "data-turbolinks-track" => "reload"
+=stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => "reload"
+
 h1 test profile view
 table
 	tr
@@ -12,10 +15,12 @@ table
 		td = appt.location.address
 		- if appt.child
 			td = appt.child.first_name
-		- else 
+		- else
 			td UNBOOKED
 	br
+div[id="remote_container"]
+
+div[class="calendar"]
 
 
-== debug @testuser.coached_appointments
-	br
+

@@ -61,3 +61,13 @@ Appointment.create(coach_activity_id:2, child_id: 2, location_id: 1)
 Appointment.create(coach_activity_id:3, child_id: 3, location_id: 2)
 Appointment.create(coach_activity_id:4, child_id: 4, location_id: 3)
 Appointment.create(coach_activity_id:5, child_id: 5, location_id: 3)
+
+
+50.times do
+  appt = Appointment.new(coach_activity_id:rand(5)+1, child_id: rand(5)+1, location_id: rand(3)+1)
+  seed_time = Faker::Time.between(5.days.ago, Date.today+20, :morning)
+  appt.start = seed_time
+  appt.end = Faker::Time.between(seed_time, seed_time+1.hours, :morning)
+  appt.color = ["blue","green","yellow","orange"].sample
+  appt.save
+end
