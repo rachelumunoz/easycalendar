@@ -2,40 +2,42 @@ div.container
   div.col-lg-12.text-center
     h1 Current User's Schedule
 
-    h3.text-left Your Coaching Appointments
-    table.table.table-striped
+    - if @user.coached_appointments.count > 0
+      h3.text-left Your Coaching Appointments
+      table.table.table-striped
+          tr
+            th.text-center Activity
+            th.text-center Location
+            th.text-center Address
+            th.text-center Student
+            th.text-center Time & Day
+          - @user.coached_appointments.each do |appt|
+            tr
+              td = appt.activity.name
+              td = appt.location.name
+              td = appt.location.address
+              - if appt.child
+                td = appt.child.first_name
+              - else
+                td UNBOOKED
+              td = appt.day_time
+
+    - if @user.appointments.count > 0
+      h3.text-left Your Children's Appointments
+      table.table.table-striped
         tr
           th.text-center Activity
-          th.text-center Location
+          th.text-center Venue
           th.text-center Address
-          th.text-center Student
+          th.text-center Coach
           th.text-center Time & Day
-        - @user.coached_appointments.each do |appt|
+        - @user.appointments.each do |appt|
           tr
             td = appt.activity.name
             td = appt.location.name
             td = appt.location.address
-            - if appt.child
-              td = appt.child.first_name
+            - if appt.coach
+              td = appt.coach.full_name
             - else
               td UNBOOKED
             td = appt.day_time
-
-
-    h3.text-left Your Children's Appointments
-    table.table.table-striped
-      tr
-        th.text-center Activity
-        th.text-center Venue
-        th.text-center Address
-        th.text-center Coach
-      - @user.appointments.each do |appt|
-        tr
-          td = appt.activity.name
-          td = appt.location.name
-          td = appt.location.address
-          - if appt.child
-            td = appt.child.first_name
-          - else
-            td UNBOOKED
-          td = appt.day_time
