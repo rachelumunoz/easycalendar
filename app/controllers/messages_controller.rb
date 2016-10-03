@@ -50,9 +50,9 @@ class MessagesController < ApplicationController
   end
 
   # COMMANDS
-  @appt_id = Appointment.find_by(params[:id])
+  # @appt_id = Appointment.find_by(params[:id])
   @book_cancelled_appt = "Yes"
-  @book_open_appt = "Book #{@appt_id}"
+  # @book_open_appt = "Book #{@appt_id}"
   @cancel_appt = "Cancel"
   @close_account = "Close"
   @command_options = "Commands"
@@ -137,37 +137,37 @@ class MessagesController < ApplicationController
     COMMANDS
   end
 
-  def list_of_linked_coaches
-    @coaches = Coach.find_by(params[:id])
-      return "Your coaches are:"
-    @coaches.each do |coach|
-      return coach
-    end
-  end
+  # def list_of_linked_coaches
+  #   @coaches = Coach.find_by(params[:id])
+  #     return "Your coaches are:"
+  #   @coaches.each do |coach|
+  #     return coach
+  #   end
+  # end
 
-  def list_of_linked_students
-    @students = Child.find_by(params[:id])
-      return "Your students are:"
-    @students.each do |student|
-      return student
-    end
-  end
+  # def list_of_linked_students
+  #   @students = Child.find_by(params[:id])
+  #     return "Your students are:"
+  #   @students.each do |student|
+  #     return student
+  #   end
+  # end
 
-  def list_of_appt_openings
-    @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
-      return "Your students are:"
-    @available_appointments.each do |appt|
-      return appt
-    end
-  end
+  # def list_of_appt_openings
+  #   @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
+  #     return "Your students are:"
+  #   @available_appointments.each do |appt|
+  #     return appt
+  #   end
+  # end
 
-  def list_of_appts
-    @appointments = Appointment.find_by(params[:id]).where(params[:child_id]==nil)
-      return "Your students are:"
-    @appointments.each do |appt|
-      return appt
-    end
-  end
+  # def list_of_appts
+  #   @appointments = Appointment.find_by(params[:id]).where(params[:child_id]==nil)
+  #     return "Your students are:"
+  #   @appointments.each do |appt|
+  #     return appt
+  #   end
+  # end
 
   def pause_confirmation_msg
     return "Confirmed: you have turned off EasyCalendar notifications. To restart notifications, simply enter the command 'Resume'."
