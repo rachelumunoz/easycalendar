@@ -33,11 +33,9 @@ Activity.create(name: "Skateboarding")
 Activity.create(name: "Gymnastics")
 Activity.create(name: "Figure Skating")
 
-CoachActivity.create(coach_id:1,activity_id:1)
-CoachActivity.create(coach_id:2,activity_id:2)
-CoachActivity.create(coach_id:3,activity_id:3)
-CoachActivity.create(coach_id:4,activity_id:4)
-CoachActivity.create(coach_id:5,activity_id:5)
+10.times do
+  CoachActivity.create(coach_id:rand(10)+1,activity_id:rand(5)+1)
+end
 
 CoachLocation.create(location_id: 1, coach_id:5)
 CoachLocation.create(location_id: 2, coach_id:5)
@@ -53,11 +51,6 @@ Invite.create(client_id: 8, coach_activity_id:3)
 Invite.create(client_id: 9, coach_activity_id:4)
 Invite.create(client_id: 10, coach_activity_id:5)
 
-Appointment.create(coach_activity_id:1, child_id:1 , location_id: 1, day_time: Time.now)
-Appointment.create(coach_activity_id:1, location_id: 1, day_time: Time.now)
-Appointment.create(coach_activity_id:2, child_id: 2, location_id: 1, day_time: Time.now)
-
-
-Appointment.create(coach_activity_id:3, child_id: 3, location_id: 2)
-Appointment.create(coach_activity_id:4, child_id: 4, location_id: 3)
-Appointment.create(coach_activity_id:5, child_id: 5, location_id: 3)
+100.times do
+  Appointment.create(coach_activity_id:rand(10)+1, child_id:rand(5)+1 , location_id: rand(3)+1, day_time: Time.now)
+end

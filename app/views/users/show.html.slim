@@ -7,16 +7,16 @@ table
 		th Venue
 		th Address
 		th Appointment w/
-- @appointments.each do |appt|
-	tr
-		td = appt.activity.name
-		td = appt.location.name
-		td = appt.location.address
-		- if appt.child
-			td = appt.child.first_name
-		- else
-			td UNBOOKED
-		td = appt.day_time
+	- @appointments.each do |appt|
+		tr
+			td = appt.activity.name
+			td = appt.location.name
+			td = appt.location.address
+			- if appt.child
+				td = appt.child.first_name
+			- else
+				td UNBOOKED
+			td = appt.day_time
 
 br
 
@@ -39,3 +39,8 @@ table
 			- else
 				td UNBOOKED
 			td = appt.day_time
+
+h3 My kids
+-@testuser.children.each do |child|
+	h4 = child.first_name + " " + child.last_name
+
