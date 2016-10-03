@@ -17,28 +17,28 @@ class MessagesController < ApplicationController
   end
 
   # when a user cancels an appointment
-  def send_cancellation_notification
-    # need to add logic
-    @coach_name = User.find_by(...).first_name
-    @to_number = User.find_by(...).phone
-    boot_twilio
-    sms = @client.messages.create(
-      from: Rails.application.secrets.twilio_number,
-      to: @to_number,
-      body: cancelation_msg
-    )
-  end
+  # def send_cancellation_notification
+  #   # need to add logic
+  #   @coach_name = User.find_by(...).first_name
+  #   @to_number = User.find_by(...).phone
+  #   boot_twilio
+  #   sms = @client.messages.create(
+  #     from: Rails.application.secrets.twilio_number,
+  #     to: @to_number,
+  #     body: cancelation_msg
+  #   )
+  # end
 
   # when a user is created in the system
-  def send_welcome_message
-    @to_number = User.find_by(...).phone
-    boot_twilio
-    sms = @client.messages.create(
-      from: Rails.application.secrets.twilio_number,
-      to: @to_number,
-      body: welcome_message
-    )
-  end
+  # def send_welcome_message
+  #   @to_number = User.find_by(...).phone
+  #   boot_twilio
+  #   sms = @client.messages.create(
+  #     from: Rails.application.secrets.twilio_number,
+  #     to: @to_number,
+  #     body: welcome_message
+  #   )
+  # end
  
 
   private
@@ -97,6 +97,7 @@ class MessagesController < ApplicationController
     elsif
       @message_body == @resume_notification
       resume_notification_msg
+    end
   end
 
   def welcome_message
@@ -187,6 +188,5 @@ class MessagesController < ApplicationController
   #     return ""
   #   end
   # end
-
 
 end
