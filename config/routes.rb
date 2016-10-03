@@ -1,5 +1,5 @@
 Easycalendar::Application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }, :skip => [:registrations, :sessions]
+  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
   get 'angular_test', to: 'angular_test#index'
 
