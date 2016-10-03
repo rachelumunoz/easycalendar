@@ -1,0 +1,21 @@
+h1 test profile view
+table
+	tr
+		th Activity
+		th Venue
+		th Address
+		th Appointment w/
+- @appointments.each do |appt|
+	tr
+		td = appt.activity.name
+		td = appt.location.name
+		td = appt.location.address
+		- if appt.child
+			td = appt.child.first_name
+		- else 
+			td UNBOOKED
+	br
+
+
+== debug @testuser.coached_appointments
+	br

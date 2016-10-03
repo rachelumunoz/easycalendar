@@ -31,6 +31,10 @@ RSpec.describe Appointment, type: :model do
       should have_one(:coach)
     end
 
+    it "has an activity" do
+      should have_one(:activity)
+    end
+
     it "has many notifications" do
       should have_many(:notifications)
     end
