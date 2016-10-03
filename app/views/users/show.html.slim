@@ -10,7 +10,7 @@ div.container
           th.text-center Address
           th.text-center Student
           th.text-center Time & Day
-        - @c_appointments.each do |appt|
+        - @user.coached_appointments.each do |appt|
           tr
             td = appt.activity.name
             td = appt.location.name
@@ -29,7 +29,7 @@ div.container
         th.text-center Venue
         th.text-center Address
         th.text-center Coach
-      - @appointments.each do |appt|
+      - @user.appointments.each do |appt|
         tr
           td = appt.activity.name
           td = appt.location.name
