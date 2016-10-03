@@ -1,4 +1,6 @@
 require 'rest-client'
+require 'uri'
+require 'net/http'
 
 class User  < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -38,16 +40,48 @@ class User  < ActiveRecord::Base
         user = User.create(first_name: data["name"],
            email: data["email"],
            password: Devise.friendly_token[0,20],
-           token: access_token.credentials[:token]
+           token: access_token.credentials[:token],
+           expires_at: access_token.credentials[:expires_at]
         )
     end
     user
   end
 
+  def refresh_token_if_expired
+    if token_expired?
+      response    = RestClient.post "#{ENV['accounts.google.com/o/oauth2/token']}oauth2/token", :grant_type => 'refresh_token', :refresh_token => self.refresh_token, :client_id => ENV[GOOGLE_CLIENT_ID], :client_secret => ENV[GOOGLE_CLIENT_SECRET]
+      refresh_hash = JSON.parse(response.body)
+
+      token_will_change!
+      expires_at_will_change!
+
+      self.token     = refreshhash['access_token']
+      self.expires_at = DateTime.now + refreshhash["expires_in"].to_i.seconds
+
+      self.save
+      puts 'Saved'
+    end
+  end
+
+
+
+  def token_expired?
+    expiry = DateTime.now + ((self.expires_at.to_i) /1000).seconds
+    return true if expiry < Time.now
+    token_expires_at = expiry
+    save if changed?
+    false
+  end
+
   def get_google_contacts
-    url = "https://www.google.com/m8/feeds/contacts/default/  full?access_token=#{token}&alt=json&max-results=100"
-    response = open(url)
-    json = JSON.parse(response.read)
+    encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
+    uri = URI.parse(encoded_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+    json = JSON.parse(request.read)
     my_contacts = json['feed']['entry']
 
     my_contacts.each do |contact|
@@ -62,10 +96,17 @@ class User  < ActiveRecord::Base
       contacts.create(name: name, email: email, tel: tel, picture: picture)
     end
   end
+
   def get_google_calendars
-    url = "https://www.googleapis.com/calendar/v3/users/me/ calendarList?access_token=#{token}"
-    response = open(url)
-    json = JSON.parse(response.read)
+    encoded_url = URI.encode("https://www.googleapis.com/calendar/v3/users/me/ calendarList?access_token=#{token}")
+    uri = URI.parse(encoded_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    res = Net::HTTP::Get.new(uri.request_uri)
+    json = JSON.parse(res)
+
     calendars = json["items"]
     calendars.each { |cal| get_events_for_calendar(cal) }
   end

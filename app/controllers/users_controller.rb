@@ -1,10 +1,18 @@
 class UsersController < ApplicationController
 
+
+  def index
+    if current_user.token_expired?
+      puts "expired"
+    else
+      puts "not expired"
+    end
+    current_user.refresh_token_if_expired
+    @events = current_user.get_google_calendars
+  end
+
   def show
-    #@user = current_user
-    @user = User.find(6)
-    # @appointments = @testuser.appointments
-    # @c_appointments = @testuser.coached_appointments
+
   end
 
 end
