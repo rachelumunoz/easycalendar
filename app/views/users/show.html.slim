@@ -1,21 +1,43 @@
-h1 test profile view
-table
-	tr
-		th Activity
-		th Venue
-		th Address
-		th Appointment w/
-- @appointments.each do |appt|
-	tr
-		td = appt.activity.name
-		td = appt.location.name
-		td = appt.location.address
-		- if appt.child
-			td = appt.child.first_name
-		- else 
-			td UNBOOKED
-	br
+div.container
+  div.col-lg-12.text-center
+    h1 Current User's Schedule
 
+    - if @user.coached_appointments.count > 0
+      h3.text-left Your Coaching Appointments
+      table.table.table-striped
+          tr
+            th.text-center Activity
+            th.text-center Location
+            th.text-center Address
+            th.text-center Student
+            th.text-center Time & Day
+          - @user.coached_appointments.each do |appt|
+            tr
+              td = appt.activity.name
+              td = appt.location.name
+              td = appt.location.address
+              - if appt.child
+                td = appt.child.first_name
+              - else
+                td UNBOOKED
+              td = appt.day_time
 
-== debug @testuser.coached_appointments
-	br
+    - if @user.appointments.count > 0
+      h3.text-left Your Children's Appointments
+      table.table.table-striped
+        tr
+          th.text-center Activity
+          th.text-center Venue
+          th.text-center Address
+          th.text-center Coach
+          th.text-center Time & Day
+        - @user.appointments.each do |appt|
+          tr
+            td = appt.activity.name
+            td = appt.location.name
+            td = appt.location.address
+            - if appt.coach
+              td = appt.coach.full_name
+            - else
+              td UNBOOKED
+            td = appt.day_time
