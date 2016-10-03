@@ -25,7 +25,9 @@ ActiveRecord::Schema.define(version: 20161003181821) do
     t.integer  "coach_activity_id"
     t.integer  "child_id"
     t.integer  "location_id"
-    t.datetime "day_time"
+    t.datetime "start"
+    t.datetime "end"
+    t.string   "color"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
