@@ -10,6 +10,8 @@ Easycalendar::Application.routes.draw do
   resources :sessions, only: [:create, :destroy]
   resource :home, only: [:show]
 
+  get '/profile', to: "users#show" 
+
   root to: "home#show"
 
   resource :messages do
