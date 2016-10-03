@@ -1,46 +1,41 @@
-h1 test profile view
+div.container
+  div.col-lg-12.text-center
+    h1 Current User's Schedule
 
-h3 Appointments w/ other coaches
-table
-	tr
-		th Activity
-		th Venue
-		th Address
-		th Appointment w/
-	- @appointments.each do |appt|
-		tr
-			td = appt.activity.name
-			td = appt.location.name
-			td = appt.location.address
-			- if appt.child
-				td = appt.child.first_name
-			- else
-				td UNBOOKED
-			td = appt.day_time
+    h3.text-left Your Coaching Appointments
+    table.table.table-striped
+        tr
+          th.text-center Activity
+          th.text-center Location
+          th.text-center Address
+          th.text-center Student
+          th.text-center Time & Day
+        - @c_appointments.each do |appt|
+          tr
+            td = appt.activity.name
+            td = appt.location.name
+            td = appt.location.address
+            - if appt.child
+              td = appt.child.first_name
+            - else
+              td UNBOOKED
+            td = appt.day_time
 
-br
 
-h3 Appointments w/ students/athletes
-
-table
-	tr
-		th Activity
-		th Venue
-		th Address
-		th Appointment w/
-		th Time & Day
-	- @c_appointments.each do |appt|
-		tr
-			td = appt.activity.name
-			td = appt.location.name
-			td = appt.location.address
-			- if appt.child
-				td = appt.child.first_name
-			- else
-				td UNBOOKED
-			td = appt.day_time
-
-h3 My kids
--@testuser.children.each do |child|
-	h4 = child.first_name + " " + child.last_name
-
+    h3.text-left Your Children's Appointments
+    table.table.table-striped
+      tr
+        th.text-center Activity
+        th.text-center Venue
+        th.text-center Address
+        th.text-center Coach
+      - @appointments.each do |appt|
+        tr
+          td = appt.activity.name
+          td = appt.location.name
+          td = appt.location.address
+          - if appt.child
+            td = appt.child.first_name
+          - else
+            td UNBOOKED
+          td = appt.day_time

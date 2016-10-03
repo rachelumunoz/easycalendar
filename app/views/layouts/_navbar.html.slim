@@ -1,13 +1,13 @@
 nav.navbar.navbar-default.transparent
 	div.container-fluid
 		div.navbar-header
-			button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button" 
+			button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
 				span.sr-only
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
 			a.navbar-brand href="/" Easy Calendar
-				
+
 
 
 
@@ -21,12 +21,12 @@ nav.navbar.navbar-default.transparent
 					li
 						a href="/profile" Schedule
 				- if current_user
-					li 
-						a href="#" 
+					li
+						a href="#"
 							| Signed in as #{current_user.email}
-					li 
+					li
 						= link_to "Sign Out", signout_path
-				- else  
+				- else
 					li
 						=link_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, id: "sign_in with google"
 
