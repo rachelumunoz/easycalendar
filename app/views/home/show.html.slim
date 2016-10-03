@@ -2,6 +2,7 @@ div.container
 	div.col-lg-12.text-center
 		h1 Home#show
 		p Find me in app/views/home/show.html.erb
-		- if current_user 
-			| hello
+		- if current_user
+			= @user.full_name
+
 

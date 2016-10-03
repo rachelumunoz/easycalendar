@@ -43,7 +43,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
   gem 'byebug', platform: :mri
-  gem 'dotenv-rails'
   gem 'factory_girl_rails'
 end
 
@@ -69,4 +68,7 @@ gem 'bower-rails'
 gem 'angular-rails'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
+gem 'json'
+gem 'rest-client'
+gem 'better_errors'
 

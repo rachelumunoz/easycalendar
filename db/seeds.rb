@@ -5,17 +5,17 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create(email: "soccer_coach@gmail.com", password:"password")#1
-User.create(email: "balet_coach@gmail.com", password:"password")#2
-User.create(email: "NIKESB_coach@gmail.com", password:"password")#3
-User.create(email: "gymnast_coach@gmail.com", password:"password")#4
-User.create(email: "ice_queen@gmail.com", password:"password")#5
+User.create(first_name: "Phil", last_name: "Jackson",email: "soccer_coach@gmail.com", password:"password")#1
+User.create(first_name: "Phil", last_name: "Jackson", email: "balet_coach@gmail.com", password:"password")#2
+User.create(first_name: "Phil", last_name: "Jackson", email: "NIKESB_coach@gmail.com", password:"password")#3
+User.create(first_name: "Phil", last_name: "Jackson", email: "gymnast_coach@gmail.com", password:"password")#4
+User.create(first_name: "Phil", last_name: "Jackson", email: "ice_queen@gmail.com", password:"password")#5
 
-User.create(email: "soccermom1@gmail.com", password:"password")#6
-User.create(email: "soccermom2@gmail.com", password:"password")#7
-User.create(email: "dancedad@gmail.com", password:"password")#8
-User.create(email: "gymmom@gmail.com", password:"password")#9
-User.create(email: "ice_daddy@gmail.com", password:"password")#10
+User.create(first_name: "Phil", last_name: "Jackson", email: "soccermom1@gmail.com", password:"password")#6
+User.create(first_name: "Phil", last_name: "Jackson", email: "soccermom2@gmail.com", password:"password")#7
+User.create(first_name: "Phil", last_name: "Jackson", email: "dancedad@gmail.com", password:"password")#8
+User.create(first_name: "Phil", last_name: "Jackson", email: "gymmom@gmail.com", password:"password")#9
+User.create(first_name: "Phil", last_name: "Jackson", email: "ice_daddy@gmail.com", password:"password")#10
 
 Child.create(first_name: "John",last_name: "Connor", age: 8, parent_id: 6)#1
 Child.create(first_name: "Randy",last_name: "Connor", age: 8, parent_id: 7)#2
@@ -33,11 +33,9 @@ Activity.create(name: "Skateboarding")
 Activity.create(name: "Gymnastics")
 Activity.create(name: "Figure Skating")
 
-CoachActivity.create(coach_id:1,activity_id:1)
-CoachActivity.create(coach_id:2,activity_id:2)
-CoachActivity.create(coach_id:3,activity_id:3)
-CoachActivity.create(coach_id:4,activity_id:4)
-CoachActivity.create(coach_id:5,activity_id:5)
+10.times do
+  CoachActivity.create(coach_id:rand(10)+1,activity_id:rand(5)+1)
+end
 
 CoachLocation.create(location_id: 1, coach_id:5)
 CoachLocation.create(location_id: 2, coach_id:5)
@@ -52,15 +50,6 @@ Invite.create(client_id: 7, coach_activity_id:2)
 Invite.create(client_id: 8, coach_activity_id:3)
 Invite.create(client_id: 9, coach_activity_id:4)
 Invite.create(client_id: 10, coach_activity_id:5)
-
-Appointment.create(coach_activity_id:1, child_id:1 , location_id: 1)
-Appointment.create(coach_activity_id:1, location_id: 1)
-Appointment.create(coach_activity_id:2, child_id: 2, location_id: 1)
-
-
-Appointment.create(coach_activity_id:3, child_id: 3, location_id: 2)
-Appointment.create(coach_activity_id:4, child_id: 4, location_id: 3)
-Appointment.create(coach_activity_id:5, child_id: 5, location_id: 3)
 
 
 50.times do

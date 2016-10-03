@@ -1,8 +1,10 @@
-class UsersController < ActionController::Base
+class UsersController < ApplicationController
 
   def show
-    @testuser = User.find(1)
-    @appointments = @testuser.appointments
+    #@user = current_user
+    @user = User.find(6)
+    # @appointments = @testuser.appointments
+    # @c_appointments = @testuser.coached_appointments
   end
 
 end
