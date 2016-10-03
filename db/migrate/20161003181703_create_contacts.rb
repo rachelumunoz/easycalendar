@@ -5,6 +5,7 @@ class CreateContacts < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :tel
       t.string :picture
+      t.integer :user_id
 
       t.timestamps
     end

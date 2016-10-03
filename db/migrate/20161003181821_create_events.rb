@@ -7,8 +7,13 @@ class CreateEvents < ActiveRecord::Migration[5.0]
       t.string :status
       t.string :link
       t.string :calendar
+      t.integer :user_id
 
       t.timestamps
     end
   end
 end
+
+
+
+
