@@ -4,7 +4,7 @@ class MessagesController < ApplicationController
  # skip_before_filter :authenticate_user!, :only => "reply"
 
  # when a user has sent an SMS to EasyCalendar
-  def send_reply
+  def reply
     @message_body = params["Body"]
     @from_number = params["From"]
     # interpret_command
