@@ -35,6 +35,9 @@ gem 'jbuilder', '~> 2.5'
   gem 'coveralls', require: false
   gem 'twilio-ruby'
   gem 'figaro'
+  gem 'faker'
+  gem 'simple_form'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -64,3 +67,6 @@ gem "omniauth-google-oauth2"
 gem 'devise'
 gem 'bower-rails'
 gem 'angular-rails'
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+
