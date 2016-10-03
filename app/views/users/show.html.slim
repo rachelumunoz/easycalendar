@@ -1,4 +1,6 @@
 h1 test profile view
+
+h3 Appointments w/ other coaches
 table
 	tr
 		th Activity
@@ -12,10 +14,28 @@ table
 		td = appt.location.address
 		- if appt.child
 			td = appt.child.first_name
-		- else 
+		- else
 			td UNBOOKED
-	br
+		td = appt.day_time
 
+br
 
-== debug @testuser.coached_appointments
-	br
+h3 Appointments w/ students/athletes
+
+table
+	tr
+		th Activity
+		th Venue
+		th Address
+		th Appointment w/
+		th Time & Day
+	- @c_appointments.each do |appt|
+		tr
+			td = appt.activity.name
+			td = appt.location.name
+			td = appt.location.address
+			- if appt.child
+				td = appt.child.first_name
+			- else
+				td UNBOOKED
+			td = appt.day_time

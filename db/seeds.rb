@@ -53,9 +53,9 @@ Invite.create(client_id: 8, coach_activity_id:3)
 Invite.create(client_id: 9, coach_activity_id:4)
 Invite.create(client_id: 10, coach_activity_id:5)
 
-Appointment.create(coach_activity_id:1, child_id:1 , location_id: 1)
-Appointment.create(coach_activity_id:1, location_id: 1)
-Appointment.create(coach_activity_id:2, child_id: 2, location_id: 1)
+Appointment.create(coach_activity_id:1, child_id:1 , location_id: 1, day_time: Time.now)
+Appointment.create(coach_activity_id:1, location_id: 1, day_time: Time.now)
+Appointment.create(coach_activity_id:2, child_id: 2, location_id: 1, day_time: Time.now)
 
 
 Appointment.create(coach_activity_id:3, child_id: 3, location_id: 2)
