@@ -7,13 +7,13 @@ class MessagesController < ApplicationController
   def reply
     @message_body = params["Body"]
     @from_number = params["From"]
-    # interpret_command
+    interpret_command
     boot_twilio
     sms = @client.messages.create(
       from: ENV['TWILIO_NUMBER'],
       to: @from_number,
-      # body: reply_message
-      body: "Hello from EasyCalendar"
+      body: reply_message
+      # body: "Hello from EasyCalendar"
     )
   end
 
@@ -47,70 +47,68 @@ class MessagesController < ApplicationController
   def boot_twilio
     account_sid = ENV['TWILIO_SID']
     auth_token = ENV['TWILIO_TOKEN']
-    puts account_sid
-    puts auth_token
     @client = Twilio::REST::Client.new(account_sid, auth_token)
   end
 
-  # # COMMANDS
-  # # @appt_id = Appointment.find_by(params[:id])
-  # @book_cancelled_appt = "Yes"
-  # # @book_open_appt = "Book #{@appt_id}"
-  # @cancel_appt = "Cancel"
-  # @close_account = "Close"
-  # @command_options = "Commands"
-  # @linked_coaches = "Coaches"
-  # @linked_students = "Students"
-  # @list_open_appts = "Open"
-  # @list_booked_appts = "Booked"
-  # @pause_notification = "Pause"
-  # @resume_notification = "Resume"
+  # COMMANDS
+  # @appt_id = Appointment.find_by(params[:id])
+  @book_cancelled_appt = "Yes"
+  # @book_open_appt = "Book #{@appt_id}"
+  @cancel_appt = "Cancel lesson"
+  @close_account = "Close"
+  @command_options = "Commands"
+  @linked_coaches = "Coaches"
+  @linked_students = "Students"
+  @list_open_appts = "Open"
+  @list_booked_appts = "Booked"
+  @pause_notification = "Pause"
+  @resume_notification = "Resume"
 
   # # reformat as case statement?
-  # def interpret_command
-  #   if @message_body == @book_cancelled_appt
-  #     appt_confirmation_msg
-  #   elsif
-  #     @message_body == @book_open_appt
-  #     appt_confirmation_msg
-  #   elsif
-  #     @message_body == @cancel_appt
-  #     cancel_confirmation_msg
-  #   elsif
-  #     @message_body == @close_account
-  #     close_confirmation_msg
-  #   elsif
-  #     @message_body == @command_options
-  #     list_of_commands_msg
-  #   elsif
-  #     @message_body == @linked_coaches
-  #     list_of_linked_coaches
-  #   elsif
-  #     @message_body == @linked_students
-  #     list_of_linked_students
-  #   elsif
-  #     @message_body == @list_open_appts
-  #     list_of_appt_openings
-  #   elsif
-  #     @message_body == @list_booked_appts
-  #     list_of_appts
-  #   elsif
-  #     @message_body == @pause_notification
-  #     pause_confirmation_msg
-  #   elsif
-  #     @message_body == @resume_notification
-  #     resume_notification_msg
-  #   end
-  # end
+  def interpret_command
+    if @message_body == @book_cancelled_appt
+      appt_confirmation_msg
+    elsif
+      @message_body == @book_open_appt
+      appt_confirmation_msg
+    elsif
+      @message_body == @cancel_appt
+      cancel_confirmation_msg
+    elsif
+      @message_body == @close_account
+      close_confirmation_msg
+    elsif
+      @message_body == @command_options
+      list_of_commands_msg
+    elsif
+      @message_body == @linked_coaches
+      list_of_linked_coaches
+    elsif
+      @message_body == @linked_students
+      list_of_linked_students
+    elsif
+      @message_body == @list_open_appts
+      list_of_appt_openings
+    elsif
+      @message_body == @list_booked_appts
+      list_of_appts
+    elsif
+      @message_body == @pause_notification
+      pause_confirmation_msg
+    elsif
+      @message_body == @resume_notification
+      resume_notification_msg
+    end
+  end
 
   # def welcome_message
   #     welcome_msg
   # end
 
   # # SYSTEM MESSAGES
-  # def appt_confirmation_msg
-  #   return "Confirmed: you have booked that appointment. We've notified your coach for you."
-  # end
+  def appt_confirmation_msg
+    return "Confirmed: you have booked that appointment. We've notified your coach for you."
+  end
 
   # def cancel_confirmation_msg
   #   return "Confirmed: you have canceled the appointment. We've notified your coach for you."
