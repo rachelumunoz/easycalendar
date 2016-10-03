@@ -10,7 +10,7 @@ class MessagesController < ApplicationController
     # interpret_command
     boot_twilio
     sms = @client.messages.create(
-      from: Rails.application.secrets.twilio_number,
+      from: ENV['TWILIO_NUMBER'],
       to: @from_number,
       # body: reply_message
       body: "Hello from EasyCalendar"
