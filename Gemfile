@@ -40,7 +40,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
   gem 'byebug', platform: :mri
-  gem 'dotenv-rails'
   gem 'factory_girl_rails'
 end
 
@@ -64,3 +63,8 @@ gem "omniauth-google-oauth2"
 gem 'devise'
 gem 'bower-rails'
 gem 'angular-rails'
+
+gem 'json'
+gem 'rest-client'
+
+gem 'better_errors'

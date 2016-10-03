@@ -1,10 +1,9 @@
 class SessionsController < ApplicationController
   def create
     #@user = User.from_omniauth(env["omniauth.auth"])
-    puts "******************[create session]"
-    @user = User.find_or_create_from_auth_hash(auth_hash)
-    sign_in(:user, @user)
-    session[:user_id] = @user.id
+
+    @current_user = User.find_or_create_from_auth_hash(auth_hash)
+    @current_user = session[:user_id] = @user.id
     redirect_to root_path, :notice => "Signed in"
   end
 
