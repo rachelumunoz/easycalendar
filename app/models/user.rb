@@ -1,5 +1,6 @@
 require "open-uri"
-require 'httparty'
+# require 'httparty'
+require 'rest-client'
 require 'json'
 
 class User  < ActiveRecord::Base
@@ -64,15 +65,15 @@ class User  < ActiveRecord::Base
         uid: oauth.uid
      )
     end
-    # user.get_google_contacts   # Wait for next section
-    # user.get_google_calendars  # Wait for next section
+    user.get_google_contacts   # Wait for next section
+    user.get_google_calendars  # Wait for next section
     user
   end
 
   def get_google_contacts
   url = "https://www.google.com/m8/feeds/contacts/default/full?access_token=#{token}&alt=json&max-results=100"
-  response = open(url)
-  json = JSON.parse(response.read)
+  response = RestClient.get(url)
+  json = JSON.parse(response.body)
   my_contacts = json['feed']['entry']
 
   my_contacts.each do |contact|
@@ -141,17 +142,22 @@ end
 
   def get_google_calendars
     url = "https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=#{token}"
-    response = open(url)
-    json = JSON.parse(response.read)
+
+    puts "===========get_google_calendars=response=============="
+    puts response = RestClient.get(url)
+    response = RestClient.get(url)
+    json = JSON.parse(response)
     calendars = json["items"]
     calendars.each { |cal| get_events_for_calendar(cal) }
   end
 
   def get_events_for_calendar(cal)
 
-    url = "https://www.googleapis.com/calendar/v3/calendars/#{cal[" id"]}/events?access_token=#{token}"
-    response = open(url)
-    json = JSON.parse(response.read)
+    url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
+    puts "=========get_events_for_calendar=response============="
+    puts response = RestClient.get(url)
+    response = RestClient.get(url)
+    json = JSON.parse(response)
     my_events = json["items"]
 
     my_events.each do |event|

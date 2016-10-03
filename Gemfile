@@ -66,4 +66,4 @@ gem 'bower-rails'
 gem 'angular-rails'
 
 gem 'json'
-gem 'httparty'
+gem 'rest-client'
