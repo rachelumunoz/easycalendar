@@ -280,7 +280,6 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   coveralls
   devise
-  dotenv-rails
   factory_girl_rails
   figaro
   jbuilder (~> 2.5)
@@ -306,4 +305,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.12.5
+   1.13.1
