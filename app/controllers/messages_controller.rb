@@ -15,11 +15,6 @@ class MessagesController < ApplicationController
     )
   end
 
-##################################################################
-
-
-
-##################################################################
 
   private
  
@@ -41,7 +36,6 @@ class MessagesController < ApplicationController
   # LIST_STUDENTS = "Students"
   PAUSE = "Pause"
   RESUME = "Resume"
-  TEST_CANCEL = "Clara"
 
   # reformat as case statement?
   def reply_logic
@@ -52,10 +46,7 @@ class MessagesController < ApplicationController
     # elsif
     #   @message_body == BOOK_APPT
     #   appt_id = Appointment.find_by(params[:id])
-    #   appt_confirmation_msg
-    # elsif 
-    #   @message_body == TEST_CANCEL
-    #   cancelation_notice
+    #   appt_confirmation_msg    
     elsif
       @argv[0] == CANCEL_APPT
       cancel_confirmation_msg
@@ -131,7 +122,7 @@ class MessagesController < ApplicationController
   end
 
   def list_of_commands_msg
-    return "'Yes' to book a canceled appt. 'Book' + 'number' to book an open appt (e.g. Book 11 to book appt number eleven). 'Cancel' + 'number' to cancel an appt. 'Close' to close your account (e.g. Cancel 3 to cancel appt number three). 'Commands' to see a list of commands. 'Coaches' to see all your coaches. 'Students' to see all your students. 'Open' to see available appt times. 'Booked' to see your upcoming appts. 'Pause' to stop notifications from EasyCalendar. 'Resume' to restart notifications."
+    return "'Yes' to book a canceled appt.\n\n'Book' + 'number' to book an open appt (e.g. Book 11 to book appt number eleven).\n\n'Cancel' + 'number' to cancel an appt.\n\n'Close' to close your account (e.g. Cancel 3 to cancel appt number three).\n\n'Commands' to see a list of commands.\n\n'Coaches' to see all your coaches.\n\n'Students' to see all your students.\n\n'Open' to see available appt times.\n\n'Booked' to see your upcoming appts.\n\n'Pause' to stop notifications from EasyCalendar.\n\n'Resume' to restart notifications."
   end
 
   # # def list_of_linked_coaches
@@ -169,24 +160,16 @@ class MessagesController < ApplicationController
     return appointment_list
   end
 
-  def pause_confirmation_msg
-    return "Confirmed: you have turned off EasyCalendar notifications. To restart notifications, simply enter the command 'Resume'."
-  end
+  # def pause_confirmation_msg
+  #   return "Confirmed: you have turned off EasyCalendar notifications. To restart notifications, simply enter the command 'Resume'."
+  # end
 
-  def resume_notification_msg
-    return "Confirmed: you have turned EasyCalendar notifications on."
-  end
+  # def resume_notification_msg
+  #   return "Confirmed: you have turned EasyCalendar notifications on."
+  # end
 
-  def welcome_msg
-    return "Welcome to Easy Calendar! Through our unique text message user interface, EasyCalendar offers you a convenient way of managing appointments with your coaches. Enter 'Commands' to see a list of available commands. You can also log into your account at https://EasyCalendar.co"
-  end
-
-  # def msg_recipient
-  #   if @from_number == "+14785424512"
-  #     return ", Ian"
-  #   else
-  #     return ""
-  #   end
+  # def welcome_msg
+  #   return "Welcome to Easy Calendar! Through our unique text message user interface, EasyCalendar offers you a convenient way of managing appointments with your coaches. Enter 'Commands' to see a list of available commands. You can also log into your account at https://EasyCalendar.co"
   # end
 
 end
