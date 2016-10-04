@@ -74,3 +74,5 @@ gem 'json'
 gem 'rest-client'
 
 
+gem 'google-api-client', '~> 0.9'
+

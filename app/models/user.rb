@@ -128,6 +128,7 @@ class User  < ActiveRecord::Base
     calendars.select{|cal| cal['accessRole'] == "owner" }.map do |cal|
       get_events_for_calendar(cal)
     end
+    # calendars.select{|cal| puts cal }
   end
 
 def get_events_for_calendar(cal)
@@ -155,6 +156,13 @@ def get_events_for_calendar(cal)
   end
 end
 
+  def new_event
+
+  end
+
+  # def calendar
+  #   self.calendar
+  # end
   # def full_name
   #   self.first_name + " " + self.last_name
   # end
