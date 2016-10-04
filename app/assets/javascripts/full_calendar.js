@@ -13,7 +13,8 @@ initialize_calendar = function() {
       selectHelper: true,
       editable: true,
       eventLimit: true,
-      events: '/appointments.json',
+      //events: '/appointments.json',
+      events: '/users/events-appts.json',
 
       select: function(start, end) {
         console.log("about to $.getScript of appointments new")

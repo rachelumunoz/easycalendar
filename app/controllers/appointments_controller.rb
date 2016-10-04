@@ -22,6 +22,7 @@ class AppointmentsController < ApplicationController
 
   def update
     @appointment.update(event_params)
+    @appointment.set_color
   end
 
   def destroy

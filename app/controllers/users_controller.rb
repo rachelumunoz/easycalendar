@@ -7,4 +7,10 @@ class UsersController < ApplicationController
     # @c_appointments = @testuser.coached_appointments
   end
 
+  def showappts
+    #@user = current_user
+    @user = User.find(6)
+    @appointments = @user.coached_appointments
+  end
+
 end

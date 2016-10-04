@@ -9,6 +9,8 @@ Easycalendar::Application.routes.draw do
   get '/signout', to: 'sessions#destroy', as: 'signout'
 
   get '/users/events', to: 'users#show', as: 'users_events'
+  get '/users/events-appts', to: "users#showappts"
+
   resources :sessions, only: [:create, :destroy]
   resource :home, only: [:show]
 
