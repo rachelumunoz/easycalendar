@@ -16,4 +16,10 @@ class UsersController < ApplicationController
 
   end
 
+  def calendar
+    @calendar = Google::Apis::CalendarV3::Calendar.new(
+      summary: 'calendarSummary',
+      time_zone: 'America/Los_Angeles'
+      )
+  end
 end

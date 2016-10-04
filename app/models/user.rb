@@ -31,6 +31,7 @@ class User  < ActiveRecord::Base
 
   has_many :contacts
   has_many :events
+  has_many :calendars
 
   def self.from_omniauth(auth)
     data = auth.info
@@ -154,9 +155,9 @@ def get_events_for_calendar(cal)
   end
 end
 
-  def full_name
-    self.first_name + " " + self.last_name
-  end
+  # def full_name
+  #   self.first_name + " " + self.last_name
+  # end
 
 
   # def self.find_for_google_oauth2(oauth, signed_in_resource=nil)
