@@ -7,138 +7,155 @@ class MessagesController < ApplicationController
   def reply
     @message_body = params["Body"]
     @from_number = params["From"]
-    # interpret_command
     boot_twilio
     sms = @client.messages.create(
       from: ENV['TWILIO_NUMBER'],
       to: @from_number,
-      # body: reply_message
-      body: "Hello from EasyCalendar"
+      body: reply_logic
     )
   end
-
-  # when a user cancels an appointment
-  # def send_cancellation_notification
-  #   # need to add logic
-  #   @coach_name = User.find_by(...).first_name
-  #   @to_number = User.find_by(...).phone
-  #   boot_twilio
-  #   sms = @client.messages.create(
-  #     from: Rails.application.secrets.twilio_number,
-  #     to: @to_number,
-  #     body: cancelation_msg
-  #   )
-  # end
-
-  # when a user is created in the system
-  # def send_welcome_message
-  #   @to_number = User.find_by(...).phone
-  #   boot_twilio
-  #   sms = @client.messages.create(
-  #     from: Rails.application.secrets.twilio_number,
-  #     to: @to_number,
-  #     body: welcome_message
-  #   )
-  # end
- 
 
   private
  
   def boot_twilio
     account_sid = ENV['TWILIO_SID']
     auth_token = ENV['TWILIO_TOKEN']
-    puts account_sid
-    puts auth_token
     @client = Twilio::REST::Client.new(account_sid, auth_token)
   end
 
-  # # COMMANDS
-  # # @appt_id = Appointment.find_by(params[:id])
-  # @book_cancelled_appt = "Yes"
-  # # @book_open_appt = "Book #{@appt_id}"
-  # @cancel_appt = "Cancel"
-  # @close_account = "Close"
-  # @command_options = "Commands"
-  # @linked_coaches = "Coaches"
-  # @linked_students = "Students"
-  # @list_open_appts = "Open"
-  # @list_booked_appts = "Booked"
-  # @pause_notification = "Pause"
-  # @resume_notification = "Resume"
 
-  # # reformat as case statement?
-  # def interpret_command
-  #   if @message_body == @book_cancelled_appt
-  #     appt_confirmation_msg
-  #   elsif
-  #     @message_body == @book_open_appt
-  #     appt_confirmation_msg
-  #   elsif
-  #     @message_body == @cancel_appt
-  #     cancel_confirmation_msg
-  #   elsif
-  #     @message_body == @close_account
-  #     close_confirmation_msg
-  #   elsif
-  #     @message_body == @command_options
-  #     list_of_commands_msg
-  #   elsif
-  #     @message_body == @linked_coaches
-  #     list_of_linked_coaches
-  #   elsif
-  #     @message_body == @linked_students
-  #     list_of_linked_students
-  #   elsif
-  #     @message_body == @list_open_appts
-  #     list_of_appt_openings
-  #   elsif
-  #     @message_body == @list_booked_appts
-  #     list_of_appts
-  #   elsif
-  #     @message_body == @pause_notification
-  #     pause_confirmation_msg
-  #   elsif
-  #     @message_body == @resume_notification
-  #     resume_notification_msg
-  #   end
-  # end
 
-  # def welcome_message
-  #     welcome_msg
-  # end
 
-  # # SYSTEM MESSAGES
+
+
+  # COMMANDS
+  BOOK_CANCELLED_APPT = "Yes"
+  # BOOK_APPT = "Book"
+  CANCEL_APPT = "Cancel"
+  CLOSE_ACCT = "Close"
+  COMMAND_OPTIONS = "Commands"
+  LIST_BOOKED_APPTS = "Booked"
+  # LIST_COACHES = "Coaches"
+  LIST_OPEN_APPTS = "Open"
+  # LIST_STUDENTS = "Students"
+  PAUSE = "Pause"
+  RESUME = "Resume"
+
+  
+
+
+
+
+
+  def reply_logic
+    @argv = @message_body.split(" ")
+
+    if @message_body == BOOK_CANCELLED_APPT
+      appt_confirmation_msg
+    # elsif
+    #   @message_body == BOOK_APPT
+    #   appt_id = Appointment.find_by(params[:id])
+    #   appt_confirmation_msg    
+    elsif
+      @argv[0] == CANCEL_APPT
+      cancelled_appt_array = []
+      cancel_confirmation_msg
+    elsif
+      @message_body == CLOSE_ACCT
+      close_confirmation_msg
+    elsif
+      @message_body == COMMAND_OPTIONS
+      list_of_commands_msg
+    elsif
+      @message_body == LIST_BOOKED_APPTS
+      list_of_appts
+    # elsif
+    #   @message_body == LIST_COACHES
+    #   list_of_linked_coaches
+    elsif
+      @message_body == LIST_OPEN_APPTS
+      list_of_appt_openings
+    # elsif
+    #   @message_body == LIST_STUDENTS
+    #   list_of_linked_students
+    elsif
+      @message_body == PAUSE
+      pause_confirmation_msg
+    elsif
+      @message_body == RESUME
+      resume_notification_msg
+    else
+      return "I'm sorry, I didn't understand your message. Please enter 'Commands' to see a list of messages to which I can respond."
+    end
+  end
+
+  def welcome_message
+      welcome_msg
+  end
+
+  # SYSTEM MESSAGES
   # def appt_confirmation_msg
-  #   return "Confirmed: you have booked that appointment. We've notified your coach for you."
+  #   @user = User.find_by(phone_number: @from_number)
+  #   @child = @user.children.where(first_name == @argv[1].to_i - 1])
+  #   @appointment = 
+  #   @appointment.update_attributes(child: @child)
+  #   @coach = @appointment.coach
+  #   return "Great!"
+  #   # return "Great! I have booked that lesson for #{@child} and notified #{@coach.first_name} for you."
   # end
 
   # def cancel_confirmation_msg
-  #   return "Confirmed: you have canceled the appointment. We've notified your coach for you."
+  #   @user = User.find_by(phone_number: @from_number)
+  #   @appoinment = @user.appointment[@message_body[1]-1]
+  #   p "==================="
+  #   p @appointment
+  #   return @appointment.start
+  #   # return "Confirmed: you have canceled the appointment. We've notified your coach for you."
   # end
 
-  # def cancelation_msg
-  #   return "Coach #{@coach_name} just had an appt open up on #{@day} at #{@start_time} to #{@end_time}. If you want to book this appointment, reply 'Yes'."
-  # end
+  def cancel_confirmation_msg
+    @user = User.find_by(phone_number: @from_number)
+    @appointment = @user.appointments[@argv[1].to_i - 1]
+    @child = @appointment.child.first_name
+    @appointment.update_attributes(child: nil)
+    @coach = @appointment.coach
+    @clients = @coach.clients
 
-  # def close_confirmation_msg
-  #   return "Confirmed: you have closed your account. We've notified your coach for you."
-  # end
+    @parent_ary = []
+    @clients.each do |client|
+      @parent_ary << client
+    end
+    @parent_ary.delete_if {|user| user == @user}
+    
+    cancelation_notice
+    return "Alright, I have canceled #{@child}'s lesson and notified #{@coach.first_name} for you."
+  end
 
-  # def list_of_commands_msg
-  #   return <<-COMMANDS
-  #     'Yes' to book a canceled appt. 
-  #     'Book' + 'number' to book an open appt (e.g. Book 11 to book appt number eleven). 
-  #     'Cancel' to cancel an appt. 
-  #     'Close' to close your account. 
-  #     'Commands' to see a list of commands. 
-  #     'Coaches' to see all your coaches. 
-  #     'Students' to see all your students. 
-  #     'Open' to see available appt times. 
-  #     'Booked' to see your upcoming appts. 
-  #     'Pause' to stop notifications from EasyCalendar. 
-  #     'Resume' to restart notifications.
-  #   COMMANDS
-  # end
+  def cancelation_notice
+    boot_twilio
+    @parent_ary.each do |parent|
+      @client.account.messages.create({
+        :from => ENV["TWILIO_NUMBER"],
+        :to => parent.phone_number,
+        :body => canceled_appt_details
+        })
+    end
+  end
+
+  def canceled_appt_details
+    "Coach #{@coach.first_name} just had the following appointment open up.\n
+    Location: #{@appointment.location.name}
+    Date: #{@appointment.start.strftime("%-m/%d")}
+    Time: #{@appointment.start.strftime("%l:%M")}-#{@appointment.end.strftime("%l:%M%P")}\n\nIf you would like to book this, please reply 'Yes'."
+  end
+
+  def close_confirmation_msg
+    return "Confirmed: you have closed your account. You will not receive any further notifications from EasyCalendar."
+  end
+
+  def list_of_commands_msg
+    return "'Yes' to book a canceled appt.\n\n'Book' + 'number' to book an open appt (e.g. Book 11 to book appt number eleven).\n\n'Cancel' + 'number' to cancel an appt.\n\n'Close' to close your account (e.g. Cancel 3 to cancel appt number three).\n\n'Commands' to see a list of commands.\n\n'Coaches' to see all your coaches.\n\n'Students' to see all your students.\n\n'Open' to see available appt times.\n\n'Booked' to see your upcoming appts.\n\n'Pause' to stop notifications from EasyCalendar.\n\n'Resume' to restart notifications."
+  end
 
   # # def list_of_linked_coaches
   # #   @coaches = Coach.find_by(params[:id])
@@ -156,21 +173,23 @@ class MessagesController < ApplicationController
   # #   end
   # # end
 
-  # # def list_of_appt_openings
-  # #   @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
-  # #     return "Your students are:"
-  # #   @available_appointments.each do |appt|
-  # #     return appt
-  # #   end
-  # # end
+  # def list_of_appt_openings
+  #   @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
+  #     return "Your students are:"
+  #   @available_appointments.each do |appt|
+  #     return appt
+  #   end
+  # end
 
-  # # def list_of_appts
-  # #   @appointments = Appointment.find_by(params[:id]).where(params[:child_id]==nil)
-  # #     return "Your students are:"
-  # #   @appointments.each do |appt|
-  # #     return appt
-  # #   end
-  # # end
+  def list_of_appts
+    @user = User.find_by(phone_number: @from_number)
+    @appointments = @user.appointments
+    appointment_list = ""
+    @appointments.each_with_index do |appt, index|
+      appointment_list << "Appt #{index+1}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
+    end
+    return appointment_list
+  end
 
   # def pause_confirmation_msg
   #   return "Confirmed: you have turned off EasyCalendar notifications. To restart notifications, simply enter the command 'Resume'."
@@ -182,14 +201,6 @@ class MessagesController < ApplicationController
 
   # def welcome_msg
   #   return "Welcome to Easy Calendar! Through our unique text message user interface, EasyCalendar offers you a convenient way of managing appointments with your coaches. Enter 'Commands' to see a list of available commands. You can also log into your account at https://EasyCalendar.co"
-  # end
-
-  # def msg_recipient
-  #   if @from_number == "+14785424512"
-  #     return ", Ian"
-  #   else
-  #     return ""
-  #   end
   # end
 
 end
