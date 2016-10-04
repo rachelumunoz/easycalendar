@@ -15,7 +15,6 @@ class MessagesController < ApplicationController
     )
   end
 
-
   private
  
   def boot_twilio
@@ -23,6 +22,11 @@ class MessagesController < ApplicationController
     auth_token = ENV['TWILIO_TOKEN']
     @client = Twilio::REST::Client.new(account_sid, auth_token)
   end
+
+
+
+
+
 
   # COMMANDS
   BOOK_CANCELLED_APPT = "Yes"
@@ -37,7 +41,12 @@ class MessagesController < ApplicationController
   PAUSE = "Pause"
   RESUME = "Resume"
 
-  # reformat as case statement?
+
+
+
+
+
+
   def reply_logic
     @argv = @message_body.split(" ")
 
@@ -101,20 +110,31 @@ class MessagesController < ApplicationController
     @user = User.find_by(phone_number: @from_number)
     @appointment = @user.appointments[@argv[1].to_i - 1]
     @appointment.update_attributes(child: nil)
+    @clients = @user.clients
+    
+    @parent_ary = []
+    @clients.each do |parent|
+      @parent_ary << parent
+    end
+
     cancelation_notice
     return "Confirm Cancel #{@appointment.child}"
   end
 
   def cancelation_notice
     boot_twilio
-    parent_ary = ["+12163082351"]
-    parent_ary.each do |parent|
+    @parent_ary.each do |parent|
       @client.account.messages.create({
         :from => ENV["TWILIO_NUMBER"],
         :to => parent,
-        :body => "An appointment is available!"
+        :body => canceled_appt_details
         })
     end
+  end
+
+  def canceled_appt_details
+    "An appt is available"
+    # "Appt #{index+1}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
   end
 
   def close_confirmation_msg
@@ -152,7 +172,6 @@ class MessagesController < ApplicationController
   def list_of_appts
     @user = User.find_by(phone_number: @from_number)
     @appointments = @user.appointments
-    # return "#{@appointments[0].start} #{@appointments[0].end}"
     appointment_list = ""
     @appointments.each_with_index do |appt, index|
       appointment_list << "Appt #{index+1}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
