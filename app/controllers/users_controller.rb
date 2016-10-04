@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     #                              single_events: true,
     #                              order_by: 'startTime',
     #                              time_min: Time.now.iso8601)
-    # @events = current_user.get_google_calendars
+    @events = current_user.get_google_calendars
   end
 
   def show
