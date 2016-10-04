@@ -157,7 +157,7 @@ class MessagesController < ApplicationController
     @appointments = @user.appointments
     p @appointments
     @appointments.each do |appt|
-      "#{appt}"
+      "#{appt.start} #{appt.end}"
     end
   end
 
