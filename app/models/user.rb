@@ -142,14 +142,14 @@ def get_events_for_calendar(cal)
   my_events = json["items"]
 
   my_events.each do |event|
-    name = event["summary"] || "no name"
+    summary = event["summary"] || "no name"
     creator = event["creator"] ? event["creator"]["email"] : nil
     start = event["start"] ? event["start"]["dateTime"] : nil
     status = event["status"] || nil
     link = event["htmlLink"] || nil
     calendar = cal["summary"] || nil
 
-    self.events.new(name: name,
+    self.events.new(summary: summary,
                   creator: creator,
                   status: status,
                   start: start,

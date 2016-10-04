@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   before_action :set_event
 
   def show
-
+    current_user.get_google_calendars
   end
 
   def edit
