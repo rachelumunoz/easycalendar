@@ -27,6 +27,7 @@ class AppointmentsController < ApplicationController
 
   def destroy
     @appointment.destroy
+    redirect_to profile_path
   end
 
   private
