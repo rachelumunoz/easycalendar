@@ -110,13 +110,15 @@ class MessagesController < ApplicationController
     @user = User.find_by(phone_number: @from_number)
     @appointment = @user.appointments[@argv[1].to_i - 1]
     @appointment.update_attributes(child: nil)
-    @clients = @user.clients
-    
-    @parent_ary = []
-    @clients.each do |parent|
-      @parent_ary << parent
-    end
+    @coach = @appointment.coach
+    @clients = @coach.clients
 
+    @parent_ary = []
+    @clients.each do |client|
+      @parent_ary << client
+    end
+    @parent_ary.delete_if {|user| user == @user}
+    
     cancelation_notice
     return "Confirm Cancel #{@appointment.child}"
   end
@@ -126,7 +128,7 @@ class MessagesController < ApplicationController
     @parent_ary.each do |parent|
       @client.account.messages.create({
         :from => ENV["TWILIO_NUMBER"],
-        :to => parent,
+        :to => parent.phone_number,
         :body => canceled_appt_details
         })
     end
