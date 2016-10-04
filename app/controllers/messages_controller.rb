@@ -15,32 +15,6 @@ class MessagesController < ApplicationController
     )
   end
 
-  # when a user cancels an appointment
-  # def send_cancellation_notification
-  #   # need to add logic
-  #   @coach_name = User.find_by(...).first_name
-  #   @to_number = User.find_by(...).phone
-  #   boot_twilio
-  #   sms = @client.messages.create(
-  #     from: Rails.application.secrets.twilio_number,
-  #     to: @to_number,
-  #     body: cancelation_msg
-  #   )
-  # end
-
-  # when a user is created in the system
-  # def send_welcome_message
-  #   @to_number = User.find_by(...).phone
-  #   boot_twilio
-  #   sms = @client.messages.create(
-  #     from: Rails.application.secrets.twilio_number,
-  #     to: @to_number,
-  #     body: welcome_message
-  #   )
-  # end
-
-
-
   private
  
   def boot_twilio
@@ -52,7 +26,7 @@ class MessagesController < ApplicationController
   # COMMANDS
   BOOK_CANCELLED_APPT = "Yes"
   # BOOK_APPT = "Book #{@appt_id}"
-  CANCEL_APPT = "Cancel lesson"
+  CANCEL_APPT = "Cancel"
   CLOSE_ACCT = "Close"
   COMMAND_OPTIONS = "Commands"
   LIST_BOOKED_APPTS = "Booked"
@@ -64,15 +38,18 @@ class MessagesController < ApplicationController
 
   # reformat as case statement?
   def reply_logic
+    @argv = @message_body.split(" ")
+
     if @message_body == BOOK_CANCELLED_APPT
       appt_confirmation_msg
     # elsif
     #   @message_body == BOOK_APPT
     #   appt_id = Appointment.find_by(params[:id])
     #   appt_confirmation_msg
-    # elsif
-    #   @message_body == CANCEL_APPT
-    #   cancel_confirmation_msg
+    elsif
+      @argv[0] == CANCEL_APPT
+      p @argv[1]
+      cancel_confirmation_msg
     elsif
       @message_body == CLOSE_ACCT
       close_confirmation_msg
@@ -107,16 +84,24 @@ class MessagesController < ApplicationController
   end
 
   # SYSTEM MESSAGES
-  def appt_confirmation_msg
-    return "Confirmed: you have booked that appointment. We've notified your coach for you."
-  end
+  # def appt_confirmation_msg
+  #   return "Confirmed: you have booked that appointment. We've notified your coach for you."
+  # end
+
+  # def cancel_confirmation_msg
+  #   @user = User.find_by(phone_number: @from_number)
+  #   @appoinment = @user.appointment[@message_body[1]-1]
+  #   p "==================="
+  #   p @appointment
+  #   return @appointment.start
+  #   # return "Confirmed: you have canceled the appointment. We've notified your coach for you."
+  # end
 
   def cancel_confirmation_msg
-    return "Confirmed: you have canceled the appointment. We've notified your coach for you."
-  end
-
-  def cancelation_msg
-    return "Coach #{@coach_name} just had an appt open up on #{@day} at #{@start_time} to #{@end_time}. If you want to book this appointment, reply 'Yes'."
+    @user = User.find_by(phone_number: @from_number)
+    @appointment = @user.appointments[@argv[1].to_i - 1]
+    @appointment.update_attributes(child: nil)
+    return "Confirm Cancel #{@appointment.child}"
   end
 
   def close_confirmation_msg
@@ -153,12 +138,13 @@ class MessagesController < ApplicationController
 
   def list_of_appts
     @user = User.find_by(phone_number: @from_number)
-    p @user
     @appointments = @user.appointments
-    p @appointments
-    @appointments.each do |appt|
-      "#{appt.start} #{appt.end}"
+    # return "#{@appointments[0].start} #{@appointments[0].end}"
+    appointment_list = ""
+    @appointments.each_with_index do |appt, index|
+      appointment_list << "Appt #{index+1}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
     end
+    return appointment_list
   end
 
   def pause_confirmation_msg
@@ -173,9 +159,6 @@ class MessagesController < ApplicationController
     return "Welcome to Easy Calendar! Through our unique text message user interface, EasyCalendar offers you a convenient way of managing appointments with your coaches. Enter 'Commands' to see a list of available commands. You can also log into your account at https://EasyCalendar.co"
   end
 
-  def appointments
-    
-  end
   # def msg_recipient
   #   if @from_number == "+14785424512"
   #     return ", Ian"
