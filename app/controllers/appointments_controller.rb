@@ -9,6 +9,9 @@ class AppointmentsController < ApplicationController
   end
 
   def new
+    p "************************************** #{current_user.email}"
+    p current_user.clients
+    @user = current_user
     @appointment = Appointment.new
   end
 
