@@ -1,7 +1,9 @@
+=javascript_include_tag "application", "data-turbolinks-track" => "reload"
+=stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => "reload"
+
 div.container
   div.col-lg-12.text-center
     h1 Current User's Schedule
-
     - if @user.coached_appointments.count > 0
       h3.text-left Your Coaching Appointments
       table.table.table-striped
@@ -20,7 +22,7 @@ div.container
                 td = appt.child.first_name
               - else
                 td UNBOOKED
-              td = appt.day_time
+              td = appt.start
 
     - if @user.appointments.count > 0
       h3.text-left Your Children's Appointments
@@ -40,4 +42,6 @@ div.container
               td = appt.coach.full_name
             - else
               td UNBOOKED
-            td = appt.day_time
+            td = appt.start
+
+div[class="calendar"]

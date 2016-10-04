@@ -4,7 +4,9 @@ class CreateAppointments < ActiveRecord::Migration[5.0]
       t.integer :coach_activity_id
       t.integer :child_id
       t.integer :location_id
-      t.datetime :day_time
+      t.datetime :start
+      t.datetime :end
+      t.string :color
 
       t.timestamps
     end

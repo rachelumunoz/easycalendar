@@ -1,6 +1,7 @@
 Easycalendar::Application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
+  resources :appointments
   get 'angular_test', to: 'angular_test#index'
 
   get '/users/auth/:provider/callback', to: 'sessions#create'
