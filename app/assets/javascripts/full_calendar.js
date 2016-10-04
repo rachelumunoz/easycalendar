@@ -13,7 +13,8 @@ initialize_calendar = function() {
       selectHelper: true,
       editable: true,
       eventLimit: true,
-      events: '/appointments.json',
+      //events: '/appointments.json',
+      events: '/users/events-appts.json',
 
       select: function(start, end) {
         console.log("about to $.getScript of appointments new")
@@ -44,6 +45,7 @@ initialize_calendar = function() {
       },
 
       eventClick: function(event, jsEvent, view) {
+        console.log("edit event")
         $.getScript(event.edit_url, function() {
           $('#event_date_range').val(moment(event.start).format("MM/DD/YYYY HH:mm") + ' - ' + moment(event.end).format("MM/DD/YYYY HH:mm"))
           date_range_picker();
@@ -55,5 +57,8 @@ initialize_calendar = function() {
   })
 };
 $(document).on('turbolinks:load', initialize_calendar);
+// $(document).ready( function(){
+//   initialize_calendar;
+// });
 
 
