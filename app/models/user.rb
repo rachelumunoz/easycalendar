@@ -19,8 +19,11 @@ class User  < ActiveRecord::Base
   has_many :client_locations, foreign_key: :client_id
   has_many :coach_locations, foreign_key: :coach_id
 
-  has_many :coaches, through: :appointments
-  has_many :clients, through: :appointments
+  has_many :coach_invites, through: :coach_activities
+  has_many :client_invites, class_name: "Invite", foreign_key: :client_id
+
+  has_many :coaches, through: :coach_invites
+  has_many :clients, through: :coach_activities
 
   has_many :notification_receivers, foreign_key: 'receiver_id'
   has_many :notifications_received, through: :notification_receivers, source: :notification
