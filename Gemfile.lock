@@ -45,6 +45,7 @@ GEM
     arel (7.1.2)
     autoprefixer-rails (6.5.0.1)
       execjs
+    awesome_print (1.7.0)
     bcrypt (3.1.11)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
@@ -280,7 +281,7 @@ GEM
       faraday (~> 0.9)
       jwt (~> 1.5)
       multi_json (~> 1.10)
-    simple_form (3.2.1)
+    simple_form (3.3.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
     simplecov (0.12.0)
@@ -341,6 +342,7 @@ PLATFORMS
 
 DEPENDENCIES
   angular-rails
+  awesome_print
   better_errors
   binding_of_caller
   bootstrap-sass (~> 3.3.6)
@@ -382,4 +384,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.13.1
+   1.13.2

@@ -146,7 +146,7 @@ def get_events_for_calendar(cal)
     link = event["htmlLink"] || nil
     calendar = cal["summary"] || nil
 
-    self.events.create(name: name,
+    self.events.new(name: name,
                   creator: creator,
                   status: status,
                   start: start,
@@ -156,9 +156,9 @@ def get_events_for_calendar(cal)
   end
 end
 
-  def new_event
+  # def new_event
 
-  end
+  # end
 
   # def calendar
   #   self.calendar

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     #   puts "************not expired****************"
     # end
     # current_user.refresh_token_if_expired
-    current_user.get_google_calendars
+    # current_user.get_google_calendars
     # render json: @events
     # @event = Google::Apis::CalendarV3::Event.new
     # @event.authorization = credentials_for(Google::Apis::CalendarV3::AUTH_CALENDAR)
@@ -20,6 +20,7 @@ class UsersController < ApplicationController
     #                              single_events: true,
     #                              order_by: 'startTime',
     #                              time_min: Time.now.iso8601)
+    @events = current_user.get_google_calendars
   end
 
   def show

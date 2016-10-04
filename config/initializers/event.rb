@@ -1,1 +1,1 @@
-$event = Event.new
+$event = GoogleEvent.new
