@@ -10,11 +10,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       session[:user_id] = @user.id
 
-      session[:client_id] = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
+      # session[:client_id] = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
 
-      session[:token_store] = Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
+      # session[:token_store] = Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
 
-      session.inspect
+
 
       sign_in_and_redirect @user, :event => :authentication
 
