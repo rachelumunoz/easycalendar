@@ -1,7 +1,10 @@
 <%= simple_form_for @appointment, remote: true do |f| %>
   <div class="form-inputs">
+    <!-- START -->
     <%= f.input_field :start, as: :hidden, value: Date.today, class: 'form-control input-sm start_hidden' %>
+    <!-- END -->
     <%= f.input_field :end, as: :hidden, value: Date.today, class: 'form-control input-sm end_hidden' %>
+    <!-- GET THE POST -->
     <%= f.input :color, as: :select, collection: [['Black','black'], ['Green','green'], ['Red','red']] %>
   </div>
 

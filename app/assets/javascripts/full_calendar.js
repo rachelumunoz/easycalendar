@@ -56,6 +56,9 @@ initialize_calendar = function() {
     });
   })
 };
-$(document).on('turbolinks:load', initialize_calendar);
+$(document).one('turbolinks:load', initialize_calendar);
+// $(document).ready( function(){
+//   initialize_calendar;
+// });
 
 
