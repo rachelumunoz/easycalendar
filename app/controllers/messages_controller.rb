@@ -15,6 +15,12 @@ class MessagesController < ApplicationController
     )
   end
 
+##################################################################
+
+
+
+##################################################################
+
   private
  
   def boot_twilio
@@ -35,6 +41,7 @@ class MessagesController < ApplicationController
   # LIST_STUDENTS = "Students"
   PAUSE = "Pause"
   RESUME = "Resume"
+  TEST_CANCEL = "Clara"
 
   # reformat as case statement?
   def reply_logic
@@ -46,9 +53,11 @@ class MessagesController < ApplicationController
     #   @message_body == BOOK_APPT
     #   appt_id = Appointment.find_by(params[:id])
     #   appt_confirmation_msg
+    # elsif 
+    #   @message_body == TEST_CANCEL
+    #   cancelation_notice
     elsif
       @argv[0] == CANCEL_APPT
-      p @argv[1]
       cancel_confirmation_msg
     elsif
       @message_body == CLOSE_ACCT
@@ -101,7 +110,20 @@ class MessagesController < ApplicationController
     @user = User.find_by(phone_number: @from_number)
     @appointment = @user.appointments[@argv[1].to_i - 1]
     @appointment.update_attributes(child: nil)
+    cancelation_notice
     return "Confirm Cancel #{@appointment.child}"
+  end
+
+  def cancelation_notice
+    boot_twilio
+    parent_ary = ["+12163082351"]
+    parent_ary.each do |parent|
+      @client.account.messages.create({
+        :from => ENV["TWILIO_NUMBER"],
+        :to => parent,
+        :body => "An appointment is available!"
+        })
+    end
   end
 
   def close_confirmation_msg
