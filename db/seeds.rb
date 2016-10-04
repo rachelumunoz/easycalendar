@@ -57,6 +57,14 @@ Invite.create(client_id: 10, coach_activity_id:5)
   seed_time = Faker::Time.between(5.days.ago, Date.today+20, :morning)
   appt.start = seed_time
   appt.end = Faker::Time.between(seed_time, seed_time+1.hours, :morning)
-  appt.color = ["blue","green","yellow","orange"].sample
+  #appt.color = "red"
+  appt.save
+end
+
+50.times do
+  appt = Appointment.new(coach_activity_id:rand(5)+1, location_id: rand(3)+1)
+  seed_time = Faker::Time.between(5.days.ago, Date.today+20, :morning)
+  appt.start = seed_time
+  appt.end = Faker::Time.between(seed_time, seed_time+1.hours, :morning)
   appt.save
 end

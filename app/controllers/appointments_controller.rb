@@ -22,10 +22,12 @@ class AppointmentsController < ApplicationController
 
   def update
     @appointment.update(event_params)
+    @appointment.set_color
   end
 
   def destroy
     @appointment.destroy
+    redirect_to profile_path
   end
 
   private

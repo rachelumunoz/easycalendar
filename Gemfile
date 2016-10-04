@@ -71,4 +71,5 @@ gem 'momentjs-rails'
 gem 'json'
 gem 'rest-client'
 gem 'better_errors'
+gem 'jquery-turbolinks'
 
