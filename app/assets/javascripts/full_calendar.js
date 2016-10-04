@@ -45,6 +45,7 @@ initialize_calendar = function() {
       },
 
       eventClick: function(event, jsEvent, view) {
+        console.log("edit event")
         $.getScript(event.edit_url, function() {
           $('#event_date_range').val(moment(event.start).format("MM/DD/YYYY HH:mm") + ' - ' + moment(event.end).format("MM/DD/YYYY HH:mm"))
           date_range_picker();
