@@ -55,7 +55,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem "binding_of_caller"
   gem 'better_errors'
-  gem "awesome_print"
+  gem 'awesome_print', :require => 'ap'
 end
 
 group :test do
@@ -75,7 +75,7 @@ gem 'json'
 
 
 gem 'jquery-turbolinks'
-
+gem 'rest-client'
 
 
 gem 'google-api-client', '~> 0.9'

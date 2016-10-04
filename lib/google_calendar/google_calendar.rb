@@ -6,13 +6,6 @@ require 'dotenv'
 require 'google/api_client/client_secrets'
 
 
-# class GoogleCalendar
-
-
-# end
-
-
-
 class GoogleEvent
   OOB_URI = "http://localhost:3000/users/auth/google_oauth2/callback"
   attr_writer :authorizer, :redirect_uri, :credentials
@@ -20,10 +13,10 @@ class GoogleEvent
   # :event
   def initialize
     client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
-    scope = ['userinfo.email,calendar, https://www.googleapis.com/auth/calendar, https://www.google.com/m8/feeds/, https://www.googleapis.com/auth/plus.login']
+    scope = ['https://www.googleapis.com/auth/calendar,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/plus.login']
     token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
     @authorizer =  Google::Auth::UserAuthorizer.new(client_id, scope, token_store)
-    user_id = "rachelumunoz@gmail.com"
+    user_id = "default"
     @credentials = @authorizer.get_credentials(user_id)
     @event = Google::Apis::CalendarV3::Event.new
     # @event.authorization = @credentials
