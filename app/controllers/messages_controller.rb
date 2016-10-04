@@ -30,18 +30,18 @@ class MessagesController < ApplicationController
 
   # COMMANDS
   BOOK_CANCELLED_APPT = "Yes"
-  # BOOK_APPT = "Book #{@appt_id}"
+  # BOOK_APPT = "Book"
   CANCEL_APPT = "Cancel"
   CLOSE_ACCT = "Close"
   COMMAND_OPTIONS = "Commands"
   LIST_BOOKED_APPTS = "Booked"
   # LIST_COACHES = "Coaches"
-  # LIST_OPEN_APPTS = "Open"
+  LIST_OPEN_APPTS = "Open"
   # LIST_STUDENTS = "Students"
   PAUSE = "Pause"
   RESUME = "Resume"
 
-
+  
 
 
 
@@ -58,6 +58,7 @@ class MessagesController < ApplicationController
     #   appt_confirmation_msg    
     elsif
       @argv[0] == CANCEL_APPT
+      cancelled_appt_array = []
       cancel_confirmation_msg
     elsif
       @message_body == CLOSE_ACCT
@@ -71,9 +72,9 @@ class MessagesController < ApplicationController
     # elsif
     #   @message_body == LIST_COACHES
     #   list_of_linked_coaches
-    # elsif
-    #   @message_body == LIST_OPEN_APPTS
-    #   list_of_appt_openings
+    elsif
+      @message_body == LIST_OPEN_APPTS
+      list_of_appt_openings
     # elsif
     #   @message_body == LIST_STUDENTS
     #   list_of_linked_students
@@ -94,7 +95,13 @@ class MessagesController < ApplicationController
 
   # SYSTEM MESSAGES
   # def appt_confirmation_msg
-  #   return "Confirmed: you have booked that appointment. We've notified your coach for you."
+  #   @user = User.find_by(phone_number: @from_number)
+  #   @child = @user.children.where(first_name == @argv[1].to_i - 1])
+  #   @appointment = 
+  #   @appointment.update_attributes(child: @child)
+  #   @coach = @appointment.coach
+  #   return "Great!"
+  #   # return "Great! I have booked that lesson for #{@child} and notified #{@coach.first_name} for you."
   # end
 
   # def cancel_confirmation_msg
@@ -109,6 +116,7 @@ class MessagesController < ApplicationController
   def cancel_confirmation_msg
     @user = User.find_by(phone_number: @from_number)
     @appointment = @user.appointments[@argv[1].to_i - 1]
+    @child = @appointment.child.first_name
     @appointment.update_attributes(child: nil)
     @coach = @appointment.coach
     @clients = @coach.clients
@@ -120,7 +128,7 @@ class MessagesController < ApplicationController
     @parent_ary.delete_if {|user| user == @user}
     
     cancelation_notice
-    return "Confirm Cancel #{@appointment.child}"
+    return "Alright, I have canceled #{@child}'s lesson and notified #{@coach.first_name} for you."
   end
 
   def cancelation_notice
@@ -135,8 +143,10 @@ class MessagesController < ApplicationController
   end
 
   def canceled_appt_details
-    "An appt is available"
-    # "Appt #{index+1}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
+    "Coach #{@coach.first_name} just had the following appointment open up.\n
+    Location: #{@appointment.location.name}
+    Date: #{@appointment.start.strftime("%-m/%d")}
+    Time: #{@appointment.start.strftime("%l:%M")}-#{@appointment.end.strftime("%l:%M%P")}\n\nIf you would like to book this, please reply 'Yes'."
   end
 
   def close_confirmation_msg
@@ -163,13 +173,13 @@ class MessagesController < ApplicationController
   # #   end
   # # end
 
-  # # def list_of_appt_openings
-  # #   @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
-  # #     return "Your students are:"
-  # #   @available_appointments.each do |appt|
-  # #     return appt
-  # #   end
-  # # end
+  # def list_of_appt_openings
+  #   @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
+  #     return "Your students are:"
+  #   @available_appointments.each do |appt|
+  #     return appt
+  #   end
+  # end
 
   def list_of_appts
     @user = User.find_by(phone_number: @from_number)

@@ -1,6 +1,6 @@
 #PARENTS
 User.create!(first_name: "I", last_name: "Luc", email: ENV['IAN_EMAIL'], phone_number: ENV['IAN_PHONE'], password:"password")#1
-User.create(first_name: "Clar", last_name: "Bov", email: "clara@clara.com", phone_number: ENV['CLARA_PHONE'], password:"password")#2
+User.create(first_name: "Clar", last_name: "Bov", email: "clara@clara.com", phone_number: ENV['IAN_PHONE'], password:"password")#2
 # User.create(first_name: "Andr", last_name: "Palm", email: "andrew@andrew.com", password:"password")#3
 # User.create(first_name: "Rach", last_name: "Mun", email: "rachel@rachel.com", password:"password")#4
 
