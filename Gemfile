@@ -72,7 +72,10 @@ gem 'angular-rails'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'json'
-gem 'rest-client'
+
+
+gem 'jquery-turbolinks'
+
 
 
 gem 'google-api-client', '~> 0.9'

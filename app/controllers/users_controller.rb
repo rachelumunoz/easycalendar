@@ -27,7 +27,16 @@ class UsersController < ApplicationController
 
   end
 
+
   def calendar
 
   end
+
+  def showappts
+    #@user = current_user
+    @user = User.find(6)
+    @appointments = @user.coached_appointments
+  end
+
+
 end

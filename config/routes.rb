@@ -15,8 +15,12 @@ Easycalendar::Application.routes.draw do
   get '/auth/failure', to: redirect('/')
   get '/signout', to: 'sessions#destroy', as: 'signout'
 
+
   get '/users/events', to: 'users#events', as: 'users_events'
   get '/users/calendar', to: "users#calendar", as: 'users_calendar'
+
+  get '/users/events-appts', to: "users#showappts"
+
 
   resources :sessions, only: [:create, :destroy]
   resource :home, only: [:show]
