@@ -32,31 +32,47 @@ class User  < ActiveRecord::Base
   has_many :contacts
   has_many :events
 
-  def self.from_omniauth(access_token)
-    data = access_token.info
-    user = User.where(:email => data["email"]).first
+  def self.from_omniauth(auth)
+    data = auth.info
+    # user = User.where(:email => data["email"]).first
 
-    unless user
-        user = User.create(first_name: data["name"],
-           email: data["email"],
-           password: Devise.friendly_token[0,20],
-           token: access_token.credentials[:token],
-           expires_at: access_token.credentials[:expires_at]
-        )
+    # unless user
+    #     user = User.create(first_name: data["name"],
+    #
+    #        password: Devise.friendly_token[0,20],
+    #        token: access_token.credentials[:token],
+    #        expires_at: access_token.credentials[:expires_at]
+    #     )
+    # end
+    # user
+
+    where(email: data.email).first_or_initialize.tap do |user|
+      user.password = Devise.friendly_token[0,20]
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user.first_name = auth.info.name
+      user.token = auth.credentials.token
+      user.expires_at = Time.at(auth.credentials.expires_at)
+      user.save!
     end
-    user
   end
 
   def refresh_token_if_expired
     if token_expired?
-      response    = RestClient.post "#{ENV['accounts.google.com/o/oauth2/token']}oauth2/token", :grant_type => 'refresh_token', :refresh_token => self.refresh_token, :client_id => ENV[GOOGLE_CLIENT_ID], :client_secret => ENV[GOOGLE_CLIENT_SECRET]
+      response = RestClient.post(
+        "accounts.google.com/o/oauth2/token",
+        :grant_type => 'refresh_token',
+        :refresh_token => self.refresh_token,
+        :client_id => ENV['GOOGLE_CLIENT_ID'],
+        :client_secret => ENV['GOOGLE_CLIENT_SECRET']
+      )
       refresh_hash = JSON.parse(response.body)
 
       token_will_change!
-      expires_at_will_change!
+      expiresat_will_change!
 
-      self.token     = refreshhash['access_token']
-      self.expires_at = DateTime.now + refreshhash["expires_in"].to_i.seconds
+      self.token     = refresh_hash['access_token']
+      self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
 
       self.save
       puts 'Saved'
@@ -98,17 +114,19 @@ class User  < ActiveRecord::Base
   end
 
   def get_google_calendars
-    encoded_url = URI.encode("https://www.googleapis.com/calendar/v3/users/me/ calendarList?access_token=#{token}")
+    encoded_url = URI.encode("https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=#{token}")
     uri = URI.parse(encoded_url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-    res = Net::HTTP::Get.new(uri.request_uri)
+    res = Net::HTTP.get(uri)
     json = JSON.parse(res)
 
     calendars = json["items"]
-    calendars.each { |cal| get_events_for_calendar(cal) }
+    calendars.select{|cal| cal['accessRole'] == "owner" }.map do |cal|
+      get_events_for_calendar(cal)
+    end
   end
 
 def get_events_for_calendar(cal)
@@ -126,7 +144,7 @@ def get_events_for_calendar(cal)
     link = event["htmlLink"] || nil
     calendar = cal["summary"] || nil
 
-    events.create(name: name,
+    self.events.create(name: name,
                   creator: creator,
                   status: status,
                   start: start,
