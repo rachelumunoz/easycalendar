@@ -4,7 +4,7 @@ Easycalendar::Application.routes.draw do
   resources :appointments
   get 'angular_test', to: 'angular_test#index'
 
-  get '/users/auth/:provider/callback', to: 'sessions#create'
+  get '/users/auth/:provider/callback', to: 'static_pages#set_google_drive_token'
   get '/auth/failure', to: redirect('/')
   get '/signout', to: 'sessions#destroy', as: 'signout'
 

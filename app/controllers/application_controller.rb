@@ -6,7 +6,7 @@ require 'dotenv'
 
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-
+  # before_filter :google_login, except: [:set_google_event_token, ]
   def current_user
     @current_user ||= User.find_by(id: session[:user_id])
   end
@@ -22,4 +22,9 @@ class ApplicationController < ActionController::Base
     credentials
   end
 
+  def google_login
+    unless $event.get_credentials
+    redirect_to('/oauth2callback')
+    end
+  end
 end
