@@ -75,4 +75,6 @@ gem 'rest-client'
 
 
 gem 'google-api-client', '~> 0.9'
-
+gem 'googleauth'
+gem 'redis'
+gem 'dotenv'

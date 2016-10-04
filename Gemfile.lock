@@ -84,6 +84,7 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20160826)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.1.1)
     erubis (2.7.0)
     execjs (2.7.0)
     factory_girl (4.7.0)
@@ -222,6 +223,7 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redis (3.3.1)
     representable (2.3.0)
       uber (~> 0.0.7)
     responders (2.3.0)
@@ -331,11 +333,13 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   coveralls
   devise
+  dotenv
   factory_girl_rails
   faker
   figaro
   fullcalendar-rails
   google-api-client (~> 0.9)
+  googleauth
   jbuilder (~> 2.5)
   jquery-rails
   json
@@ -346,6 +350,7 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
   rails-controller-testing
+  redis
   rest-client
   rspec-rails (~> 3.5)
   sass-rails (~> 5.0)

@@ -1,3 +1,9 @@
+require 'googleauth'
+require 'googleauth/stores/redis_token_store'
+require 'google/apis/calendar_v3'
+require 'googleauth/stores/file_token_store'
+require 'dotenv'
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
@@ -6,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   def credentials_for(scope)
-    authorizer = Google::Auth::WebUserAuthorizer.new(settings.client_id, scope, settings.token_store)
+    authorizer = Google::Auth::WebUserAuthorizer.new(session[:client_id], scope, session[:token_store])
     user_id = session[:user_id]
     redirect root_path if user_id.nil?
     credentials = authorizer.get_credentials(user_id, request)
