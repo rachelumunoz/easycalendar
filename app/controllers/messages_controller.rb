@@ -187,4 +187,17 @@ class MessagesController < ApplicationController
   #   return "Welcome to Easy Calendar! Through our unique text message user interface, EasyCalendar offers you a convenient way of managing appointments with your coaches. Enter 'Commands' to see a list of available commands. You can also log into your account at https://EasyCalendar.co"
   # end
 
+  def invitation_notice
+    boot_twilio
+    @client.account.messages.create({
+      :from => ENV["TWILIO_NUMBER"],
+      :to => @new_user.phone_number,
+      :body => invitation_message
+      })
+  end
+
+  def invitation_message
+    return "Welcome to EasyCalendar!"
+  end
+
 end
