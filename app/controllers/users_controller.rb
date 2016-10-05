@@ -36,8 +36,14 @@ class UsersController < ApplicationController
   end
 
   def showappts
-    #@user = current_user
-    @user = User.find(3)
-    #@appointments = @user.coached_appointments
+    @user = current_user
+    @appointments = @user.coached_appointments
   end
+
+
+  def invite
+    #@user = current_user
+
+  end
+
 end

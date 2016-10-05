@@ -15,6 +15,8 @@ Easycalendar::Application.routes.draw do
   get '/users/calendar', to: "users#calendar", as: 'users_calendar'
 
   get '/users/events-appts', to: "users#showappts"
+  get '/invite', to: "invites#new"
+  post '/invite', to: "invites#create", as: "invites"
 
 
   resources :sessions, only: [:create, :destroy]

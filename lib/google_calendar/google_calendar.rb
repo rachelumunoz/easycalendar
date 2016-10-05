@@ -12,6 +12,7 @@ class GoogleEvent
   attr_accessor :summary
   # :event
   def initialize
+
     # client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
     # scope = ['https://www.googleapis.com/auth/calendar','https://www.google.com/m8/feeds/','https://www.googleapis.com/auth/plus.login']
     # token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
@@ -19,6 +20,7 @@ class GoogleEvent
     # user_id = "default"
     # @credentials = @authorizer.get_credentials(user_id)
     # @event = Google::Apis::CalendarV3::Event.new
+
     # @event.authorization = @credentials
     # puts "**********************summary********************************"
     # puts @event.summary
