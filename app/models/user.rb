@@ -113,7 +113,7 @@ class User  < ActiveRecord::Base
       else
         picture = nil
       end
-      contacts.create(name: name, email: email, tel: tel, picture: picture)
+      contacts.create!(name: name, email: email, tel: tel, picture: picture)
     end
   end
 
@@ -143,13 +143,28 @@ def get_events_for_calendar(cal)
 
   my_events.each do |event|
     summary = event["summary"] || "no name"
+    puts "===========summary================="
+    puts summary
     creator = event["creator"] ? event["creator"]["email"] : nil
+    puts "===========creator================="
+    puts creator
+
     start = event["start"] ? event["start"]["dateTime"] : nil
+    puts "===========start================="
+    puts start
+    puts "-------========event======================--"
+    puts event
     status = event["status"] || nil
+
+
     link = event["htmlLink"] || nil
+
+
     calendar = cal["summary"] || nil
 
-    self.events.new(summary: summary,
+    google_event_id = event["id"]
+
+    self.events.create(summary: summary,
                   creator: creator,
                   status: status,
                   start: start,

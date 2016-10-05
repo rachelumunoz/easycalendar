@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20161004220704) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "description"
-    t.datetime "end"
+    t.datetime "end_time"
     t.string   "location"
     t.string   "attendees"
   end
