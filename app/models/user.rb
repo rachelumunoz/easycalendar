@@ -19,10 +19,10 @@ class User  < ActiveRecord::Base
   has_many :client_locations, foreign_key: :client_id
   has_many :coach_locations, foreign_key: :coach_id
 
-  has_many :coach_invites, through: :coach_activities
+  has_many :coach_invites, through: :coach_activities, source: :invites
   has_many :client_invites, class_name: "Invite", foreign_key: :client_id
 
-  has_many :coaches, through: :coach_invites
+  has_many :coaches, through: :client_invites
   has_many :clients, through: :coach_activities
 
   has_many :notification_receivers, foreign_key: 'receiver_id'
@@ -65,28 +65,16 @@ class User  < ActiveRecord::Base
     end
   end
 
-  def get_google_contacts
-    encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
-    uri = URI.parse(encoded_url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Get.new(uri.request_uri)
-    json = JSON.parse(request.read)
-    my_contacts = json['feed']['entry']
-
-    my_contacts.each do |contact|
-      name = contact['title']['$t'] || nil
-      email = contact['gd$email'] ? contact['gd$email'][0]['address'] : nil
-      tel = contact['gd$phoneNumber'] ? contact["gd$phoneNumber"][0]["$t"] :  nil
-      if contact['link'][1]['type'] == "image/*"
-        picture = "#{contact['link'][1]['href']}?access_token=#{token}"
-      else
-        picture = nil
-      end
-      contacts.create!(name: name, email: email, tel: tel, picture: picture)
-    end
+  # This is ark's way of associating a canceled appointment
+  # with a notification receiver so that they can reply with
+  # a 'Yes' and get it.  If we want to be more precise,
+  # to guard against the possibility of receiving multiple
+  # notifications but only being able to reply 'Yes' to the
+  # most recent, we will need to associate the canceled appt's
+  # id and require the user to enter something like 'Yes 123'
+  # or 'Book 123' for appt_id 123
+  def most_recent_notification_received
+    notifications_received.order(created_at: :desc).first
   end
 
   def get_google_calendars
@@ -106,47 +94,51 @@ class User  < ActiveRecord::Base
     # calendars.select{|cal| puts cal }
   end
 
-def get_events_for_calendar(cal)
-  url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
-  response = open(url)
-  json = JSON.parse(response.read)
-  my_events = json["items"]
-  my_events.each do |event|
-    summary = event["summary"] || "no name"
-    start = event["start"] ? event["start"]["dateTime"] : nil
-    end_time = event["end"] ? event["end"]["dateTime"] : nil
-    link = event["htmlLink"] || nil
-    status = event["status"] || nil
-    google_event_id = event["id"]
-    creator = event["creator"] ? event["creator"]["email"] : nil
-    location = event["location"] || nil
-    description = event["description"] || nil
-    calendar = cal["summary"] || nil
+  def get_events_for_calendar(cal)
+    url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
+    response = open(url)
+    json = JSON.parse(response.read)
+    my_events = json["items"]
+    my_events.each do |event|
+      summary = event["summary"] || "no name"
+      start = event["start"] ? event["start"]["dateTime"] : nil
+      end_time = event["end"] ? event["end"]["dateTime"] : nil
+      link = event["htmlLink"] || nil
+      status = event["status"] || nil
+      google_event_id = event["id"]
+      creator = event["creator"] ? event["creator"]["email"] : nil
+      location = event["location"] || nil
+      description = event["description"] || nil
+      calendar = cal["summary"] || nil
 
-    #iCalUID
-    # puts "-------========event======================--"
-    # puts event
+      #iCalUID
+      # puts "-------========event======================--"
+      # puts event
 
-    # need a location check when converting to appt
-    self.events.create(summary: summary,
-                  creator: creator,
-                  status: status,
-                  start: start,
-                  end_time: end_time,
-                  link: link,
-                  google_event_id: google_event_id,
-                  location: location,
-                  description: description,
-                  calendar: calendar
-                  )
+      # need a location check when converting to appt
+      self.events.create(summary: summary,
+                    creator: creator,
+                    status: status,
+                    start: start,
+                    end_time: end_time,
+                    link: link,
+                    google_event_id: google_event_id,
+                    location: location,
+                    description: description,
+                    calendar: calendar
+                    )
     end
   end
 
+  def full_name
+    #self.first_name + " " + self.last_name
+    "helloworld"
+  end
 end
 
-
-
-
+  # def calendar
+  #   self.calendar
+  # end
 
   # def refresh_token_if_expired
   #   if token_expired?
@@ -172,6 +164,7 @@ end
 
 
 
+
   # def token_expired?
   #   expiry = DateTime.now + ((self.expires_at.to_i) /1000).seconds
   #   return true if expiry < Time.now
@@ -181,3 +174,27 @@ end
   # end
 
 
+
+  # def get_google_contacts
+  #   encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
+  #   uri = URI.parse(encoded_url)
+  #   http = Net::HTTP.new(uri.host, uri.port)
+  #   http.use_ssl = true
+  #   http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+  #   request = Net::HTTP::Get.new(uri.request_uri)
+  #   json = JSON.parse(request.read)
+  #   my_contacts = json['feed']['entry']
+
+  #   my_contacts.each do |contact|
+  #     name = contact['title']['$t'] || nil
+  #     email = contact['gd$email'] ? contact['gd$email'][0]['address'] : nil
+  #     tel = contact['gd$phoneNumber'] ? contact["gd$phoneNumber"][0]["$t"] :  nil
+  #     if contact['link'][1]['type'] == "image/*"
+  #       picture = "#{contact['link'][1]['href']}?access_token=#{token}"
+  #     else
+  #       picture = nil
+  #     end
+  #     contacts.create!(name: name, email: email, tel: tel, picture: picture)
+  #   end
+  # end
