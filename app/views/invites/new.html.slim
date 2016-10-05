@@ -1,0 +1,14 @@
+h1 Invite
+
+p coach logged in
+p enter users phone number
+p coach_activity_id - Coach needs a dropdown menu for the sport that the coach will be teaching.
+p phone number must validated in either jquery or through the backend
+
+
+= simple_form_for @invite, url: invites_path do |f|
+  = f.association :coach_activity, collection: @user.coach_activities, label_method: :activity
+  = f.simple_fields_for @new_user do |user_form|
+    = user_form.input :email
+    = user_form.input :phone_number
+  = f.button :submit
