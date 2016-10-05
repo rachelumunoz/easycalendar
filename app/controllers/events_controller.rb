@@ -20,8 +20,21 @@ class EventsController < ApplicationController
     # @events = current_user.events
     @service = Google::Apis::CalendarV3::CalendarService.new
     @service.client_options.application_name = "Easycalendar"
-    @service.authorization = GoogleAuthorization.authorize
-    @service
+
+    #need authorization
+
+    #need to check if authorization is there if not
+      # send to redirect of url
+      #get code
+    #else
+
+    @service.authorization = GoogleAuthorization.authorize_part_one
+
+
+
+
+
+
   end
 
 
