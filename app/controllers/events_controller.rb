@@ -2,8 +2,8 @@ class EventsController < ApplicationController
   before_action :set_event, except: :index
 
   def show
-    current_user.get_google_calendars
-    @events = current_user.events
+
+    # @events = current_user.events
   end
 
   def new
@@ -29,8 +29,10 @@ class EventsController < ApplicationController
     #   puts "=======================yay========================"
     # end
     # #need authorization
-    current_user.get_google_calendars
-    @events = current_user.events
+    # current_user.get_google_calendars
+    # @events = current_user.events
+    current_user.events_to_appointments
+    @appointments = current_user.appointments
   end
 
 

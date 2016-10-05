@@ -50,8 +50,21 @@ class User  < ActiveRecord::Base
   end
 
   def events_to_appointments
-
+    self.events.each do |event|
+      #needs
+      #CoachActivity.new
+      #Coach
+      self.appointments.create(
+        coach_activity_id: 1,
+        child_id: 1,
+        location_id: 1,
+        start: event.start,
+        end: event.end_time,
+        google_event_id: event.google_event_id,
+        )
+    end
   end
+
   def get_google_contacts
     encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
     uri = URI.parse(encoded_url)
