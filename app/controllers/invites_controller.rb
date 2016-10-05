@@ -10,7 +10,7 @@ class InvitesController < ApplicationController
     @user = User.find(3)
     @new_user = User.new
     @new_user.email = params[:invite][:user][:email]
-    @new_user.phone_number = params[:invite][:user][:email]
+    @new_user.phone_number = params[:invite][:user][:phone_number]
     @new_user.password = "password"
     @new_user.save
     p @new_user
@@ -21,7 +21,7 @@ class InvitesController < ApplicationController
     p "pre-save----------2:(>.<)----------"
     p @invite
     @invite.save
-    p "pre-save----------2:(^_^)----------"
+    p "post-save----------2:(^_^)----------"
     redirect_to profile_path
   end
 
