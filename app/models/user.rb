@@ -93,6 +93,18 @@ class User  < ActiveRecord::Base
     false
   end
 
+  # This is ark's way of associating a canceled appointment 
+  # with a notification receiver so that they can reply with 
+  # a 'Yes' and get it.  If we want to be more precise, 
+  # to guard against the possibility of receiving multiple
+  # notifications but only being able to reply 'Yes' to the
+  # most recent, we will need to associate the canceled appt's
+  # id and require the user to enter something like 'Yes 123'
+  # or 'Book 123' for appt_id 123
+  def most_recent_notification_received
+    notifications_received.order(created_at: :desc).first
+  end
+
   def get_google_contacts
     encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
     uri = URI.parse(encoded_url)
