@@ -19,10 +19,10 @@ class User  < ActiveRecord::Base
   has_many :client_locations, foreign_key: :client_id
   has_many :coach_locations, foreign_key: :coach_id
 
-  has_many :coach_invites, through: :coach_activities
+  has_many :coach_invites, through: :coach_activities, source: :invites
   has_many :client_invites, class_name: "Invite", foreign_key: :client_id
 
-  has_many :coaches, through: :coach_invites
+  has_many :coaches, through: :client_invites
   has_many :clients, through: :coach_activities
 
   has_many :notification_receivers, foreign_key: 'receiver_id'
@@ -134,29 +134,36 @@ class User  < ActiveRecord::Base
     # calendars.select{|cal| puts cal }
   end
 
-def get_events_for_calendar(cal)
+  def get_events_for_calendar(cal)
 
-  url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
-  response = open(url)
-  json = JSON.parse(response.read)
-  my_events = json["items"]
+    url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
+    response = open(url)
+    json = JSON.parse(response.read)
+    my_events = json["items"]
 
-  my_events.each do |event|
-    name = event["summary"] || "no name"
-    creator = event["creator"] ? event["creator"]["email"] : nil
-    start = event["start"] ? event["start"]["dateTime"] : nil
-    status = event["status"] || nil
-    link = event["htmlLink"] || nil
-    calendar = cal["summary"] || nil
+    my_events.each do |event|
+      name = event["summary"] || "no name"
+      creator = event["creator"] ? event["creator"]["email"] : nil
+      start = event["start"] ? event["start"]["dateTime"] : nil
+      status = event["status"] || nil
+      link = event["htmlLink"] || nil
+      calendar = cal["summary"] || nil
 
-    self.events.new(name: name,
-                  creator: creator,
-                  status: status,
-                  start: start,
-                  link: link,
-                  calendar: calendar
-                  )
+      self.events.new(name: name,
+                    creator: creator,
+                    status: status,
+                    start: start,
+                    link: link,
+                    calendar: calendar
+                    )
+    end
   end
+
+  def full_name
+    #self.first_name + " " + self.last_name
+    "helloworld"
+  end
+
 end
 
   # def new_event
@@ -166,10 +173,6 @@ end
   # def calendar
   #   self.calendar
   # end
-  # def full_name
-  #   self.first_name + " " + self.last_name
-  # end
-
 
   # def self.find_for_google_oauth2(oauth, signed_in_resource=nil)
   #   credentials = oauth.credentials
@@ -267,4 +270,3 @@ end
 
 #   end
 
-end
