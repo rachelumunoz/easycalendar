@@ -14,7 +14,7 @@ class GoogleEvent
   def initialize
     client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
     scope = ['https://www.googleapis.com/auth/calendar,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/plus.login']
-    token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
+    token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: $redis, url: ENV['REDIS_URL'])
     @authorizer =  Google::Auth::UserAuthorizer.new(client_id, scope, token_store)
     user_id = "default"
     @credentials = @authorizer.get_credentials(user_id)
