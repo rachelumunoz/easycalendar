@@ -63,9 +63,6 @@ class MessagesController < ApplicationController
       @message_body == LIST_OPEN_APPTS
       list_of_appt_openings
     elsif
-      @message_body == LIST_STUDENTS
-    #   list_of_linked_students
-    elsif
       @message_body == PAUSE
       pause_confirmation_msg
     elsif
@@ -145,14 +142,6 @@ class MessagesController < ApplicationController
     end
     return coach_list
   end
-
-  # # def list_of_linked_students
-  # #   @students = Child.find_by(params[:id])
-  # #     return "Your students are:"
-  # #   @students.each do |student|
-  # #     return student
-  # #   end
-  # # end
 
   def list_of_appt_openings
     @user = User.find_by(phone_number: @from_number)
