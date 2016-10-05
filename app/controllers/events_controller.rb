@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   before_action :set_event, except: :index
 
   def show
-
+    current_user.get_google_calendars
+    @events = current_user.events
   end
 
   def new
@@ -16,25 +17,20 @@ class EventsController < ApplicationController
 
   #should attach service to each user/coach
   def index
-    # current_user.get_google_calendars
-    # @events = current_user.events
-    @service = Google::Apis::CalendarV3::CalendarService.new
-    @service.client_options.application_name = "Easycalendar"
+    # # current_user.get_google_calendars
+    # # @events = current_user.events
+    # @service = Google::Apis::CalendarV3::CalendarService.new
+    # @service.client_options.application_name = "Easycalendar"
 
-
-
-    @service.authorization = GoogleAuthorization.authorize_part_one
-    if @return.class == "string"
-      redirect_to "/ + #{ @return} "
-    else
-      puts "=======================yay========================"
-    end
-    #need authorization
-
-
-
-
-
+    # @service.authorization = GoogleAuthorization.authorize_part_one
+    # if @return.class == "string"
+    #   redirect_to "/ + #{ @return} "
+    # else
+    #   puts "=======================yay========================"
+    # end
+    # #need authorization
+    current_user.get_google_calendars
+    @events = current_user.events
   end
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005021646) do
+ActiveRecord::Schema.define(version: 20161005042621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,12 +86,13 @@ ActiveRecord::Schema.define(version: 20161005021646) do
     t.string   "link"
     t.string   "calendar"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "description"
     t.datetime "end_time"
     t.string   "location"
     t.string   "attendees"
+    t.string   "google_event_id"
   end
 
   create_table "invites", force: :cascade do |t|
