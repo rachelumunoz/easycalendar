@@ -9,15 +9,14 @@ class AppointmentsController < MessagesController
   end
 
   def new
-    p "************************************** #{current_user.email}"
-    p current_user.clients
-    #@user = current_user
-    @user = User.find(3)
+    @user = current_user
+    #@user = User.find(3)
     @appointment = Appointment.new
   end
 
   def edit
-    @user = User.find(3)
+    @user = current_user
+    #@user = User.find(3)
     #@appointment = Appointment.new
   end
 
