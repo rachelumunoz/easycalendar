@@ -41,4 +41,9 @@ class UsersController < ApplicationController
     #@appointments = @user.coached_appointments
   end
 
+  def invite
+    #@user = current_user
+
+  end
+
 end
