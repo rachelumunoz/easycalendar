@@ -12,18 +12,39 @@ class GoogleEvent
   attr_accessor :summary
   # :event
   def initialize
-    client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
-    scope = ['https://www.googleapis.com/auth/calendar,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/plus.login']
-    token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: $redis, url: ENV['REDIS_URL'])
-    @authorizer =  Google::Auth::UserAuthorizer.new(client_id, scope, token_store)
-    user_id = "default"
-    @credentials = @authorizer.get_credentials(user_id)
-    @event = Google::Apis::CalendarV3::Event.new
+
+    # client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
+    # scope = ['https://www.googleapis.com/auth/calendar','https://www.google.com/m8/feeds/','https://www.googleapis.com/auth/plus.login']
+    # token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
+    # @authorizer =  Google::Auth::UserAuthorizer.new(client_id, scope, token_store)
+    # user_id = "default"
+    # @credentials = @authorizer.get_credentials(user_id)
+    # @event = Google::Apis::CalendarV3::Event.new
+
     # @event.authorization = @credentials
     # puts "**********************summary********************************"
     # puts @event.summary
     # puts "***********************location*******************************"
     # puts @event.location
+  end
+
+  def authorize
+    client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
+    token_store =  Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
+    scope = ['https://www.googleapis.com/auth/calendar','https://www.google.com/m8/feeds/','https://www.googleapis.com/auth/plus.login']
+    authorizer = Google::Auth::UserAuthorizer.new(client_id, scope, token_store, '/users/auth/google_oauth2/callback')
+    user_id = 'default'
+    credentials = authorizer.get_credentials(user_id)
+    if credentials.nil?
+      url = authorizer.get_authorization_url(base_url: OOB_URI)
+      puts "Open the following URL in the browser and enter the " +
+           "resulting code after authorization"
+      puts url
+      code = gets
+      credentials = authorizer.get_and_store_credentials_from_code(
+        user_id: user_id, code: code, base_url: OOB_URI)
+    end
+    credentials
   end
 
   def authorization_url

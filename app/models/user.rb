@@ -38,18 +38,6 @@ class User  < ActiveRecord::Base
 
   def self.from_omniauth(auth)
     data = auth.info
-    # user = User.where(:email => data["email"]).first
-
-    # unless user
-    #     user = User.create(first_name: data["name"],
-    #
-    #        password: Devise.friendly_token[0,20],
-    #        token: access_token.credentials[:token],
-    #        expires_at: access_token.credentials[:expires_at]
-    #     )
-    # end
-    # user
-
     where(email: data.email).first_or_initialize.tap do |user|
       user.password = Devise.friendly_token[0,20]
       user.provider = auth.provider
@@ -61,41 +49,26 @@ class User  < ActiveRecord::Base
     end
   end
 
-  def refresh_token_if_expired
-    if token_expired?
-      response = RestClient.post(
-        "accounts.google.com/o/oauth2/token",
-        :grant_type => 'refresh_token',
-        :refresh_token => self.refresh_token,
-        :client_id => ENV['GOOGLE_CLIENT_ID'],
-        :client_secret => ENV['GOOGLE_CLIENT_SECRET']
-      )
-      refresh_hash = JSON.parse(response.body)
-
-      token_will_change!
-      expiresat_will_change!
-
-      self.token     = refresh_hash['access_token']
-      self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
-
-      self.save
-      puts 'Saved'
+  def events_to_appointments
+    self.events.each do |event|
+      puts '===========event========================'
+      puts event
+      puts '===========location========================'
+      puts event.location
+      puts '===========find location========================'
+      puts  Location.find_by(address: event.location)
+      appointment = Appointment.find_or_create_by!(google_event_id: event.google_event_id,
+        coach_activity: self.coach_activities.first,
+        location: Location.find_by(address: event.location),
+        start: event.start,
+        end: event.end_time
+        )
     end
   end
 
-
-
-  def token_expired?
-    expiry = DateTime.now + ((self.expires_at.to_i) /1000).seconds
-    return true if expiry < Time.now
-    token_expires_at = expiry
-    save if changed?
-    false
-  end
-
-  # This is ark's way of associating a canceled appointment 
-  # with a notification receiver so that they can reply with 
-  # a 'Yes' and get it.  If we want to be more precise, 
+  # This is ark's way of associating a canceled appointment
+  # with a notification receiver so that they can reply with
+  # a 'Yes' and get it.  If we want to be more precise,
   # to guard against the possibility of receiving multiple
   # notifications but only being able to reply 'Yes' to the
   # most recent, we will need to associate the canceled appt's
@@ -103,30 +76,6 @@ class User  < ActiveRecord::Base
   # or 'Book 123' for appt_id 123
   def most_recent_notification_received
     notifications_received.order(created_at: :desc).first
-  end
-
-  def get_google_contacts
-    encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
-    uri = URI.parse(encoded_url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Get.new(uri.request_uri)
-    json = JSON.parse(request.read)
-    my_contacts = json['feed']['entry']
-
-    my_contacts.each do |contact|
-      name = contact['title']['$t'] || nil
-      email = contact['gd$email'] ? contact['gd$email'][0]['address'] : nil
-      tel = contact['gd$phoneNumber'] ? contact["gd$phoneNumber"][0]["$t"] :  nil
-      if contact['link'][1]['type'] == "image/*"
-        picture = "#{contact['link'][1]['href']}?access_token=#{token}"
-      else
-        picture = nil
-      end
-      contacts.create(name: name, email: email, tel: tel, picture: picture)
-    end
   end
 
   def get_google_calendars
@@ -147,25 +96,38 @@ class User  < ActiveRecord::Base
   end
 
   def get_events_for_calendar(cal)
-
     url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
     response = open(url)
     json = JSON.parse(response.read)
     my_events = json["items"]
-
     my_events.each do |event|
-      name = event["summary"] || "no name"
-      creator = event["creator"] ? event["creator"]["email"] : nil
+      summary = event["summary"] || "no name"
       start = event["start"] ? event["start"]["dateTime"] : nil
-      status = event["status"] || nil
+      puts "===============event-start=============================="
+      puts event["start"]
+      end_time = event["end"] ? event["end"]["dateTime"] : nil
       link = event["htmlLink"] || nil
+      status = event["status"] || nil
+      google_event_id = event["id"]
+      creator = event["creator"] ? event["creator"]["email"] : nil
+      location = event["location"] || nil
+      description = event["description"] || nil
       calendar = cal["summary"] || nil
 
-      self.events.new(name: name,
+      #iCalUID
+      # puts "-------========event======================--"
+      # puts event
+
+      # need a location check when converting to appt
+      self.events.create(summary: summary,
                     creator: creator,
                     status: status,
                     start: start,
+                    end_time: end_time,
                     link: link,
+                    google_event_id: google_event_id,
+                    location: location,
+                    description: description,
                     calendar: calendar
                     )
     end
@@ -175,110 +137,67 @@ class User  < ActiveRecord::Base
     #self.first_name + " " + self.last_name
     "helloworld"
   end
-
 end
-
-  # def new_event
-
-  # end
 
   # def calendar
   #   self.calendar
   # end
 
-  # def self.find_for_google_oauth2(oauth, signed_in_resource=nil)
-  #   credentials = oauth.credentials
-  #   data = oauth.info
-  #   puts "=========oauth========="
-  #   puts oauth
-  #   puts "=======data=========="
-  #   puts data
-  #   puts "=======email=========="
-  #   puts data[:email]
-  #   puts "=======credentials=========="
-  #   puts credentials
-  #   puts "=======uid=========="
-  #   puts  oauth.uid
-  #   puts "=======resfresh token=========="
-  #   # puts self.oauth2_refresh_token
+  # def refresh_token_if_expired
+  #   if token_expired?
+  #     response = RestClient.post(
+  #       "accounts.google.com/o/oauth2/token",
+  #       :grant_type => 'refresh_token',
+  #       :refresh_token => self.refresh_token,
+  #       :client_id => ENV['GOOGLE_CLIENT_ID'],
+  #       :client_secret => ENV['GOOGLE_CLIENT_SECRET']
+  #     )
+  #     refresh_hash = JSON.parse(response.body)
 
-  #   user = User.find_by(uid: oauth.uid)
+  #     token_will_change!
+  #     expiresat_will_change!
 
-  #   if user
-  #     puts "helllllo"
-  #   else
-  #    user = User.create(
-  #       first_name: data[:first_name],
-  #       last_name: data[:family_name],
-  #       picture: data[:image],
-  #       email: data[:email],
-  #       password: Devise.friendly_token[0,20],
-  #       token: credentials[:token],
-  #       expires_at: credentials[:expires_at],
-  #       uid: oauth.uid
-  #    )
+  #     self.token     = refresh_hash['access_token']
+  #     self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
+
+  #     self.save
+  #     puts 'Saved'
   #   end
-  #   user.get_google_contacts   # Wait for next section
-  #   user.get_google_calendars  # Wait for next section
-  #   user
   # end
 
-#   def get_google_contacts
-#   url = "https://www.google.com/m8/feeds/contacts/default/full?access_token=#{token}&alt=json&max-results=100"
-#   response = RestClient.get(url)
-#   json = JSON.parse(response.body)
-#   my_contacts = json['feed']['entry']
-
-#   my_contacts.each do |contact|
-#     name = contact['title']['$t'] || nil
-#     email = contact['gd$email'] ? contact['gd$email'][0]['address'] : nil
-#     tel = contact['gd$phoneNumber'] ? contact["gd$phoneNumber"][0]["$t"] : nil
-#     if contact['link'][1]['type'] == "image/*"
-#       picture = "#{contact['link'][1]['href']}?access_token=#{token}"
-#     else
-#       picture = nil
-#     end
-#     contacts.create(name: name, email: email, tel: tel, picture: picture)
-#   end
-# end
 
 
-#   def get_google_calendars
-#     url = "https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=#{token}"
 
-#     puts "===========get_google_calendars=response=============="
-#     puts response = RestClient.get(url)
-#     response = RestClient.get(url)
-#     json = JSON.parse(response)
-#     calendars = json["items"]
-#     calendars.each { |cal| get_events_for_calendar(cal) }
-#   end
+  # def token_expired?
+  #   expiry = DateTime.now + ((self.expires_at.to_i) /1000).seconds
+  #   return true if expiry < Time.now
+  #   token_expires_at = expiry
+  #   save if changed?
+  #   false
+  # end
 
-#   def get_events_for_calendar(cal)
 
-#     url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
-#     puts "=========get_events_for_calendar=response============="
-#     puts response = RestClient.get(url)
-#     response = RestClient.get(url)
-#     json = JSON.parse(response)
-#     my_events = json["items"]
 
-#     my_events.each do |event|
-#       name = event["summary"] || "no name"
-#       creator = event["creator"] ? event["creator"]["email"] : nil
-#       start = event["start"] ? event["start"]["dateTime"] : nil
-#       status = event["status"] || nil
-#       link = event["htmlLink"] || nil
-#       calendar = cal["summary"] || nil
+  # def get_google_contacts
+  #   encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
+  #   uri = URI.parse(encoded_url)
+  #   http = Net::HTTP.new(uri.host, uri.port)
+  #   http.use_ssl = true
+  #   http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-#       events.create(name: name,
-#                     creator: creator,
-#                     status: status,
-#                     start: start,
-#                     link: link,
-#                     calendar: calendar
-#                     )
-#     end
+  #   request = Net::HTTP::Get.new(uri.request_uri)
+  #   json = JSON.parse(request.read)
+  #   my_contacts = json['feed']['entry']
 
-#   end
-
+  #   my_contacts.each do |contact|
+  #     name = contact['title']['$t'] || nil
+  #     email = contact['gd$email'] ? contact['gd$email'][0]['address'] : nil
+  #     tel = contact['gd$phoneNumber'] ? contact["gd$phoneNumber"][0]["$t"] :  nil
+  #     if contact['link'][1]['type'] == "image/*"
+  #       picture = "#{contact['link'][1]['href']}?access_token=#{token}"
+  #     else
+  #       picture = nil
+  #     end
+  #     contacts.create!(name: name, email: email, tel: tel, picture: picture)
+  #   end
+  # end

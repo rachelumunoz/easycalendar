@@ -55,7 +55,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem "binding_of_caller"
   gem 'better_errors'
-  gem 'awesome_print', :require => 'ap'
+  gem 'awesome_print'
 end
 
 group :test do

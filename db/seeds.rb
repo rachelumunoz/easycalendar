@@ -36,6 +36,7 @@
 
 # CoachLocation.create(location_id: 1, coach_id:3)
 
+
 # Invite.create(client_id: 1, coach_activity_id:1)
 # Invite.create(client_id: 2, coach_activity_id:1)
 
@@ -46,10 +47,12 @@
 # CoachLocation.create(location_id: 3, coach_id:5)
 # CoachLocation.create(location_id: 3, coach_id:5)
 
+
 # Invite.create(client_id: 1, coach_activity_id:1)
 # Invite.create(client_id: 2, coach_activity_id:1)
 # Invite.create(client_id: 3, coach_activity_id:5)
 # Invite.create(client_id: 4, coach_activity_id:5)
+
 
 # seed_time = Faker::Time.between(5.days.ago, Date.today+20, :morning)
 # # IAN'S APPTS
@@ -65,6 +68,7 @@
 # appt = Appointment.create!(coach_activity_id: 1, child_id: 2, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
 
 # # CLARA'S APPTS
+
 # appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
 # appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
 # # appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
@@ -119,7 +123,7 @@
 
 
 
-# IAN SEED DATA
+# # IAN SEED DATA
 
 # #PARENTS
 # User.create!(first_name: "I", last_name: "Luc", email: ENV['IAN_EMAIL'], phone_number: ENV['IAN_PHONE'], password:"password")#1

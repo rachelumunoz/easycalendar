@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004020453) do
+ActiveRecord::Schema.define(version: 20161005044828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20161004020453) do
     t.string   "color"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "google_event_id"
   end
 
   create_table "calendars", force: :cascade do |t|
@@ -79,15 +80,20 @@ ActiveRecord::Schema.define(version: 20161004020453) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.string   "name"
+    t.string   "summary"
     t.string   "creator"
     t.datetime "start"
     t.string   "status"
     t.string   "link"
     t.string   "calendar"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "description"
+    t.datetime "end_time"
+    t.string   "location"
+    t.string   "attendees"
+    t.string   "google_event_id"
   end
 
   create_table "invites", force: :cascade do |t|
@@ -149,6 +155,8 @@ ActiveRecord::Schema.define(version: 20161004020453) do
     t.string   "refresh_token"
     t.string   "expires_at"
     t.string   "phone_number"
+    t.boolean  "not_authorized"
+    t.string   "authorization_url"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

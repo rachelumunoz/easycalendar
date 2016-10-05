@@ -1,13 +1,19 @@
 <%= simple_form_for @appointment, url: appointment_path, remote: true do |f| %>
   <div class="form-inputs">
     <!-- START -->
+    <%
+        date_format = '%Y-%m-%dT%H:%M:%S'
+        start_date = f.object.start.in_time_zone("Pacific Time (US & Canada)")
+        start_date_str = start_date.strftime(date_format)
+        end_date = f.object.end.in_time_zone("Pacific Time (US & Canada)").strftime(date_format)
+    %>
 
-    <%= f.input_field :start, as: :datetime, html5: true, :html => { :class => "form-group" } %>
+    <%= f.input_field :start, as: :datetime, html5: true, :class => "form-group", value: start_date_str %>
     <!-- END --><br>
-    <%= f.input_field :end, as: :datetime, html5: true, :html => { :class => "form-group" } %>
+    <%= f.input_field :end, as: :datetime, html5: true, :class => "form-group", value: end_date  %>
     <!-- GET THE POST -->
     <!-- got retrieve coach activities from the page's current user as a drop down collection -->
-    <%= f.association :coach_activity, collection: @user.coach_activities, label_method: :activity%>
+    <%= f.input :activity, collection: @user.coach_activities, :label_method => lambda{|ca| ca.activity.name } %>
     <%= f.association :location %>
     <%= f.association :child, collection: @user.clients_children, label_method: :first_name %>
 

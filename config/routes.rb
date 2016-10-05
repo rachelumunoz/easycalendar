@@ -1,10 +1,5 @@
 Easycalendar::Application.routes.draw do
-  # get 'events/show'
-
-  # get 'events/edit'
-
-  # get 'events/update'
-  resources :events, only: [:show, :edit, :update]
+  resources :events
    # devise_for :users, controllers: { omniauth_callbacks: 'static_pages#set_google_event_token'}
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
