@@ -1,5 +1,9 @@
 h1 Events#edit
 = simple_form_for @event do |f|
-  = f.input :name
+  = f.input :summary
+  = f.input :description
+  = f.input :start
+  = f.input :end_time
+  = f.input :status
   = f.button :submit
-p = debug @event
+/ p = debug @event

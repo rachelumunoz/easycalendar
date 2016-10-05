@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     #                              single_events: true,
     #                              order_by: 'startTime',
     #                              time_min: Time.now.iso8601)
-    @events = current_user.get_google_calendars
+    # @events = current_user.get_google_calendars
   end
 
   def show
@@ -36,10 +36,10 @@ class UsersController < ApplicationController
   end
 
   def showappts
-    #@user = current_user
-    @user = User.find(3)
-    #@appointments = @user.coached_appointments
+    @user = current_user
+    @appointments = @user.coached_appointments
   end
+
 
   def invite
     #@user = current_user
