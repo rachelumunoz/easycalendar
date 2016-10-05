@@ -17,10 +17,10 @@ class User  < ActiveRecord::Base
   has_many :client_locations, foreign_key: :client_id
   has_many :coach_locations, foreign_key: :coach_id
 
-  has_many :coach_invites, through: :coach_activities
+  has_many :coach_invites, through: :coach_activities, source: :invites
   has_many :client_invites, class_name: "Invite", foreign_key: :client_id
 
-  has_many :coaches, through: :coach_invites
+  has_many :coaches, through: :client_invites
   has_many :clients, through: :coach_activities
 
   has_many :notification_receivers, foreign_key: 'receiver_id'
@@ -45,6 +45,18 @@ class User  < ActiveRecord::Base
         )
     end
     user
+  end
+
+  # This is ark's way of associating a canceled appointment 
+  # with a notification receiver so that they can reply with 
+  # a 'Yes' and get it.  If we want to be more precise, 
+  # to guard against the possibility of receiving multiple
+  # notifications but only being able to reply 'Yes' to the
+  # most recent, we will need to associate the canceled appt's
+  # id and require the user to enter something like 'Yes 123'
+  # or 'Book 123' for appt_id 123
+  def most_recent_notification_received
+    notifications_received.order(created_at: :desc).first
   end
 
   def get_google_contacts

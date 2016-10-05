@@ -3,7 +3,6 @@ class MessagesController < ApplicationController
  skip_before_filter :verify_authenticity_token
  # skip_before_filter :authenticate_user!, :only => "reply"
 
- # when a user has sent an SMS to EasyCalendar
   def reply
     @message_body = params["Body"]
     @from_number = params["From"]
@@ -23,42 +22,29 @@ class MessagesController < ApplicationController
     @client = Twilio::REST::Client.new(account_sid, auth_token)
   end
 
-
-
-
-
-
   # COMMANDS
   BOOK_CANCELLED_APPT = "Yes"
-  # BOOK_APPT = "Book"
+  BOOK_APPT = "Book"
   CANCEL_APPT = "Cancel"
   CLOSE_ACCT = "Close"
   COMMAND_OPTIONS = "Commands"
   LIST_BOOKED_APPTS = "Booked"
-  # LIST_COACHES = "Coaches"
+  LIST_COACHES = "Coaches"
   LIST_OPEN_APPTS = "Open"
-  # LIST_STUDENTS = "Students"
+  LIST_STUDENTS = "Students"
   PAUSE = "Pause"
   RESUME = "Resume"
-
-  
-
-
-
-
 
   def reply_logic
     @argv = @message_body.split(" ")
 
-    if @message_body == BOOK_CANCELLED_APPT
+    if @argv[0] == BOOK_CANCELLED_APPT
       appt_confirmation_msg
-    # elsif
-    #   @message_body == BOOK_APPT
-    #   appt_id = Appointment.find_by(params[:id])
-    #   appt_confirmation_msg    
+    elsif
+      @argv[0] == BOOK_APPT
+      appt_confirmation_msg    
     elsif
       @argv[0] == CANCEL_APPT
-      cancelled_appt_array = []
       cancel_confirmation_msg
     elsif
       @message_body == CLOSE_ACCT
@@ -69,14 +55,14 @@ class MessagesController < ApplicationController
     elsif
       @message_body == LIST_BOOKED_APPTS
       list_of_appts
-    # elsif
-    #   @message_body == LIST_COACHES
-    #   list_of_linked_coaches
+    elsif
+      @message_body == LIST_COACHES
+      list_of_linked_coaches
     elsif
       @message_body == LIST_OPEN_APPTS
       list_of_appt_openings
-    # elsif
-    #   @message_body == LIST_STUDENTS
+    elsif
+      @message_body == LIST_STUDENTS
     #   list_of_linked_students
     elsif
       @message_body == PAUSE
@@ -94,46 +80,37 @@ class MessagesController < ApplicationController
   end
 
   # SYSTEM MESSAGES
-  # def appt_confirmation_msg
-  #   @user = User.find_by(phone_number: @from_number)
-  #   @child = @user.children.where(first_name == @argv[1].to_i - 1])
-  #   @appointment = 
-  #   @appointment.update_attributes(child: @child)
-  #   @coach = @appointment.coach
-  #   return "Great!"
-  #   # return "Great! I have booked that lesson for #{@child} and notified #{@coach.first_name} for you."
-  # end
 
-  # def cancel_confirmation_msg
-  #   @user = User.find_by(phone_number: @from_number)
-  #   @appoinment = @user.appointment[@message_body[1]-1]
-  #   p "==================="
-  #   p @appointment
-  #   return @appointment.start
-  #   # return "Confirmed: you have canceled the appointment. We've notified your coach for you."
-  # end
+  def appt_confirmation_msg
+    @user = User.find_by(phone_number: @from_number)
+    @child = @user.children.find_by(first_name: @argv[2])
+    @appointment = Appointment.find(@argv[1].to_i)
+    @appointment.update_attributes(child: @child)
+    return "Great! You've booked appointment #{@appointment.id} for #{@appointment.child.first_name}. I have notified #{@appointment.coach.first_name} for you."
+  end
 
   def cancel_confirmation_msg
     @user = User.find_by(phone_number: @from_number)
-    @appointment = @user.appointments[@argv[1].to_i - 1]
+    @appointment = @user.appointments.find(@argv[1].to_i)
     @child = @appointment.child.first_name
     @appointment.update_attributes(child: nil)
     @coach = @appointment.coach
     @clients = @coach.clients
-
-    @parent_ary = []
-    @clients.each do |client|
-      @parent_ary << client
-    end
-    @parent_ary.delete_if {|user| user == @user}
     
-    cancelation_notice
-    return "Alright, I have canceled #{@child}'s lesson and notified #{@coach.first_name} for you."
+    receivers = @clients.reject{|client| client == @user}
+    
+    Notification.create(
+      appointment: @appointment, 
+      receivers: receivers,
+      content: canceled_appt_details)
+
+    cancelation_notice(receivers)
+    return "Alright, I have canceled #{@child}'s appointment (ID #{@appointment.id}) and notified #{@coach.first_name} for you."
   end
 
-  def cancelation_notice
+  def cancelation_notice(receivers)
     boot_twilio
-    @parent_ary.each do |parent|
+    receivers.each do |parent|
       @client.account.messages.create({
         :from => ENV["TWILIO_NUMBER"],
         :to => parent.phone_number,
@@ -144,9 +121,10 @@ class MessagesController < ApplicationController
 
   def canceled_appt_details
     "Coach #{@coach.first_name} just had the following appointment open up.\n
+    Appt ID: #{@appointment.id}
     Location: #{@appointment.location.name}
     Date: #{@appointment.start.strftime("%-m/%d")}
-    Time: #{@appointment.start.strftime("%l:%M")}-#{@appointment.end.strftime("%l:%M%P")}\n\nIf you would like to book this, please reply 'Yes'."
+    Time: #{@appointment.start.strftime("%l:%M")}-#{@appointment.end.strftime("%l:%M%P")}\n\nIf you would like to book this, please reply 'Yes' along with the Appt ID (e.g. Yes 109). If you have more than one child who trains with this coach, you should enter his or her name, too (e.g. Yes 109 Emma)."
   end
 
   def close_confirmation_msg
@@ -154,16 +132,18 @@ class MessagesController < ApplicationController
   end
 
   def list_of_commands_msg
-    return "'Yes' to book a canceled appt.\n\n'Book' + 'number' to book an open appt (e.g. Book 11 to book appt number eleven).\n\n'Cancel' + 'number' to cancel an appt.\n\n'Close' to close your account (e.g. Cancel 3 to cancel appt number three).\n\n'Commands' to see a list of commands.\n\n'Coaches' to see all your coaches.\n\n'Students' to see all your students.\n\n'Open' to see available appt times.\n\n'Booked' to see your upcoming appts.\n\n'Pause' to stop notifications from EasyCalendar.\n\n'Resume' to restart notifications."
+    return "'Yes' + 'number' + 'your child's name' to book a canceled appt (e.g. Yes 234 Emma).\n\n'Book' + 'number' + 'your child's name' to book an open appt.\n\n'Cancel' + 'number' to cancel an appt.\n\n'Close' to close your account.\n\n'Commands' to see a list of commands.\n\n'Coaches' to see all your coaches.\n\n'Students' to see all your students.\n\n'Open' to see available appointment times for all your coaches.\n\n'Booked' to see your upcoming appts.\n\n'Pause' to stop notifications from EasyCalendar.\n\n'Resume' to restart notifications."
   end
 
-  # # def list_of_linked_coaches
-  # #   @coaches = Coach.find_by(params[:id])
-  # #     return "Your coaches are:"
-  # #   @coaches.each do |coach|
-  # #     return coach
-  # #   end
-  # # end
+  def list_of_linked_coaches
+    @user = User.find_by(phone_number: @from_number)
+    @coaches = @user.coaches
+    coach_list = ""
+    @coaches.each_with_index do |coach, index|
+      coach_list << "Coach #{index+1}: #{coach.first_name} #{coach.last_name}"
+    end
+    return coach_list
+  end
 
   # # def list_of_linked_students
   # #   @students = Child.find_by(params[:id])
@@ -173,20 +153,34 @@ class MessagesController < ApplicationController
   # #   end
   # # end
 
-  # def list_of_appt_openings
-  #   @available_appointments = Appointment.find_by(params[:id]).where(params[:child_id]==params[:id])
-  #     return "Your students are:"
-  #   @available_appointments.each do |appt|
-  #     return appt
-  #   end
-  # end
+  def list_of_appt_openings
+    @user = User.find_by(phone_number: @from_number)
+    @coaches = @user.coaches
+
+    open_appts_ary = []
+
+    @coaches.each do |coach|
+      coach.coached_appointments.where(child_id: nil).find_each do |open_appt|
+        open_appts_ary << open_appt
+      end
+    end
+
+    open_appts_list = ""
+
+    open_appts_ary.each_with_index do |appt, index|
+      open_appts_list << "Appt ID #{appt.id}: Coach #{appt.coach.first_name}\nLocation: #{appt.location.name}\nDate: #{appt.start.strftime("%-m/%d")}\nTime: #{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
+    end
+
+    open_appts_list << "To book one of these appointments, reply Yes plus the number of the appointment (e.g. Yes 1)."
+    return open_appts_list
+  end
 
   def list_of_appts
     @user = User.find_by(phone_number: @from_number)
     @appointments = @user.appointments
     appointment_list = ""
     @appointments.each_with_index do |appt, index|
-      appointment_list << "Appt #{index+1}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
+      appointment_list << "Appt ID #{appt.id}: #{appt.child.first_name} #{appt.start.strftime("%-m/%d")}\n#{appt.start.strftime("%l:%M")}-#{appt.end.strftime("%l:%M%P")}\n\n"
     end
     return appointment_list
   end
