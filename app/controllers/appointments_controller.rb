@@ -1,4 +1,4 @@
-class AppointmentsController < ApplicationController
+class AppointmentsController < MessagesController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -30,6 +30,9 @@ class AppointmentsController < ApplicationController
   def update
     @appointment.update(event_params)
     @appointment.set_color
+    if @appointment.child_id == nil
+      cancel_confirmation_msg
+    end
   end
 
   def destroy

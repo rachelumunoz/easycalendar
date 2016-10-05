@@ -24,19 +24,23 @@ class MessagesController < ApplicationController
   end
 
   # COMMANDS
-  BOOK_CANCELLED_APPT = "Yes"
-  BOOK_APPT = "Book"
-  CANCEL_APPT = "Cancel"
-  CLOSE_ACCT = "Close"
-  COMMAND_OPTIONS = "Commands"
-  LIST_BOOKED_APPTS = "Booked"
-  LIST_COACHES = "Coaches"
-  LIST_OPEN_APPTS = "Open"
-  LIST_STUDENTS = "Students"
-  PAUSE = "Pause"
-  RESUME = "Resume"
+  BOOK_CANCELLED_APPT = "yes"
+  BOOK_APPT = "book"
+  CANCEL_APPT = "cancel"
+  CLOSE_ACCT = "close"
+  COMMAND_OPTIONS = "commands"
+  LIST_BOOKED_APPTS = "booked"
+  LIST_COACHES = "coaches"
+  LIST_OPEN_APPTS = "open"
+  LIST_STUDENTS = "students"
+  PAUSE = "pause"
+  RESUME = "resume"
 
   def reply_logic
+    @message_body = @message_body.downcase.split.join(" ")
+    @message_body.gsub!(/[|()!@#$%^&*.,]/," ");
+    @message_body = @message_body.split.join(" ")
+
     @argv = @message_body.split(" ")
 
     if @argv[0] == BOOK_CANCELLED_APPT
