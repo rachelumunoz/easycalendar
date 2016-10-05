@@ -29,10 +29,10 @@ class EventsController < ApplicationController
     #   puts "=======================yay========================"
     # end
     # #need authorization
-    # current_user.get_google_calendars
-    # @events = current_user.events
+    current_user.get_google_calendars
+    @events = current_user.events
     current_user.events_to_appointments
-    @appointments = current_user.appointments
+    @appointments = current_user.coached_appointments
   end
 
 

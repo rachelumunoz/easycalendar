@@ -51,16 +51,17 @@ class User  < ActiveRecord::Base
 
   def events_to_appointments
     self.events.each do |event|
-      #needs
-      #CoachActivity.new
-      #Coach
-      self.appointments.create(
-        coach_activity_id: 1,
-        child_id: 1,
-        location_id: 1,
+      puts '===========event========================'
+      puts event
+      puts '===========location========================'
+      puts event.location
+      puts '===========find location========================'
+      puts  Location.find_by(address: event.location)
+      appointment = Appointment.find_or_create_by!(google_event_id: event.google_event_id,
+        coach_activity: self.coach_activities.first,
+        location: Location.find_by(address: event.location),
         start: event.start,
-        end: event.end_time,
-        google_event_id: event.google_event_id,
+        end: event.end_time
         )
     end
   end
@@ -102,6 +103,8 @@ class User  < ActiveRecord::Base
     my_events.each do |event|
       summary = event["summary"] || "no name"
       start = event["start"] ? event["start"]["dateTime"] : nil
+      puts "===============event-start=============================="
+      puts event["start"]
       end_time = event["end"] ? event["end"]["dateTime"] : nil
       link = event["htmlLink"] || nil
       status = event["status"] || nil

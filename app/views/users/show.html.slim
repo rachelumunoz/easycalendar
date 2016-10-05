@@ -23,4 +23,4 @@ table.table.table-striped
           td = appt.child.first_name
         - else
           td UNBOOKED
-          td = appt.start
+          td = appt.start.in_time_zone("Pacific Time (US & Canada)").strftime('%a., %b. %-d, %l:%M %p')

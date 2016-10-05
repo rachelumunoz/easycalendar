@@ -4,15 +4,15 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def google_oauth2
 
-    if params[:code]
-      puts "============there is a code====================="
-      puts params[:code]
+    # if params[:code]
+    #   puts "============there is a code====================="
+    #   puts params[:code]
 
-    end
+    # end
 
     @user = User.from_omniauth(request.env["omniauth.auth"])
-    # puts "======find for google======"
-    # puts request.env["omniauth.auth"]
+    puts "======find for google======"
+    puts request.env["omniauth.auth"]
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Google"
       session[:user_id] = @user.id
