@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController 
-
  skip_before_filter :verify_authenticity_token
+ # the following skip method is for use with Devise
  # skip_before_filter :authenticate_user!, :only => "reply"
 
   def reply
@@ -13,6 +13,7 @@ class MessagesController < ApplicationController
       body: reply_logic
     )
   end
+
 
   private
  
@@ -75,9 +76,9 @@ class MessagesController < ApplicationController
     end
   end
 
-  def welcome_message
-      welcome_msg
-  end
+  # def welcome_message
+  #     welcome_msg
+  # end
 
   # SYSTEM MESSAGES
 
@@ -132,7 +133,7 @@ class MessagesController < ApplicationController
   end
 
   def list_of_commands_msg
-    return "'Yes' + 'number' + 'your child's name' to book a canceled appt (e.g. Yes 234 Emma).\n\n'Book' + 'number' + 'your child's name' to book an open appt.\n\n'Cancel' + 'number' to cancel an appt.\n\n'Close' to close your account.\n\n'Commands' to see a list of commands.\n\n'Coaches' to see all your coaches.\n\n'Students' to see all your students.\n\n'Open' to see available appointment times for all your coaches.\n\n'Booked' to see your upcoming appts.\n\n'Pause' to stop notifications from EasyCalendar.\n\n'Resume' to restart notifications."
+    return "'Yes' + 'Appt ID' to book a canceled appt (e.g. Yes 234).\n\n'Book' + 'Appt ID' to book an open appt.\n\n'Cancel' + 'Appt ID' to cancel an appt.\n\n'Close' to close your account.\n\n'Commands' to see a list of commands.\n\n'Coaches' to see all your coaches.\n\n'Students' to see all your students.\n\n'Open' to see available appointment times for all your coaches.\n\n'Booked' to see your upcoming appts.\n\n'Pause' to stop notifications from EasyCalendar.\n\n'Resume' to restart notifications."
   end
 
   def list_of_linked_coaches
