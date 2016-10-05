@@ -11,11 +11,14 @@ class AppointmentsController < ApplicationController
   def new
     p "************************************** #{current_user.email}"
     p current_user.clients
-    @user = current_user
+    #@user = current_user
+    @user = User.find(3)
     @appointment = Appointment.new
   end
 
   def edit
+    @user = User.find(3)
+    #@appointment = Appointment.new
   end
 
   def create
@@ -39,6 +42,6 @@ class AppointmentsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:title, :date_range, :start, :end, :color)
+      params.require(:appointment).permit(:coach_activity_id, :child_id, :location_id, :start, :end, :color)
     end
 end

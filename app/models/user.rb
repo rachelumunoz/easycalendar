@@ -17,10 +17,10 @@ class User  < ActiveRecord::Base
   has_many :client_locations, foreign_key: :client_id
   has_many :coach_locations, foreign_key: :coach_id
 
-  has_many :coach_invites, through: :coach_activities
+  has_many :coach_invites, through: :coach_activities, source: :invites
   has_many :client_invites, class_name: "Invite", foreign_key: :client_id
 
-  has_many :coaches, through: :coach_invites
+  has_many :coaches, through: :client_invites
   has_many :clients, through: :coach_activities
 
   has_many :notification_receivers, foreign_key: 'receiver_id'
@@ -99,7 +99,8 @@ def get_events_for_calendar(cal)
 end
 
   def full_name
-    self.first_name + " " + self.last_name
+    #self.first_name + " " + self.last_name
+    "helloworld"
   end
 
 
