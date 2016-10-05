@@ -1,4 +1,4 @@
-class InvitesController < ApplicationController
+class InvitesController < MessagesController
   def new
     @user = current_user
     @new_user = User.new
@@ -7,7 +7,6 @@ class InvitesController < ApplicationController
   end
 
   def create
-
     @user = current_user
     @new_user = User.new
     @new_user.email = params[:invite][:user][:email]
@@ -26,6 +25,8 @@ class InvitesController < ApplicationController
     @invite.coach_activity_id = params[:invite][:coach_activity_id].to_i
     @invite.client_id = @new_user.id
     @invite.save
+
+    invitation_notice
     redirect_to profile_path
   end
 
