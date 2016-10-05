@@ -32,6 +32,7 @@ class Appointment < ApplicationRecord
     else
       self.color = "gray"
     end
+    self.save
   end
 
   def all_day_event?

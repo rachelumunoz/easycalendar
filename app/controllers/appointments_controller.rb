@@ -23,6 +23,7 @@ class AppointmentsController < ApplicationController
 
   def create
     @appointment = Appointment.new(event_params)
+    @appointment.set_color
     @appointment.save
   end
 
