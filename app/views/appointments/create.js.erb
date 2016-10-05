@@ -3,4 +3,5 @@ $('.calendar').fullCalendar(
   $.parseJSON("<%=j render(@appointment, format: :json).html_safe %>"),
   true
 );
+
 $('.modal').modal('hide');

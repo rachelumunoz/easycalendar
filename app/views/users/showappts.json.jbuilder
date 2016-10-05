@@ -1,4 +1,4 @@
-json.array! @user.appointments do |appointment|
+json.array! @user.coached_appointments do |appointment|
   appointment.set_color
   date_format = appointment.all_day_event? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M:%S'
   json.id appointment.id

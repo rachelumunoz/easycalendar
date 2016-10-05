@@ -1,4 +1,6 @@
 require 'rest-client'
+require 'uri'
+require 'net/http'
 
 class User  < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -32,19 +34,63 @@ class User  < ActiveRecord::Base
 
   has_many :contacts
   has_many :events
+  has_many :calendars
 
-  def self.from_omniauth(access_token)
-    data = access_token.info
-    user = User.where(:email => data["email"]).first
+  def self.from_omniauth(auth)
+    data = auth.info
+    # user = User.where(:email => data["email"]).first
 
-    unless user
-        user = User.create(first_name: data["name"],
-           email: data["email"],
-           password: Devise.friendly_token[0,20],
-           token: access_token.credentials[:token]
-        )
+    # unless user
+    #     user = User.create(first_name: data["name"],
+    #
+    #        password: Devise.friendly_token[0,20],
+    #        token: access_token.credentials[:token],
+    #        expires_at: access_token.credentials[:expires_at]
+    #     )
+    # end
+    # user
+
+    where(email: data.email).first_or_initialize.tap do |user|
+      user.password = Devise.friendly_token[0,20]
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user.first_name = auth.info.name
+      user.token = auth.credentials.token
+      user.expires_at = Time.at(auth.credentials.expires_at)
+      user.save!
     end
-    user
+  end
+
+  def refresh_token_if_expired
+    if token_expired?
+      response = RestClient.post(
+        "accounts.google.com/o/oauth2/token",
+        :grant_type => 'refresh_token',
+        :refresh_token => self.refresh_token,
+        :client_id => ENV['GOOGLE_CLIENT_ID'],
+        :client_secret => ENV['GOOGLE_CLIENT_SECRET']
+      )
+      refresh_hash = JSON.parse(response.body)
+
+      token_will_change!
+      expiresat_will_change!
+
+      self.token     = refresh_hash['access_token']
+      self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
+
+      self.save
+      puts 'Saved'
+    end
+  end
+
+
+
+  def token_expired?
+    expiry = DateTime.now + ((self.expires_at.to_i) /1000).seconds
+    return true if expiry < Time.now
+    token_expires_at = expiry
+    save if changed?
+    false
   end
 
   # This is ark's way of associating a canceled appointment 
@@ -60,9 +106,14 @@ class User  < ActiveRecord::Base
   end
 
   def get_google_contacts
-    url = "https://www.google.com/m8/feeds/contacts/default/  full?access_token=#{token}&alt=json&max-results=100"
-    response = open(url)
-    json = JSON.parse(response.read)
+    encoded_url = URI.encode("https://www.google.com/m8/feeds/contacts/default/full?max-results=50000")
+    uri = URI.parse(encoded_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+    json = JSON.parse(request.read)
     my_contacts = json['feed']['entry']
 
     my_contacts.each do |contact|
@@ -77,43 +128,63 @@ class User  < ActiveRecord::Base
       contacts.create(name: name, email: email, tel: tel, picture: picture)
     end
   end
+
   def get_google_calendars
-    url = "https://www.googleapis.com/calendar/v3/users/me/ calendarList?access_token=#{token}"
+    encoded_url = URI.encode("https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=#{token}")
+    uri = URI.parse(encoded_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    res = Net::HTTP.get(uri)
+    json = JSON.parse(res)
+
+    calendars = json["items"]
+    calendars.select{|cal| cal['accessRole'] == "owner" }.map do |cal|
+      get_events_for_calendar(cal)
+    end
+    # calendars.select{|cal| puts cal }
+  end
+
+  def get_events_for_calendar(cal)
+
+    url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
     response = open(url)
     json = JSON.parse(response.read)
-    calendars = json["items"]
-    calendars.each { |cal| get_events_for_calendar(cal) }
+    my_events = json["items"]
+
+    my_events.each do |event|
+      name = event["summary"] || "no name"
+      creator = event["creator"] ? event["creator"]["email"] : nil
+      start = event["start"] ? event["start"]["dateTime"] : nil
+      status = event["status"] || nil
+      link = event["htmlLink"] || nil
+      calendar = cal["summary"] || nil
+
+      self.events.new(name: name,
+                    creator: creator,
+                    status: status,
+                    start: start,
+                    link: link,
+                    calendar: calendar
+                    )
+    end
   end
-
-def get_events_for_calendar(cal)
-
-  url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
-  response = open(url)
-  json = JSON.parse(response.read)
-  my_events = json["items"]
-
-  my_events.each do |event|
-    name = event["summary"] || "no name"
-    creator = event["creator"] ? event["creator"]["email"] : nil
-    start = event["start"] ? event["start"]["dateTime"] : nil
-    status = event["status"] || nil
-    link = event["htmlLink"] || nil
-    calendar = cal["summary"] || nil
-
-    events.create(name: name,
-                  creator: creator,
-                  status: status,
-                  start: start,
-                  link: link,
-                  calendar: calendar
-                  )
-  end
-end
 
   def full_name
-    self.first_name + " " + self.last_name
+    #self.first_name + " " + self.last_name
+    "helloworld"
   end
 
+end
+
+  # def new_event
+
+  # end
+
+  # def calendar
+  #   self.calendar
+  # end
 
   # def self.find_for_google_oauth2(oauth, signed_in_resource=nil)
   #   credentials = oauth.credentials
@@ -211,4 +282,3 @@ end
 
 #   end
 
-end

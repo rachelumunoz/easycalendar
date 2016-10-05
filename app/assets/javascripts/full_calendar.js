@@ -17,48 +17,35 @@ initialize_calendar = function() {
       events: '/users/events-appts.json',
 
       select: function(start, end) {
-        console.log("about to $.getScript of appointments new")
-        $.getScript('/appointments/new', function() {
-          $('#event_date_range').val(moment(start).format("MM/DD/YYYY HH:mm") + ' - ' + moment(end).format("MM/DD/YYYY HH:mm"))
-          date_range_picker();
-          $('.start_hidden').val(moment(start).format('YYYY-MM-DD HH:mm'));
-          $('.end_hidden').val(moment(end).format('YYYY-MM-DD HH:mm'));
-        });
+        // console.log("about to $.getScript of appointments new")
+        $.getScript('/appointments/new', function() {});
 
         calendar.fullCalendar('unselect');
       },
 
-      eventDrop: function(event, delta, revertFunc) {
-        console.log("about to drop an event")
-        event_data = {
-          event: {
-            id: event.id,
-            start: event.start.format(),
-            end: event.end.format()
-          }
-        };
-        $.ajax({
-            url: event.update_url,
-            data: event_data,
-            type: 'PATCH'
-        });
-      },
+      // eventDrop: function(event, delta, revertFunc) {
+      //   console.log("about to drop an event")
+      //   event_data = {
+      //     event: {
+      //       id: event.id,
+      //       start: event.start,
+      //       end: event.end
+      //     }
+      //   };
+      //   $.ajax({
+      //       url: event.update_url,
+      //       data: event_data,
+      //       type: 'PATCH'
+      //   });
+      // },
 
       eventClick: function(event, jsEvent, view) {
-        console.log("edit event")
-        $.getScript(event.edit_url, function() {
-          $('#event_date_range').val(moment(event.start).format("MM/DD/YYYY HH:mm") + ' - ' + moment(event.end).format("MM/DD/YYYY HH:mm"))
-          date_range_picker();
-          $('.start_hidden').val(moment(event.start).format('YYYY-MM-DD HH:mm'));
-          $('.end_hidden').val(moment(event.end).format('YYYY-MM-DD HH:mm'));
-        });
+        $.getScript(event.edit_url, function() {});
       }
     });
   })
 };
 $(document).on('turbolinks:load', initialize_calendar);
-// $(document).ready( function(){
-//   initialize_calendar;
-// });
+
 
 
