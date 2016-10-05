@@ -53,6 +53,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem "binding_of_caller"
+  gem 'better_errors'
+  gem 'awesome_print', :require => 'ap'
 end
 
 group :test do
@@ -69,7 +72,13 @@ gem 'angular-rails'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'json'
-gem 'rest-client'
-gem 'better_errors'
-gem 'jquery-turbolinks'
 
+
+gem 'jquery-turbolinks'
+gem 'rest-client'
+
+
+gem 'google-api-client', '~> 0.9'
+gem 'googleauth'
+gem 'redis-rails'
+gem 'dotenv'
