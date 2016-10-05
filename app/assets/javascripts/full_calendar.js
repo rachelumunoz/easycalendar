@@ -23,38 +23,21 @@ initialize_calendar = function() {
         calendar.fullCalendar('unselect');
       },
 
-      // eventSave: function(event, delta, revertFunc) {
+      // eventDrop: function(event, delta, revertFunc) {
+      //   console.log("about to drop an event")
       //   event_data = {
       //     event: {
-      //       coach_activity_id: event.coach_activity_id,
-      //       child_id: event.child_id,
-      //       location_id: event.location_id,
-      //       start: event.start.format(),
-      //       end: event.end.format()
+      //       id: event.id,
+      //       start: event.start,
+      //       end: event.end
       //     }
       //   };
       //   $.ajax({
-      //       url: event.create_url,
+      //       url: event.update_url,
       //       data: event_data,
-      //       type: 'PUT'
+      //       type: 'PATCH'
       //   });
-      // }
-
-//       eventDrop: function(event, delta, revertFunc) {
-//         console.log("about to drop an event")
-//         event_data = {
-//           event: {
-//             id: event.id,
-//             start: event.start.format(),
-//             end: event.end.format()
-//           }
-//         };
-//         $.ajax({
-//             url: event.update_url,
-//             data: event_data,
-//             type: 'PATCH'
-//         });
-//       },
+      // },
 
       eventClick: function(event, jsEvent, view) {
         $.getScript(event.edit_url, function() {});
