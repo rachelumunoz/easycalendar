@@ -69,11 +69,11 @@ class AppointmentsController < MessagesController
       @service.authorization = authorization
 
       event = @service.get_event('primary', @appointment.google_event_id)
-      event.summary = @appointment.activity.name
+      event.summary = "#{@appointment.activity.name} w/ #{@appointment.child.first_name}"
       event.start.date_time = @appointment.start.utc.iso8601
       event.end.date_time = @appointment.end.utc.iso8601
       result = @service.update_event('primary',event.id, event)
-      result
+
     end
   end
 
@@ -88,7 +88,7 @@ class AppointmentsController < MessagesController
       @service.delete_event('primary', @appointment.google_event_id)
     end
     @appointment.destroy
-    redirect_to profile_path
+    redirect_to '/schedule'
   end
 
   private
