@@ -23,10 +23,10 @@ initialize_calendar = function() {
       select: function(start, end) {
         $.getScript('/appointments/new', function() {
           var end_date = start.clone();
-          console.log(start)
-          console.log(end)
-          start_date_str = formatDate(start);
-          end_date_str = formatDate(end_date);
+          start_time = start.hour(8)
+          end_time = end_date.hour(9)
+          start_date_str = formatDate(start_time);
+          end_date_str = formatDate(end_time);
           $('#appointment_start').val(start_date_str);
           $('#appointment_end').val(end_date_str);
         });
