@@ -29,7 +29,7 @@ Activity.create(name: "Gymnastics")#4
 Activity.create(name: "Figure Skating")#5
 
 5.times do
-  CoachActivity.create(coach_id: 5,activity_id: rand(5)+1)
+  CoachActivity.create(coach_id: 3,activity_id: rand(5)+1)
 end
 
 CoachActivity.create(coach_id: 3, activity_id: 1)
@@ -40,12 +40,12 @@ CoachLocation.create(location_id: 1, coach_id:3)
 Invite.create(client_id: 1, coach_activity_id:1)
 Invite.create(client_id: 2, coach_activity_id:1)
 
-CoachLocation.create(location_id: 2, coach_id:5)
-CoachLocation.create(location_id: 3, coach_id:5)
-CoachLocation.create(location_id: 1, coach_id:5)
-CoachLocation.create(location_id: 2, coach_id:5)
-CoachLocation.create(location_id: 3, coach_id:5)
-CoachLocation.create(location_id: 3, coach_id:5)
+CoachLocation.create(location_id: 2, coach_id:3)
+CoachLocation.create(location_id: 3, coach_id:3)
+CoachLocation.create(location_id: 1, coach_id:3)
+CoachLocation.create(location_id: 2, coach_id:3)
+CoachLocation.create(location_id: 3, coach_id:3)
+CoachLocation.create(location_id: 3, coach_id:3)
 
 
 Invite.create(client_id: 1, coach_activity_id:1)
@@ -69,25 +69,25 @@ appt = Appointment.create!(coach_activity_id: 1, child_id: 2, location_id: 1, st
 
 # CLARA'S APPTS
 
-appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id: 1, child_id: 3, location_id: 1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
 
-# # ANDREW'S APPTS
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# # # ANDREW'S APPTS
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 4, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
 
-# # RACHELS'S APPTS
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
-appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# # # RACHELS'S APPTS
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
+# appt = Appointment.create!(coach_activity_id:rand(5)+1, child_id: 5, location_id: rand(3)+1, start: Faker::Time.between(5.days.ago, Date.today+20, :morning), end: Faker::Time.between(seed_time, seed_time+1.hours, :morning))
 
 
 

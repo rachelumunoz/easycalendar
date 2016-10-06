@@ -16,12 +16,15 @@ class AppointmentsController < MessagesController
   def edit
     @user = current_user
     @appointment = Appointment.find_by(id: params[:id])
+
+    @event_id = @appointment.google_event_id
   end
 
   def create
     @appointment = Appointment.new(event_params)
     @appointment.set_color
     @appointment.save
+
     #creat google event
     event = Google::Apis::CalendarV3::Event.new(
     {  summary: "#{@appointment.activity.name}",
