@@ -12,12 +12,12 @@ class AppointmentsController < ApplicationController
     p "************************************** #{current_user.email}"
     p current_user.clients
     #@user = current_user
-    @user = User.find(3)
+    @user = current_user
     @appointment = Appointment.new
   end
 
   def edit
-    @user = User.find(3)
+    @user = current_user
     #@appointment = Appointment.new
   end
 
@@ -25,6 +25,30 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(event_params)
     @appointment.set_color
     @appointment.save
+    puts "===========hello============="
+    #creat google event
+    event = Google::Apis::CalendarV3::Event.new(
+    {  summary: "#{@appointment.activity.name}",
+      location: @appointment.location.address,
+      start: {
+        date_time: "2016-10-06T09:00:00-07:00"
+      },
+      end: {
+        date_time: "2016-10-06T09:30:00-07:00"
+      }
+      })
+    puts "==============event==============="
+    puts event.class
+    authorization = GoogleAuthorization.authorize(current_user.email,request)
+    if authorization.is_a? String
+      redirect_to authorization
+    else
+      @service = Google::Apis::CalendarV3::CalendarService.new
+      @service.client_options.application_name = "Easycalendar"
+
+      @service.authorization = authorization
+      @service.insert_event('primary', event)
+    end
   end
 
   def update
