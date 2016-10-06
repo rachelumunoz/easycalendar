@@ -56,9 +56,6 @@ class AppointmentsController < MessagesController
       cancel_confirmation_msg
     end
 
-    puts "==============google_event_id================"
-    puts @appointment.google_event_id
-
     authorization = GoogleAuthorization.authorize(current_user.email,request)
 
     if authorization.is_a? String
@@ -79,6 +76,15 @@ class AppointmentsController < MessagesController
   end
 
   def destroy
+    authorization = GoogleAuthorization.authorize(current_user.email,request)
+    if authorization.is_a? String
+      redirect_to authorization
+    else
+      @service = Google::Apis::CalendarV3::CalendarService.new
+      @service.client_options.application_name = "Easycalendar"
+      @service.authorization = authorization
+      @service.delete_event('primary', @appointment.google_event_id)
+    end
     @appointment.destroy
     redirect_to profile_path
   end

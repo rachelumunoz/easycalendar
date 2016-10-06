@@ -17,6 +17,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Google"
       session[:user_id] = @user.id
+      current_user.get_google_calendars
+      current_user.events_to_appointments
       begin
         target_url = Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
         redirect_to target_url
@@ -24,7 +26,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         redirect_to '/profile'
       end
     else
-      puts "=========nope nope nope========="
       session["devise.google_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
     end

@@ -53,61 +53,6 @@ class User  < ActiveRecord::Base
     end
   end
 
-
-
-  # def refresh_token_if_expired
-  #   if token_expired?
-  #     response = RestClient.post("accounts.google.com/o/oauth2/token", :grant_type => 'refresh_token',
-  #       :refresh_token => self.refresh_token,
-  #       :client_id => ENV['GOOGLE_CLIENT_ID'],
-  #       :client_secret => ENV['GOOGLE_CLIENT_SECRET'])
-
-  #     refreshhash = JSON.parse(response.body)
-
-  #     token_will_change!
-  #     expiresat_will_change!
-
-  #     self.token = refreshhash['access_token']
-  #     self.expires_at = DateTime.now + refreshhash["expires_in"].to_i.seconds
-
-  #     self.save
-  #     puts 'Saved'
-  #   end
-  # end
-
-
-  def token_expired?
-    expiry = Time.at(self.expires_at.to_i)
-    return true if expiry < Time.now
-    # token_expires_at = expiry
-    # save if changed?
-    false
-  end
-
-  def refresh_token_if_expired
-    if token_expired?
-      response = RestClient.post(
-        "accounts.google.com/o/oauth2/token",
-        :grant_type => 'refresh_token',
-        :refresh_token => self.refresh_token,
-        :client_id => ENV['GOOGLE_CLIENT_ID'],
-        :client_secret => ENV['GOOGLE_CLIENT_SECRET']
-      )
-      refresh_hash = JSON.parse(response.body)
-
-      token_will_change!
-      expiresat_will_change!
-
-      self.token     = refresh_hash['access_token']
-      self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
-
-      self.save
-      puts 'Saved'
-    end
-  end
-
-
-
   def events_to_appointments
     appointment_count = coached_appointments.where(google_event_id: events.pluck(:google_event_id)).pluck(:google_event_id).uniq.size
     return if appointment_count >= events.pluck(:google_event_id).uniq.size
@@ -148,7 +93,6 @@ class User  < ActiveRecord::Base
     calendars.select{|cal| cal['accessRole'] == "owner" }.map do |cal|
       get_events_for_calendar(cal)
     end
-    # calendars.select{|cal| puts cal }
   end
 
   def get_events_for_calendar(cal)
@@ -161,8 +105,6 @@ class User  < ActiveRecord::Base
     my_events.each do |event|
       summary = event["summary"] || "no name"
       start = event["start"] ? event["start"]["dateTime"] : nil
-      puts "===============event-start=============================="
-      puts event["start"]
       end_time = event["end"] ? event["end"]["dateTime"] : nil
       link = event["htmlLink"] || nil
       status = event["status"] || nil
@@ -171,10 +113,6 @@ class User  < ActiveRecord::Base
       location = event["location"] || nil
       description = event["description"] || nil
       calendar = cal["summary"] || nil
-
-      #iCalUID
-      # puts "-------========event======================--"
-      # puts event
 
       # need a location check when converting to appt
       event = self.events.find_or_create_by(google_event_id: google_event_id)
@@ -197,20 +135,6 @@ class User  < ActiveRecord::Base
     "helloworld"
   end
 end
-
-  # end
-
-
-
-
-  # def token_expired?
-  #   expiry = DateTime.now + ((self.expires_at.to_i) /1000).seconds
-  #   return true if expiry < Time.now
-  #   token_expires_at = expiry
-  #   save if changed?
-  #   false
-  # end
-
 
 
   # def get_google_contacts
@@ -236,3 +160,4 @@ end
   #     contacts.create!(name: name, email: email, tel: tel, picture: picture)
   #   end
   # end
+  #
