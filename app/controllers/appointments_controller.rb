@@ -29,7 +29,7 @@ class AppointmentsController < MessagesController
 
     if @appointment.google_event_id.nil?
       event = Google::Apis::CalendarV3::Event.new(
-      {  summary: "activity hard code",
+      {  summary: @appointment.child.first_name,
       location: @appointment.location.address,
       start: {
         date_time: @appointment.start.utc.iso8601
@@ -69,10 +69,9 @@ class AppointmentsController < MessagesController
       @service.authorization = authorization
 
       event = @service.get_event('primary', @appointment.google_event_id)
-      # event.summary = @appointment.activity.name
-      event.summary = "updated from easyCalendar"
-      event.start.date_time = "2016-10-14T09:00:00-07:00"
-      event.end.date_time = "2016-10-14T09:30:00-07:00"
+      event.summary = @appointment.activity.name
+      event.start.date_time = @appointment.start.utc.iso8601
+      event.end.date_time = @appointment.end.utc.iso8601
       result = @service.update_event('primary',event.id, event)
       result
     end
