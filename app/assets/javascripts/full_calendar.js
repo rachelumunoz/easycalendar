@@ -1,3 +1,7 @@
+function formatDate(moment_obj) {
+  return moment_obj.format("YYYY-MM-DD") + 'T' + moment_obj.format("HH:mm");
+}
+
 var initialize_calendar;
 initialize_calendar = function() {
   console.log("enter initialize calendar");
@@ -17,8 +21,15 @@ initialize_calendar = function() {
       events: '/users/events-appts.json',
 
       select: function(start, end) {
-        // console.log("about to $.getScript of appointments new")
-        $.getScript('/appointments/new', function() {});
+        $.getScript('/appointments/new', function() {
+          var end_date = start.clone();
+          console.log(start)
+          console.log(end)
+          start_date_str = formatDate(start);
+          end_date_str = formatDate(end_date);
+          $('#appointment_start').val(start_date_str);
+          $('#appointment_end').val(end_date_str);
+        });
 
         calendar.fullCalendar('unselect');
       },
