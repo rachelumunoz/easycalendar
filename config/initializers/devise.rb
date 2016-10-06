@@ -249,10 +249,13 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   require 'omniauth-google-oauth2'
-  config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'],
-  ENV['GOOGLE_CLIENT_SECRET'],
-  { access_type: "offline", approval_prompt: "",
-  scope: 'userinfo.email,calendar,https://www.googleapis.com/auth/calendar,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/plus.login',provider_ignores_state: true }
+  config.omniauth :google_oauth2,
+    ENV['GOOGLE_CLIENT_ID'],
+    ENV['GOOGLE_CLIENT_SECRET'],
+    { access_type: "offline",
+      approval_prompt: "",
+      #prompt: 'consent',
+      scope: 'userinfo.email,https://www.googleapis.com/auth/calendar, https://www.google.com/m8/feeds/, https://www.googleapis.com/auth/plus.login',provider_ignores_state: true }
 
 
   # ==> Warden configuration

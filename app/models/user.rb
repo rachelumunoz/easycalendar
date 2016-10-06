@@ -42,6 +42,7 @@ class User  < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.provider = auth.provider
       user.uid = auth.uid
+      user.refresh_token = auth.credentials.refresh_token
       user.first_name = auth.info.name
       user.token = auth.credentials.token
       user.expires_at = Time.at(auth.credentials.expires_at)
@@ -49,20 +50,72 @@ class User  < ActiveRecord::Base
     end
   end
 
+
+
+  # def refresh_token_if_expired
+  #   if token_expired?
+  #     response = RestClient.post("accounts.google.com/o/oauth2/token", :grant_type => 'refresh_token',
+  #       :refresh_token => self.refresh_token,
+  #       :client_id => ENV['GOOGLE_CLIENT_ID'],
+  #       :client_secret => ENV['GOOGLE_CLIENT_SECRET'])
+
+  #     refreshhash = JSON.parse(response.body)
+
+  #     token_will_change!
+  #     expiresat_will_change!
+
+  #     self.token = refreshhash['access_token']
+  #     self.expires_at = DateTime.now + refreshhash["expires_in"].to_i.seconds
+
+  #     self.save
+  #     puts 'Saved'
+  #   end
+  # end
+
+
+  def token_expired?
+    expiry = Time.at(self.expires_at.to_i)
+    return true if expiry < Time.now
+    # token_expires_at = expiry
+    # save if changed?
+    false
+  end
+
+  def refresh_token_if_expired
+    if token_expired?
+      response = RestClient.post(
+        "accounts.google.com/o/oauth2/token",
+        :grant_type => 'refresh_token',
+        :refresh_token => self.refresh_token,
+        :client_id => ENV['GOOGLE_CLIENT_ID'],
+        :client_secret => ENV['GOOGLE_CLIENT_SECRET']
+      )
+      refresh_hash = JSON.parse(response.body)
+
+      token_will_change!
+      expiresat_will_change!
+
+      self.token     = refresh_hash['access_token']
+      self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
+
+      self.save
+      puts 'Saved'
+    end
+  end
+
+
+
   def events_to_appointments
+    appointment_count = coached_appointments.where(google_event_id: events.pluck(:google_event_id)).pluck(:google_event_id).uniq.size
+    return if appointment_count >= events.pluck(:google_event_id).uniq.size
     self.events.each do |event|
-      puts '===========event========================'
-      puts event
-      puts '===========location========================'
-      puts event.location
-      puts '===========find location========================'
-      puts  Location.find_by(address: event.location)
-      appointment = Appointment.find_or_create_by!(google_event_id: event.google_event_id,
-        coach_activity: self.coach_activities.first,
-        location: Location.find_by(address: event.location),
-        start: event.start,
-        end: event.end_time
-        )
+      appointment = Appointment.find_or_initialize_by(google_event_id: event.google_event_id)
+      appointment.coach_activity = self.coach_activities.first || CoachActivity.find_or_initialize_by(activity: Activity.first, coach: self)
+      appointment.location = Location.find_by(address: event.location) || Location.find_or_initialize_by(name: "Unknown", address: "Unknown")
+      appointment.start = event.start
+      appointment.end = event.end_time
+      appointment.coach = self
+      appointment.save!
     end
   end
 
@@ -100,6 +153,8 @@ class User  < ActiveRecord::Base
     response = open(url)
     json = JSON.parse(response.read)
     my_events = json["items"]
+    existing_event_count = self.events.where(google_event_id: my_events.map{|event| event["id"] }).size
+    return if existing_event_count >= my_events.length
     my_events.each do |event|
       summary = event["summary"] || "no name"
       start = event["start"] ? event["start"]["dateTime"] : nil
@@ -119,7 +174,8 @@ class User  < ActiveRecord::Base
       # puts event
 
       # need a location check when converting to appt
-      self.events.create(summary: summary,
+      event = self.events.find_or_create_by(google_event_id: google_event_id)
+      event.update(summary: summary,
                     creator: creator,
                     status: status,
                     start: start,
@@ -139,30 +195,6 @@ class User  < ActiveRecord::Base
   end
 end
 
-  # def calendar
-  #   self.calendar
-  # end
-
-  # def refresh_token_if_expired
-  #   if token_expired?
-  #     response = RestClient.post(
-  #       "accounts.google.com/o/oauth2/token",
-  #       :grant_type => 'refresh_token',
-  #       :refresh_token => self.refresh_token,
-  #       :client_id => ENV['GOOGLE_CLIENT_ID'],
-  #       :client_secret => ENV['GOOGLE_CLIENT_SECRET']
-  #     )
-  #     refresh_hash = JSON.parse(response.body)
-
-  #     token_will_change!
-  #     expiresat_will_change!
-
-  #     self.token     = refresh_hash['access_token']
-  #     self.expires_at = DateTime.now + refresh_hash["expires_in"].to_i.seconds
-
-  #     self.save
-  #     puts 'Saved'
-  #   end
   # end
 
 
