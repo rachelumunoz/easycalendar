@@ -19,7 +19,8 @@ function bindValidateNum() {
   $('form#new_invite').on('submit', validateNum);
 }
 
-$(document).on('turbolinks:load', bindValidateNum);
+// $(document).on('turbolinks:load', bindValidateNum);
+$(document).ready(bindValidateNum);
 
 
 
