@@ -29,7 +29,7 @@ class AppointmentsController < MessagesController
 
     if @appointment.google_event_id.nil?
       event = Google::Apis::CalendarV3::Event.new(
-      {  summary: "#{@appointment.activity.name}",
+      {  summary: "activity hard code",
       location: @appointment.location.address,
       start: {
         date_time: @appointment.start.utc.iso8601
@@ -49,6 +49,7 @@ class AppointmentsController < MessagesController
         @service.insert_event('primary', event)
       end
     end
+    redirect_to '/schedule'
   end
 
   def update

@@ -7,7 +7,7 @@
     <%= f.input_field :end, as: :datetime, html5: true, class: "form-group" %>
     <!-- GET THE POST -->
     <!-- got retrieve coach activities from the page's current user as a drop down collection -->
-    <%= f.input :activity, collection: @user.coach_activities, :label_method => lambda{|ca| ca.activity.name } %>
+    <%= f.association :coach_activity, collection: @user.coach_activities, :label_method => lambda{|ca| ca.activity.name } %>
     <%= f.association :location %>
     <%= f.association :child, collection: @user.clients_children, label_method: :first_name %>
   </div>
