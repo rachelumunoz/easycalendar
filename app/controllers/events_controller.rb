@@ -17,27 +17,27 @@ class EventsController < ApplicationController
 
   #should attach service to each user/coach
   def index
-  #      event = Google::Apis::CalendarV3::Event.new(
-  # {
-  #   summary: 'Google I/O 2015',
-  #   location: '800 Howard St., San Francisco, CA 94103',
-  #   description: 'A chance to hear more about Google\'s developer products.',
-  #   start: {
-  #     date_time: '2016-10-15T09:00:00-07:00',
-  #     time_zone: 'America/Los_Angeles',
-  #   },
-  #   end: {
-  #     date_time: '2016-10-15T17:00:00-07:00',
-  #     time_zone: 'America/Los_Angeles',
-  #   },
-  #   recurrence: [
-  #     'RRULE:FREQ=DAILY;COUNT=2'
-  #   ],
-  #   attendees: [
-  #     {email: 'lpage@example.com'},
-  #     {email: 'sbrin@example.com'},
-  #   ]
-  # })
+       event = Google::Apis::CalendarV3::Event.new(
+  {
+    summary: 'Google I/O 2015',
+    location: '800 Howard St., San Francisco, CA 94103',
+    description: 'A chance to hear more about Google\'s developer products.',
+    start: {
+      date_time: '2016-10-15T09:00:00-07:00',
+      time_zone: 'America/Los_Angeles',
+    },
+    end: {
+      date_time: '2016-10-15T17:00:00-07:00',
+      time_zone: 'America/Los_Angeles',
+    },
+    recurrence: [
+      'RRULE:FREQ=DAILY;COUNT=2'
+    ],
+    attendees: [
+      {email: 'lpage@example.com'},
+      {email: 'sbrin@example.com'},
+    ]
+  })
     authorization = GoogleAuthorization.authorize(current_user.email,request)
     if authorization.is_a? String
       redirect_to authorization
