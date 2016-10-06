@@ -55,6 +55,27 @@ class AppointmentsController < MessagesController
     if @appointment.child_id == nil
       cancel_confirmation_msg
     end
+
+    puts "==============google_event_id================"
+    puts @appointment.google_event_id
+
+    authorization = GoogleAuthorization.authorize(current_user.email,request)
+
+    if authorization.is_a? String
+      redirect_to authorization
+    else
+      @service = Google::Apis::CalendarV3::CalendarService.new
+      @service.client_options.application_name = "Easycalendar"
+      @service.authorization = authorization
+
+      event = @service.get_event('primary', @appointment.google_event_id)
+      # event.summary = @appointment.activity.name
+      event.summary = "updated from easyCalendar"
+      event.start.date_time = "2016-10-14T09:00:00-07:00"
+      event.end.date_time = "2016-10-14T09:30:00-07:00"
+      result = @service.update_event('primary',event.id, event)
+      result
+    end
   end
 
   def destroy
