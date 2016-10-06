@@ -28,9 +28,15 @@
 # Activity.create(name: "Gymnastics")#4
 # Activity.create(name: "Figure Skating")#5
 
+
 # 5.times do
 #   CoachActivity.create(coach_id: 5,activity_id: rand(5)+1)
 # end
+
+# 5.times do
+#   CoachActivity.create(coach_id: 3,activity_id: rand(5)+1)
+# end
+
 
 # CoachActivity.create(coach_id: 3, activity_id: 1)
 
@@ -40,12 +46,14 @@
 # Invite.create(client_id: 1, coach_activity_id:1)
 # Invite.create(client_id: 2, coach_activity_id:1)
 
+
 # CoachLocation.create(location_id: 2, coach_id:5)
 # CoachLocation.create(location_id: 3, coach_id:5)
 # CoachLocation.create(location_id: 1, coach_id:5)
 # CoachLocation.create(location_id: 2, coach_id:5)
 # CoachLocation.create(location_id: 3, coach_id:5)
 # CoachLocation.create(location_id: 3, coach_id:5)
+
 
 
 # Invite.create(client_id: 1, coach_activity_id:1)
