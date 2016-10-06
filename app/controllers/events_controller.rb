@@ -17,6 +17,7 @@ class EventsController < ApplicationController
 
   #should attach service to each user/coach
   def index
+
   end
 
 

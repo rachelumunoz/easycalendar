@@ -23,7 +23,9 @@ Easycalendar::Application.routes.draw do
   resources :sessions, only: [:create, :destroy]
   resource :home, only: [:show]
 
-  get '/profile', to: "users#show"
+  get '/schedule', to: "users#show"
+  get '/settings', to: "users#edit"
+  patch "/settings" , to: "users#update"
 
   root to: "home#show"
 

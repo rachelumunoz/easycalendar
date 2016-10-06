@@ -17,6 +17,7 @@ function validateNum() {
 
 function bindValidateNum() {
   $('form#new_invite').on('submit', validateNum);
+  $('form.edit_user').on('submit', validateNum);
 }
 
 $(document).on('turbolinks:load', bindValidateNum);

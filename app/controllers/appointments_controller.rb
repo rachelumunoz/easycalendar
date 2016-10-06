@@ -1,3 +1,5 @@
+require 'time'
+
 class AppointmentsController < MessagesController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
@@ -27,13 +29,13 @@ class AppointmentsController < MessagesController
 
     if @appointment.google_event_id.nil?
       event = Google::Apis::CalendarV3::Event.new(
-      {  summary: "#{@appointment.activity.name}",
+      {  summary: "activity hard code",
       location: @appointment.location.address,
       start: {
-        date_time: "2016-10-09T09:00:00-07:00"
+        date_time: @appointment.start.utc.iso8601
       },
       end: {
-        date_time: "2016-10-09T09:30:00-07:00"
+        date_time: @appointment.end.utc.iso8601
       }
       })
       authorization = GoogleAuthorization.authorize(current_user.email,request)
@@ -47,6 +49,7 @@ class AppointmentsController < MessagesController
         @service.insert_event('primary', event)
       end
     end
+    redirect_to '/schedule'
   end
 
   def update
