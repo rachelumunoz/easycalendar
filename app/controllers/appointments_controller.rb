@@ -29,7 +29,7 @@ class AppointmentsController < MessagesController
 
     if @appointment.google_event_id.nil?
       event = Google::Apis::CalendarV3::Event.new(
-      {  summary: "activity hard code",
+      {  summary: @appointment.child.first_name,
       location: @appointment.location.address,
       start: {
         date_time: @appointment.start.utc.iso8601
@@ -58,11 +58,37 @@ class AppointmentsController < MessagesController
     if @appointment.child_id == nil
       cancel_confirmation_msg
     end
+
+    authorization = GoogleAuthorization.authorize(current_user.email,request)
+
+    if authorization.is_a? String
+      redirect_to authorization
+    else
+      @service = Google::Apis::CalendarV3::CalendarService.new
+      @service.client_options.application_name = "Easycalendar"
+      @service.authorization = authorization
+
+      event = @service.get_event('primary', @appointment.google_event_id)
+      event.summary = "#{@appointment.activity.name} w/ #{@appointment.child.first_name}"
+      event.start.date_time = @appointment.start.utc.iso8601
+      event.end.date_time = @appointment.end.utc.iso8601
+      result = @service.update_event('primary',event.id, event)
+
+    end
   end
 
   def destroy
+    authorization = GoogleAuthorization.authorize(current_user.email,request)
+    if authorization.is_a? String
+      redirect_to authorization
+    else
+      @service = Google::Apis::CalendarV3::CalendarService.new
+      @service.client_options.application_name = "Easycalendar"
+      @service.authorization = authorization
+      @service.delete_event('primary', @appointment.google_event_id)
+    end
     @appointment.destroy
-    redirect_to profile_path
+    redirect_to '/schedule'
   end
 
   private
