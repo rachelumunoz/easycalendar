@@ -6,5 +6,6 @@ class CreateCoachActivities < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+    add_index :coach_activities, [:coach_id, :activity_id], unique: true
   end
 end

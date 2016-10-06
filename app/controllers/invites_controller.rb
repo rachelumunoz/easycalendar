@@ -27,7 +27,7 @@ class InvitesController < MessagesController
     @invite.save
 
     invitation_notice
-    redirect_to profile_path
+    redirect_to "/schedule"
   end
 
 end
