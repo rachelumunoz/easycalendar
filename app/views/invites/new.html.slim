@@ -5,17 +5,18 @@ div class="container"
         h1 Invite
         = simple_form_for @invite, url: invites_path do |f|
           div class="form-group"
-            = f.association :coach_activity, collection: @user.coach_activities ,    :label_method => lambda{|ca| ca.activity.name }
-            = f.simple_fields_for @new_user do |user_form|
-              = user_form.input :first_name, :label => "Parent's first name"
-              = user_form.input :last_name, :label => "Parent's last name"
-              = user_form.input :email
-              = user_form.input :phone_number
-            = f.simple_fields_for @new_child do |child_form|
-              = child_form.input :first_name, :label => "Child's first name"
-              = child_form.input :last_name, :label => "Child's last name"
-              = child_form.input :age
-            = f.button :submit
+          = f.association :coach_activity, collection: @user.coach_activities, :label_method => lambda{|ca| ca.activity.name }
+          = f.simple_fields_for @new_user do |user_form|
+            = user_form.input :first_name, :label => "Parent's first name"
+            = user_form.input :last_name, :label => "Parent's last name"
+            = user_form.input :email
+            = user_form.input :phone_number
+          = f.simple_fields_for @new_child do |child_form|
+            = child_form.input :first_name, :label => "Child's first name"
+            = child_form.input :last_name, :label => "Child's last name"
+            = child_form.input :age
+          = f.button :submit
 
 
 
+= debug @user = User.last.phone_number

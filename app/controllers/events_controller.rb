@@ -31,10 +31,10 @@ class EventsController < ApplicationController
     #   @service.authorization = authorization
     #   @service.insert_event('primary', event)
     #   current_user.get_google_calendars
-    #   @events = current_user.events
-    #   current_user.events_to_appointments
-    #   @coached_appointments = current_user.coached_appointments
-    #   @appointments = current_user.appointments
+      @events = current_user.events
+      current_user.events_to_appointments
+      @coached_appointments = current_user.coached_appointments
+      @appointments = current_user.appointments
     # end
 
   end
