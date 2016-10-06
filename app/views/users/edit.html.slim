@@ -1,0 +1,10 @@
+h1 = "Setting for #{@current_user.first_name}"
+
+= simple_form_for @user, url: "/settings" do |f|
+  = f.input :first_name, :label => "First Name"
+  = f.input :last_name, :label => "Last Name"
+  = f.input :phone_number, :label => "Phone Number"
+  = f.simple_fields_for @new_coach_activity do |coach_activity_form|
+    = coach_activity_form.collection_select :activity_id , @activities , :id, :name, :label => "New Activity"
+    br
+  = f.button :submit

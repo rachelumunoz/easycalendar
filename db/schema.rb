@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20161006033553) do
     t.integer  "activity_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["coach_id", "activity_id"], name: "index_coach_activities_on_coach_id_and_activity_id", unique: true, using: :btree
   end
 
   create_table "coach_locations", force: :cascade do |t|
