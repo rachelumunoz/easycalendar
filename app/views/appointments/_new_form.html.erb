@@ -2,9 +2,9 @@
   <div class="form-inputs">
     <!-- START -->
 
-    <%= f.input_field :start, as: :datetime, html5: true, :html => { :class => "form-group" } %>
+    <%= f.input_field :start, as: :datetime, html5: true,  class: 'form-group start_date' %>
     <!-- END --><br>
-    <%= f.input_field :end, as: :datetime, html5: true, :html => { :class => "form-group" } %>
+    <%= f.input_field :end, as: :datetime, html5: true, class: "form-group" %>
     <!-- GET THE POST -->
     <!-- got retrieve coach activities from the page's current user as a drop down collection -->
     <%= f.association :coach_activity, collection: @user.coach_activities, label_method: :activity%>
