@@ -5,6 +5,7 @@ require 'net/http'
 class User  < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
   has_many :children, foreign_key: 'parent_id'
@@ -35,6 +36,8 @@ class User  < ActiveRecord::Base
   has_many :contacts
   has_many :events
   has_many :calendars
+
+  default_scope { where("status != 'Inactive'") }
 
   def self.from_omniauth(auth)
     data = auth.info
