@@ -1,3 +1,5 @@
+require 'time'
+
 class AppointmentsController < MessagesController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
@@ -30,10 +32,10 @@ class AppointmentsController < MessagesController
       {  summary: "#{@appointment.activity.name}",
       location: @appointment.location.address,
       start: {
-        date_time: "2016-10-09T09:00:00-07:00"
+        date_time: @appointment.start.utc.iso8601
       },
       end: {
-        date_time: "2016-10-09T09:30:00-07:00"
+        date_time: @appointment.end.utc.iso8601
       }
       })
       authorization = GoogleAuthorization.authorize(current_user.email,request)
