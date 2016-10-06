@@ -10,20 +10,39 @@ class AppointmentsController < MessagesController
 
   def new
     @user = current_user
-    #@user = User.find(3)
     @appointment = Appointment.new
   end
 
   def edit
     @user = current_user
-    #@user = User.find(3)
-    #@appointment = Appointment.new
+    @appointment = Appointment.find_by(id: params[:id])
   end
 
   def create
     @appointment = Appointment.new(event_params)
     @appointment.set_color
     @appointment.save
+    #creat google event
+    event = Google::Apis::CalendarV3::Event.new(
+    {  summary: "#{@appointment.activity.name}",
+      location: @appointment.location.address,
+      start: {
+        date_time: "2016-10-08T09:00:00-07:00"
+      },
+      end: {
+        date_time: "2016-10-08T09:30:00-07:00"
+      }
+      })
+    authorization = GoogleAuthorization.authorize(current_user.email,request)
+    if authorization.is_a? String
+      redirect_to authorization
+    else
+      @service = Google::Apis::CalendarV3::CalendarService.new
+      @service.client_options.application_name = "Easycalendar"
+
+      @service.authorization = authorization
+      @service.insert_event('primary', event)
+    end
   end
 
   def update
