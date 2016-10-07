@@ -21,7 +21,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         target_url = Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
         redirect_to target_url
       rescue
-        redirect_to '/schedule'
+        if @user.coach_activities.size == 0
+          redirect_to '/settings'
+        else
+          redirect_to '/schedule'
+        end
       end
     else
       session["devise.google_data"] = request.env["omniauth.auth"]
