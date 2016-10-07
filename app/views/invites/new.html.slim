@@ -1,7 +1,7 @@
-div class="container"
-  div class="well"
-    div class="row"
-      div class="col-md-6"
+.container
+  .well
+    .row
+      .col-md-6.invite-form
         h1 Invite
         = simple_form_for @invite, url: invites_path do |f|
           div class="form-group"
@@ -16,7 +16,3 @@ div class="container"
             = child_form.input :last_name, :label => "Child's last name"
             = child_form.input :age
           = f.button :submit
-
-
-
-= debug @user = User.last.phone_number
