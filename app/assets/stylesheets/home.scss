@@ -2,13 +2,48 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.nav {
+  margin-bottom: 0px;
+}
+
+.container {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px;
+  width: 100%;
+  font-family: Helvetica;
+}
+
 .background {
   color: white;
-  background: url("baseball.jpg");
+  background: url("rink.jpg");
   overflow: auto;
-  margin-top: -20px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 800px
+  height: 800px;
+  width: 100%
+}
+
+.opening-text {
+  text-align: left;
+  font-size: 2.5em;
+  font-weight: bold;
+  color: black;
+  margin-top: 18%;
+  margin-right: 12%;
+  width: 280px;
+}
+
+.home-button {
+  text-align: center;
+  height: 100px;
+  width: 300px;
+  margin-top: 40%;
+  margin-right: -20%;
+}
+
+.button-text {
+  margin-top: 20px;
+  font-size: 1.5em;
 }
