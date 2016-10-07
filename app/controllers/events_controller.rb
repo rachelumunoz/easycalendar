@@ -9,15 +9,11 @@ class EventsController < ApplicationController
   end
 
   def create
-
-
-
   end
 
 
   #should attach service to each user/coach
   def index
-
   end
 
 
@@ -25,9 +21,6 @@ class EventsController < ApplicationController
   end
 
   def update
-    # # @event.update_attributes
-    # puts "=================params=================="
-    # puts params[:status]
   end
 
   private

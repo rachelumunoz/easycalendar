@@ -8,8 +8,6 @@ require 'google/api_client/client_secrets'
 module GoogleAuthorization
   OOB_URI = "http://localhost:3000/users/auth/google_oauth2/callback"
 
-
-
   def self.authorize(email, request, code = nil)
     puts "Inside authorize"
     client_id = Google::Auth::ClientId.new(ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'])
