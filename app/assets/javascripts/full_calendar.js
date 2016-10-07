@@ -13,6 +13,10 @@ initialize_calendar = function() {
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
       },
+      defaultView: 'agendaWeek',
+      minTime: "5:00:00",
+      maxTime: "21:00:00",
+      contentHeight: 400,
       selectable: true,
       selectHelper: true,
       editable: true,
