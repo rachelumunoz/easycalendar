@@ -2,8 +2,6 @@ require 'google/apis/calendar_v3'
 
 class UsersController < ApplicationController
 
-
-
   def show
     @user = current_user
   end
