@@ -28,8 +28,13 @@ class AppointmentsController < MessagesController
     @appointment.save
 
     if @appointment.google_event_id.nil?
+      if @appointment.child == nil
+        @summary = "OPEN"
+      else
+        @summary = @appointment.child.first_name
+      end
       event = Google::Apis::CalendarV3::Event.new(
-      {  summary: @appointment.child.first_name,
+      {  summary: @summary,
       location: @appointment.location.address,
       start: {
         date_time: @appointment.start.utc.iso8601
